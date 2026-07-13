@@ -1,0 +1,203 @@
+:root {
+    --verde-principal: #1f6f50;
+    --verde-oscuro: #174d39;
+    --verde-claro: #e8f4ee;
+    --verde-suave: #d2eadf;
+    --blanco: #ffffff;
+    --gris-fondo: #f5f7f6;
+    --gris-texto: #5f6b66;
+    --gris-borde: #dce3df;
+    --rojo: #b93b3b;
+}
+
+body {
+    background-color: var(--gris-fondo);
+    color: #24312c;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    min-height: 75vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: var(--verde-oscuro);
+}
+
+.navbar-farmacia {
+    background-color: var(--verde-principal);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-farmacia .navbar-brand {
+    font-size: 1.3rem;
+    letter-spacing: 0.3px;
+}
+
+.navbar-farmacia .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    border-radius: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.navbar-farmacia .nav-link:hover {
+    color: var(--blanco);
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.encabezado-pagina {
+    background-color: var(--blanco);
+    border-left: 5px solid var(--verde-principal);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.encabezado-pagina p {
+    color: var(--gris-texto);
+    margin-bottom: 0;
+}
+
+.tarjeta-modulo {
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-modulo:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(31, 111, 80, 0.14);
+}
+
+.tarjeta-modulo .card-body {
+    padding: 24px;
+}
+
+.icono-modulo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background-color: var(--verde-claro);
+    color: var(--verde-principal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+
+.btn-farmacia {
+    background-color: var(--verde-principal);
+    border-color: var(--verde-principal);
+    color: var(--blanco);
+}
+
+.btn-farmacia:hover {
+    background-color: var(--verde-oscuro);
+    border-color: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.btn-outline-farmacia {
+    border-color: var(--verde-principal);
+    color: var(--verde-principal);
+}
+
+.btn-outline-farmacia:hover {
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+}
+
+.tabla-farmacia {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tabla-farmacia thead {
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+}
+
+.tabla-farmacia tbody tr:hover {
+    background-color: var(--verde-claro);
+}
+
+.formulario-farmacia {
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+}
+
+.formulario-farmacia .card-body {
+    padding: 28px;
+}
+
+.form-control:focus {
+    border-color: var(--verde-principal);
+    box-shadow: 0 0 0 0.2rem rgba(31, 111, 80, 0.18);
+}
+
+.alerta-stock {
+    background-color: #fff3cd;
+    border-left: 5px solid #d39e00;
+    color: #6c5400;
+}
+
+.footer-farmacia {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.footer-farmacia small {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.dashboard-contenido {
+    max-width: 1200px;
+}
+
+.dashboard-contenido h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+.dashboard-contenido > div:first-child {
+    margin-bottom: 32px;
+}
+
+.tarjeta-modulo {
+    min-height: 210px;
+}
+
+.tarjeta-modulo .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+}
+
+.tarjeta-modulo .card-text {
+    color: var(--gris-texto);
+    line-height: 1.5;
+    min-height: 48px;
+}
+
+.tarjeta-modulo .btn {
+    margin-top: 12px;
+}
+
+.navbar-farmacia .container {
+    max-width: 1200px;
+}
+
+.navbar-farmacia {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.footer-farmacia {
+    margin-top: 60px;
+}
