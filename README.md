@@ -38,8 +38,7 @@ El objetivo es facilitar el control de las ventas, mantener actualizado el inven
 
 ## Estructura de documentación
 
-```text
 docs/
-├── 01/
+├── 01/ Avance 1
 ├── 02/
 └── 03/
