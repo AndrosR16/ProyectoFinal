@@ -3,7 +3,6 @@ package com.ufide.Farmacia.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ufide.Farmacia.entity.Proveedor;
@@ -12,8 +11,11 @@ import com.ufide.Farmacia.repository.ProveedorRepository;
 @Service
 public class ProveedorService {
 
-    @Autowired
-    private ProveedorRepository repository;
+private final ProveedorRepository repository;
+
+public ProveedorService(ProveedorRepository repository) {
+    this.repository = repository;
+}
 
     public List<Proveedor> listar() {
         return repository.findAll();
