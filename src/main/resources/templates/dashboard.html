@@ -11,113 +11,218 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
-<body class="bg-light">
+<body>
 
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main class="container py-5 dashboard-contenido">
 
-        <div class="mb-4">
-            <h1 class="fw-bold">Sistema de Facturación para Farmacia</h1>
-            <p class="text-muted">
-                Seleccione uno de los módulos para comenzar.
-            </p>
-        </div>
+        <section class="encabezado-pagina mb-5">
+            <div class="row align-items-center">
 
-        <div class="row g-4">
+                <div class="col-lg-8">
+                    <span class="insignia-proveedor mb-3">
+                        Gestión farmacéutica
+                    </span>
 
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 tarjeta-modulo shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Clientes</h5>
-                        <p class="card-text">
-                            Registro y consulta de clientes de la farmacia.
-                        </p>
-                        <a th:href="@{/clientes}" class="btn btn-farmacia">
-                            Ir a clientes
-                        </a>
+                    <h1>Sistema de Facturación para Farmacia</h1>
+
+                    <p>
+                        Administre clientes, medicamentos, proveedores,
+                        inventario y facturación desde un mismo lugar.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <div class="resumen-sistema">
+                        <span class="resumen-etiqueta">
+                            Acceso principal
+                        </span>
+
+                        <strong>Panel administrativo</strong>
+
+                        <small>
+                            Seleccione un módulo para comenzar.
+                        </small>
                     </div>
                 </div>
+
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+
+                <div>
+                    <span class="subtitulo-seccion">
+                        Módulos disponibles
+                    </span>
+
+                    <h2 class="titulo-seccion">
+                        Área de trabajo
+                    </h2>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="row g-4">
+
+            <div class="col-lg-8">
+                <article class="card tarjeta-modulo tarjeta-destacada h-100">
+                    <div class="card-body">
+
+
+                        <span class="etiqueta-modulo">
+                            Catálogo principal
+                        </span>
+
+                        <h3 class="card-title">
+                            Medicamentos
+                        </h3>
+
+                        <p class="card-text">
+                            Administre el catálogo de productos farmacéuticos,
+                            precios, presentaciones y datos generales de cada
+                            medicamento.
+                        </p>
+
+                        <a th:href="@{/medicamentos}"
+                           class="btn btn-farmacia">
+                            Abrir medicamentos
+                        </a>
+
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-4">
+                <article class="card tarjeta-modulo h-100">
+                    <div class="card-body">
+
+
+                        <h3 class="card-title">
+                            Clientes
+                        </h3>
+
+                        <p class="card-text">
+                            Registre y consulte la información de los clientes.
+                        </p>
+
+                        <a th:href="@{/clientes}"
+                           class="btn btn-outline-farmacia">
+                            Ver clientes
+                        </a>
+
+                    </div>
+                </article>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
+                <article class="card tarjeta-modulo h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Medicamentos</h5>
+
+                        <h3 class="card-title">
+                            Proveedores
+                        </h3>
+
                         <p class="card-text">
-                            Administración del catálogo de medicamentos.
+                            Mantenga actualizados los contactos de distribuidores
+                            y proveedores de la farmacia.
                         </p>
-                        <a th:href="@{/medicamentos}" class="btn btn-farmacia">
-                            Ir a medicamentos
+
+                        <a th:href="@{/proveedores}"
+                           class="btn btn-outline-farmacia">
+                            Ver proveedores
                         </a>
+
                     </div>
-                </div>
+                </article>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
+                <article class="card tarjeta-modulo h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Proveedores</h5>
+
+                        <h3 class="card-title">
+                            Inventario
+                        </h3>
+
                         <p class="card-text">
-                            Registro y mantenimiento de proveedores.
+                            Consulte existencias, movimientos y alertas de bajo stock.
                         </p>
-                        <a th:href="@{/proveedores}" class="btn btn-farmacia">
-                            Ir a proveedores
+
+                        <a th:href="@{/inventario}"
+                           class="btn btn-outline-farmacia">
+                            Revisar inventario
                         </a>
+
                     </div>
-                </div>
+                </article>
             </div>
 
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
+                <article class="card tarjeta-modulo h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Inventario</h5>
+
+                        <h3 class="card-title">
+                            Facturas
+                        </h3>
+
                         <p class="card-text">
-                            Consulta del stock disponible y alertas de inventario.
+                            Registre ventas y consulte las facturas generadas.
                         </p>
-                        <a th:href="@{/inventario}" class="btn btn-farmacia">
-                            Ir a inventario
+
+                        <a th:href="@{/facturas}"
+                           class="btn btn-outline-farmacia">
+                            Ir a facturación
                         </a>
+
                     </div>
-                </div>
+                </article>
             </div>
 
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
+            <div class="col-lg-12">
+                <article class="card tarjeta-reporte">
                     <div class="card-body">
-                        <h5 class="card-title">Facturas</h5>
-                        <p class="card-text">
-                            Creación y consulta de facturas de venta.
-                        </p>
-                        <a th:href="@{/facturas}" class="btn btn-farmacia">
-                            Ir a facturas
-                        </a>
+
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-8">
+                                <span class="subtitulo-seccion">
+                                    Análisis del sistema
+                                </span>
+
+                                <h3>
+                                    Reportes de ventas
+                                </h3>
+
+                                <p class="mb-lg-0">
+                                    Consulte ventas registradas, medicamentos con
+                                    mayor movimiento y resultados generales de la farmacia.
+                                </p>
+                            </div>
+
+                            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                                <a th:href="@{/reportes}"
+                                   class="btn btn-farmacia">
+                                    Consultar reportes
+                                </a>
+                            </div>
+
+                        </div>
+
                     </div>
-                </div>
+                </article>
             </div>
 
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Reportes</h5>
-                        <p class="card-text">
-                            Consulta de ventas y medicamentos más vendidos.
-                        </p>
-                        <a th:href="@{/reportes}" class="btn btn-farmacia">
-                            Ir a reportes
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        </section>
 
     </main>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

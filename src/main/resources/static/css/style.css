@@ -1,19 +1,28 @@
 :root {
-    --verde-principal: #1f6f50;
-    --verde-oscuro: #174d39;
-    --verde-claro: #e8f4ee;
-    --verde-suave: #d2eadf;
+    --verde-principal: #2f6f5e;
+    --verde-oscuro: #214f43;
+    --verde-claro: #e8f3ef;
+    --azul-medico: #4b6f82;
+    --azul-claro: #eaf1f5;
+    --crema: #f5f1e8;
     --blanco: #ffffff;
-    --gris-fondo: #f5f7f6;
-    --gris-texto: #5f6b66;
-    --gris-borde: #dce3df;
-    --rojo: #b93b3b;
+    --gris-fondo: #f3f5f3;
+    --gris-texto: #66716c;
+    --gris-oscuro: #2d3934;
+    --gris-borde: #d9e1dd;
+    --rojo: #a94747;
+    --rojo-claro: #f8eaea;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
+    margin: 0;
     background-color: var(--gris-fondo);
-    color: #24312c;
-    font-family: Arial, Helvetica, sans-serif;
+    color: var(--gris-oscuro);
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 main {
@@ -24,25 +33,43 @@ h1,
 h2,
 h3,
 h4,
-h5 {
+h5,
+h6 {
     color: var(--verde-oscuro);
+    font-weight: 700;
+}
+
+p {
+    color: var(--gris-texto);
 }
 
 .navbar-farmacia {
-    background-color: var(--verde-principal);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    background-color: var(--verde-oscuro);
+    padding-top: 13px;
+    padding-bottom: 13px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-farmacia .container {
+    max-width: 1200px;
 }
 
 .navbar-farmacia .navbar-brand {
+    color: var(--blanco);
     font-size: 1.3rem;
+    font-weight: 700;
     letter-spacing: 0.3px;
 }
 
+.navbar-farmacia .navbar-brand:hover {
+    color: var(--blanco);
+}
+
 .navbar-farmacia .nav-link {
-    color: rgba(255, 255, 255, 0.88);
-    border-radius: 6px;
-    padding-left: 12px;
-    padding-right: 12px;
+    color: rgba(255, 255, 255, 0.86);
+    border-radius: 7px;
+    padding: 8px 12px;
+    margin: 0 2px;
 }
 
 .navbar-farmacia .nav-link:hover {
@@ -52,109 +79,20 @@ h5 {
 
 .encabezado-pagina {
     background-color: var(--blanco);
-    border-left: 5px solid var(--verde-principal);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.encabezado-pagina h1,
+.encabezado-pagina h2 {
+    margin-bottom: 8px;
 }
 
 .encabezado-pagina p {
-    color: var(--gris-texto);
     margin-bottom: 0;
-}
-
-.tarjeta-modulo {
-    border: 1px solid var(--gris-borde);
-    border-radius: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjeta-modulo:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(31, 111, 80, 0.14);
-}
-
-.tarjeta-modulo .card-body {
-    padding: 24px;
-}
-
-.icono-modulo {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    background-color: var(--verde-claro);
-    color: var(--verde-principal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-bottom: 16px;
-}
-
-
-.btn-farmacia {
-    background-color: var(--verde-principal);
-    border-color: var(--verde-principal);
-    color: var(--blanco);
-}
-
-.btn-farmacia:hover {
-    background-color: var(--verde-oscuro);
-    border-color: var(--verde-oscuro);
-    color: var(--blanco);
-}
-
-.btn-outline-farmacia {
-    border-color: var(--verde-principal);
-    color: var(--verde-principal);
-}
-
-.btn-outline-farmacia:hover {
-    background-color: var(--verde-principal);
-    color: var(--blanco);
-}
-
-.tabla-farmacia {
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.tabla-farmacia thead {
-    background-color: var(--verde-principal);
-    color: var(--blanco);
-}
-
-.tabla-farmacia tbody tr:hover {
-    background-color: var(--verde-claro);
-}
-
-.formulario-farmacia {
-    border: 1px solid var(--gris-borde);
-    border-radius: 12px;
-}
-
-.formulario-farmacia .card-body {
-    padding: 28px;
-}
-
-.form-control:focus {
-    border-color: var(--verde-principal);
-    box-shadow: 0 0 0 0.2rem rgba(31, 111, 80, 0.18);
-}
-
-.alerta-stock {
-    background-color: #fff3cd;
-    border-left: 5px solid #d39e00;
-    color: #6c5400;
-}
-
-.footer-farmacia {
-    background-color: var(--verde-oscuro);
-    color: var(--blanco);
-}
-
-.footer-farmacia small {
-    color: rgba(255, 255, 255, 0.75);
+    max-width: 750px;
 }
 
 .dashboard-contenido {
@@ -162,16 +100,72 @@ h5 {
 }
 
 .dashboard-contenido h1 {
-    font-size: 2.2rem;
-    margin-bottom: 8px;
+    font-size: 2.15rem;
 }
 
-.dashboard-contenido > div:first-child {
-    margin-bottom: 32px;
+.resumen-sistema {
+    background-color: var(--verde-oscuro);
+    border-radius: 14px;
+    padding: 22px;
+    color: var(--blanco);
+    box-shadow: 0 5px 14px rgba(33, 79, 67, 0.16);
+}
+
+.resumen-sistema strong {
+    display: block;
+    font-size: 1.15rem;
+    margin-top: 4px;
+}
+
+.resumen-sistema small {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.resumen-etiqueta {
+    color: #d8e8e1;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+.subtitulo-seccion {
+    display: block;
+    color: var(--verde-principal);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.titulo-seccion {
+    margin-bottom: 0;
+    font-size: 1.65rem;
+}
+
+.texto-apoyo {
+    color: var(--gris-texto);
+    font-size: 0.92rem;
 }
 
 .tarjeta-modulo {
-    min-height: 210px;
+    min-height: 220px;
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease;
+}
+
+.tarjeta-modulo:hover {
+    box-shadow: 0 8px 20px rgba(47, 111, 94, 0.13);
+}
+
+.tarjeta-modulo .card-body {
+    padding: 26px;
 }
 
 .tarjeta-modulo .card-title {
@@ -189,15 +183,345 @@ h5 {
     margin-top: 12px;
 }
 
-.navbar-farmacia .container {
-    max-width: 1200px;
+.tarjeta-destacada {
+    min-height: 285px;
+    background-color: #f8fcfa;
 }
 
-.navbar-farmacia {
-    padding-top: 12px;
-    padding-bottom: 12px;
+.tarjeta-destacada .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.tarjeta-destacada .card-title {
+    font-size: 1.8rem;
+    margin-top: 8px;
+}
+
+.tarjeta-destacada .card-text {
+    max-width: 650px;
+}
+
+.icono-modulo {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background-color: var(--verde-claro);
+    color: var(--verde-principal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    margin-bottom: 17px;
+}
+
+.icono-grande {
+    width: 65px;
+    height: 65px;
+    font-size: 1.25rem;
+}
+
+.etiqueta-modulo {
+    display: inline-block;
+    background-color: var(--azul-claro);
+    color: var(--azul-medico);
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.tarjeta-reporte {
+    background-color: var(--crema);
+    border: 1px solid #e6ddcd;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.tarjeta-reporte .card-body {
+    padding: 30px;
+}
+
+.tarjeta-reporte h3 {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+.tarjeta-reporte p {
+    max-width: 760px;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 9px 17px;
+}
+
+.btn-farmacia {
+    background-color: var(--verde-principal);
+    border-color: var(--verde-principal);
+    color: var(--blanco);
+}
+
+.btn-farmacia:hover,
+.btn-farmacia:focus {
+    background-color: var(--verde-oscuro);
+    border-color: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.btn-outline-farmacia {
+    background-color: transparent;
+    border: 1px solid var(--verde-principal);
+    color: var(--verde-principal);
+}
+
+.btn-outline-farmacia:hover {
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+}
+
+.btn-editar {
+    background-color: var(--azul-claro);
+    border-color: transparent;
+    color: var(--azul-medico);
+}
+
+.btn-editar:hover {
+    background-color: var(--azul-medico);
+    color: var(--blanco);
+}
+
+.btn-eliminar {
+    background-color: var(--rojo-claro);
+    border-color: transparent;
+    color: var(--rojo);
+}
+
+.btn-eliminar:hover {
+    background-color: var(--rojo);
+    color: var(--blanco);
+}
+
+.contenedor-tabla {
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.tabla-farmacia {
+    margin-bottom: 0;
+}
+
+.tabla-farmacia thead {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.tabla-farmacia thead th {
+    padding: 14px 16px;
+    border: none;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.tabla-farmacia tbody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    color: var(--gris-oscuro);
+    border-color: #edf0ee;
+}
+
+.tabla-farmacia tbody tr:nth-child(even) {
+    background-color: #fafcfa;
+}
+
+.tabla-farmacia tbody tr:hover {
+    background-color: var(--verde-claro);
+}
+
+.nombre-proveedor {
+    color: var(--verde-oscuro);
+    font-weight: 700;
+}
+
+.dato-secundario {
+    color: var(--gris-texto);
+    font-size: 0.92rem;
+}
+
+.insignia-proveedor {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--verde-claro);
+    color: var(--verde-principal);
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.formulario-farmacia {
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+.formulario-farmacia .card-body {
+    padding: 30px;
+}
+
+.form-label {
+    color: var(--verde-oscuro);
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.form-control,
+.form-select {
+    min-height: 45px;
+    border: 1px solid var(--gris-borde);
+    border-radius: 9px;
+    background-color: #fcfdfc;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--verde-principal);
+    box-shadow: 0 0 0 0.2rem rgba(47, 111, 94, 0.15);
+}
+
+.form-text {
+    color: var(--gris-texto);
+    font-size: 0.85rem;
+}
+
+.invalid-feedback {
+    font-size: 0.86rem;
+    font-weight: 500;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.alert-success {
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+}
+
+.alert-danger {
+    background-color: var(--rojo-claro);
+    color: #7d3030;
+}
+
+.alerta-stock {
+    background-color: #fff4d6;
+    color: #725723;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: var(--crema);
+    border-bottom: 1px solid var(--gris-borde);
+}
+
+.modal-title {
+    color: var(--verde-oscuro);
+}
+
+.modal-footer {
+    background-color: #fafbf9;
+    border-top: 1px solid var(--gris-borde);
+}
+
+.estado-vacio {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.estado-vacio .simbolo {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background-color: var(--verde-claro);
+    color: var(--verde-principal);
+    font-size: 1.8rem;
+    font-weight: 800;
 }
 
 .footer-farmacia {
     margin-top: 60px;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.footer-farmacia small {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-farmacia p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 991px) {
+    .navbar-farmacia .nav-link {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-contenido h1 {
+        font-size: 1.8rem;
+    }
+
+    .encabezado-pagina {
+        padding: 22px;
+    }
+
+    .tarjeta-modulo,
+    .tarjeta-destacada {
+        min-height: auto;
+    }
+
+    .tarjeta-destacada .card-title {
+        font-size: 1.55rem;
+    }
+
+    .formulario-farmacia .card-body {
+        padding: 22px;
+    }
+
+    .tarjeta-reporte .card-body {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn {
+        width: 100%;
+        margin-bottom: 7px;
+    }
+
+    .contenedor-tabla {
+        overflow-x: auto;
+    }
 }

@@ -8,8 +8,8 @@
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold" th:href="@{/}">
-            Farmacia
+        <a class="navbar-brand" th:href="@{/}">
+            Farmacia Vida
         </a>
 
         <button class="navbar-toggler"
@@ -63,13 +63,30 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reportes}">
+                        Reportes
+                    </a>
+                </li>
+
             </ul>
 
-            <form th:action="@{/logout}" method="post">
-                <button class="btn btn-outline-light" type="submit">
-                    Cerrar sesión
-                </button>
-            </form>
+            <div class="d-flex align-items-center gap-3">
+
+                <span class="text-white-50 small d-none d-lg-inline">
+                    Panel administrativo
+                </span>
+
+                <form th:action="@{/logout}" method="post">
+
+                    <button class="btn btn-outline-light btn-sm"
+                            type="submit">
+                        Cerrar sesión
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
@@ -78,4 +95,5 @@
 </nav>
 
 </body>
+
 </html>
