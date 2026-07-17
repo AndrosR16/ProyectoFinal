@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -22,9 +23,8 @@ public class Proveedor {
     private String nombre;
 
     @NotBlank(message = "El teléfono es obligatorio")
-    @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres")
+    @Pattern(regexp = "^[0-9]{8}$", message = "El teléfono debe contener exactamente 8 dígitos")
     private String telefono;
-
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Debe ingresar un correo válido")
     @Size(max = 120, message = "El correo no puede superar los 120 caracteres")
