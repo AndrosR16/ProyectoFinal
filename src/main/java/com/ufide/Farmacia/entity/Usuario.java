@@ -36,6 +36,11 @@ public class Usuario {
     @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
+    @NotBlank(message = "El rol es obligatorio")
+    @Size(max = 20, message = "El rol no puede superar los 20 caracteres")
+    @Column(nullable = false)
+    private String rol = "USER";
+
     public Usuario() {
     }
 
@@ -77,5 +82,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

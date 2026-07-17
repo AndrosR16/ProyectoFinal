@@ -29,26 +29,48 @@ public class UsuarioService {
 
     public void validarRegistro(RegistroForm form, BindingResult result) {
         if (existeUsername(form.getUsername())) {
-            result.rejectValue("username", "duplicado", "Ese nombre de usuario ya esta en uso");
+            result.rejectValue(
+                    "username",
+                    "duplicado",
+                    "Ese nombre de usuario ya está en uso"
+            );
         }
+
         if (existeCorreo(form.getCorreo())) {
-            result.rejectValue("correo", "duplicado", "Ese correo ya esta registrado");
+            result.rejectValue(
+                    "correo",
+                    "duplicado",
+                    "Ese correo ya está registrado"
+            );
         }
-        if (!java.util.Objects.equals(form.getPassword(), form.getConfirmPassword())) {
-            result.rejectValue("confirmPassword", "noCoincide", "Las contrasenas no coinciden");
+
+        if (!java.util.Objects.equals(
+                form.getPassword(),
+                form.getConfirmPassword())) {
+
+            result.rejectValue(
+                    "confirmPassword",
+                    "noCoincide",
+                    "Las contraseñas no coinciden"
+            );
         }
     }
 
     public Usuario registrar(RegistroForm form) {
         Usuario usuario = new Usuario();
+
         usuario.setUsername(normalizar(form.getUsername()));
         usuario.setNombre(form.getNombre());
         usuario.setCorreo(normalizar(form.getCorreo()));
         usuario.setPassword(passwordEncoder.encode(form.getPassword()));
+        usuario.setRol("USER");
+
         return repository.save(usuario);
     }
 
     private String normalizar(String valor) {
-        return valor == null ? null : valor.trim().toLowerCase();
+        return valor == null
+                ? null
+                : valor.trim().toLowerCase();
     }
 }

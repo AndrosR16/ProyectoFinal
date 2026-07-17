@@ -12,8 +12,6 @@ import com.ufide.Farmacia.repository.UsuarioRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final String ROL_USUARIO_DEFECTO = "USER";
-
     private final UsuarioRepository repository;
 
     public CustomUserDetailsService(UsuarioRepository repository) {
@@ -21,14 +19,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
         String normalizedUsername = username.trim().toLowerCase();
+
         Usuario usuario = repository.findByUsername(normalizedUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + normalizedUsername));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Usuario no encontrado: " + normalizedUsername
+                ));
 
         return User.withUsername(usuario.getUsername())
                 .password(usuario.getPassword())
-                .roles(ROL_USUARIO_DEFECTO)
+                .roles(usuario.getRol())
                 .build();
     }
 }

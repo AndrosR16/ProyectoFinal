@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -21,20 +23,30 @@
             <div class="row align-items-center">
 
                 <div class="col-lg-8">
+
                     <span class="insignia-proveedor mb-3">
                         Gestión farmacéutica
                     </span>
 
                     <h1>Sistema de Facturación para Farmacia</h1>
 
-                    <p>
+                    <p sec:authorize="hasRole('ADMIN')">
                         Administre clientes, medicamentos, proveedores,
                         inventario y facturación desde un mismo lugar.
                     </p>
+
+                    <p sec:authorize="hasRole('USER')">
+                        Consulte la información disponible del catálogo
+                        de medicamentos de la farmacia.
+                    </p>
+
                 </div>
 
                 <div class="col-lg-4 mt-4 mt-lg-0">
-                    <div class="resumen-sistema">
+
+                    <div class="resumen-sistema"
+                         sec:authorize="hasRole('ADMIN')">
+
                         <span class="resumen-etiqueta">
                             Acceso principal
                         </span>
@@ -44,34 +56,49 @@
                         <small>
                             Seleccione un módulo para comenzar.
                         </small>
+
                     </div>
+
+                    <div class="resumen-sistema"
+                         sec:authorize="hasRole('USER')">
+
+                        <span class="resumen-etiqueta">
+                            Acceso de usuario
+                        </span>
+
+                        <strong>Consulta de medicamentos</strong>
+
+                        <small>
+                            Revise el catálogo disponible.
+                        </small>
+
+                    </div>
+
                 </div>
 
             </div>
         </section>
 
         <section class="mb-4">
-            <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
 
-                <div>
-                    <span class="subtitulo-seccion">
-                        Módulos disponibles
-                    </span>
+            <span class="subtitulo-seccion">
+                Módulos disponibles
+            </span>
 
-                    <h2 class="titulo-seccion">
-                        Área de trabajo
-                    </h2>
-                </div>
+            <h2 class="titulo-seccion">
+                Área de trabajo
+            </h2>
 
-            </div>
         </section>
 
         <section class="row g-4">
 
-            <div class="col-lg-8">
-                <article class="card tarjeta-modulo tarjeta-destacada h-100">
-                    <div class="card-body">
+            <div class="col-lg-8"
+                 sec:authorize="hasRole('ADMIN')">
 
+                <article class="card tarjeta-modulo tarjeta-destacada h-100">
+
+                    <div class="card-body">
 
                         <span class="etiqueta-modulo">
                             Catálogo principal
@@ -93,13 +120,48 @@
                         </a>
 
                     </div>
+
                 </article>
+
             </div>
 
-            <div class="col-lg-4">
-                <article class="card tarjeta-modulo h-100">
+            <div class="col-lg-12"
+                 sec:authorize="hasRole('USER')">
+
+                <article class="card tarjeta-modulo tarjeta-destacada">
+
                     <div class="card-body">
 
+                        <span class="etiqueta-modulo">
+                            Catálogo disponible
+                        </span>
+
+                        <h3 class="card-title">
+                            Medicamentos
+                        </h3>
+
+                        <p class="card-text">
+                            Consulte los medicamentos disponibles,
+                            sus precios y la información registrada.
+                        </p>
+
+                        <a th:href="@{/medicamentos}"
+                           class="btn btn-farmacia">
+                            Ver medicamentos
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="col-lg-4"
+                 sec:authorize="hasRole('ADMIN')">
+
+                <article class="card tarjeta-modulo h-100">
+
+                    <div class="card-body">
 
                         <h3 class="card-title">
                             Clientes
@@ -115,11 +177,16 @@
                         </a>
 
                     </div>
+
                 </article>
+
             </div>
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4"
+                 sec:authorize="hasRole('ADMIN')">
+
                 <article class="card tarjeta-modulo h-100">
+
                     <div class="card-body">
 
                         <h3 class="card-title">
@@ -137,11 +204,16 @@
                         </a>
 
                     </div>
+
                 </article>
+
             </div>
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4"
+                 sec:authorize="hasRole('ADMIN')">
+
                 <article class="card tarjeta-modulo h-100">
+
                     <div class="card-body">
 
                         <h3 class="card-title">
@@ -158,11 +230,16 @@
                         </a>
 
                     </div>
+
                 </article>
+
             </div>
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4"
+                 sec:authorize="hasRole('ADMIN')">
+
                 <article class="card tarjeta-modulo h-100">
+
                     <div class="card-body">
 
                         <h3 class="card-title">
@@ -179,16 +256,22 @@
                         </a>
 
                     </div>
+
                 </article>
+
             </div>
 
-            <div class="col-lg-12">
+            <div class="col-lg-12"
+                 sec:authorize="hasRole('ADMIN')">
+
                 <article class="card tarjeta-reporte">
+
                     <div class="card-body">
 
                         <div class="row align-items-center">
 
                             <div class="col-lg-8">
+
                                 <span class="subtitulo-seccion">
                                     Análisis del sistema
                                 </span>
@@ -201,19 +284,24 @@
                                     Consulte ventas registradas, medicamentos con
                                     mayor movimiento y resultados generales de la farmacia.
                                 </p>
+
                             </div>
 
                             <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
                                 <a th:href="@{/reportes}"
                                    class="btn btn-farmacia">
                                     Consultar reportes
                                 </a>
+
                             </div>
 
                         </div>
 
                     </div>
+
                 </article>
+
             </div>
 
         </section>

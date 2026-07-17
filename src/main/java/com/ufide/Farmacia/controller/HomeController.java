@@ -10,4 +10,9 @@ public class HomeController {
     public String mostrarInicio() {
         return "dashboard";
     }
+
+    @GetMapping("/acceso-denegado")
+    public String mostrarAccesoDenegado() {
+        return "acceso-denegado";
+    }
 }
