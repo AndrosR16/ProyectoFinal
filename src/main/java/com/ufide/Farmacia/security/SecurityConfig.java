@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/")
                 .hasAnyRole("ADMIN", "USER")
 
-                .requestMatchers(HttpMethod.GET, "/medicamentos/**")
+                .requestMatchers(HttpMethod.GET, "/medicamentos")
                 .hasAnyRole("ADMIN", "USER")
 
                 .requestMatchers("/medicamentos/**")
