@@ -1,123 +1,115 @@
 <!DOCTYPE html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-farmacia"
-     th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-farmacia" th:fragment="navbar">
 
-    <div class="container">
+        <div class="container">
 
-        <a class="navbar-brand" th:href="@{/}">
-            Farmacia Vida
-        </a>
+            <a class="navbar-brand" th:href="@{/}">
+                Farmacia Vida
+            </a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#menuPrincipal"
-                aria-controls="menuPrincipal"
-                aria-expanded="false"
-                aria-label="Mostrar menú">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal" aria-expanded="false" aria-label="Mostrar menú">
 
-            <span class="navbar-toggler-icon"></span>
-        </button>
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <div class="collapse navbar-collapse" id="menuPrincipal">
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">
-                        Inicio
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">
+                            Inicio
+                        </a>
+                    </li>
 
-                <li class="nav-item"
-                    sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
 
-                    <a class="nav-link" th:href="@{/clientes}">
-                        Clientes
-                    </a>
+                        <a class="nav-link" th:href="@{/clientes}">
+                            Clientes
+                        </a>
 
-                </li>
+                    </li>
 
-                <li class="nav-item">
+                    <li class="nav-item">
 
-                    <a class="nav-link" th:href="@{/medicamentos}">
-                        Medicamentos
-                    </a>
+                        <a class="nav-link" th:href="@{/medicamentos}">
+                            Medicamentos
+                        </a>
 
-                </li>
+                    </li>
 
-                <li class="nav-item"
-                    sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
 
-                    <a class="nav-link" th:href="@{/proveedores}">
-                        Proveedores
-                    </a>
+                        <a class="nav-link" th:href="@{/proveedores}">
+                            Proveedores
+                        </a>
 
-                </li>
+                    </li>
 
-                <li class="nav-item"
-                    sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
 
-                    <a class="nav-link" th:href="@{/inventario}">
-                        Inventario
-                    </a>
+                        <a class="nav-link" th:href="@{/inventario}">
+                            Inventario
+                        </a>
 
-                </li>
+                    </li>
 
-                <li class="nav-item"
-                    sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
 
-                    <a class="nav-link" th:href="@{/facturas}">
-                        Facturas
-                    </a>
+                        <a class="nav-link" th:href="@{/facturas}">
+                            Facturas
+                        </a>
 
-                </li>
+                    </li>
 
-                <li class="nav-item"
-                    sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
 
-                    <a class="nav-link" th:href="@{/reportes}">
-                        Reportes
-                    </a>
+                        <a class="nav-link" th:href="@{/reportes}">
+                            Reportes
+                        </a>
 
-                </li>
+                    </li>
 
-            </ul>
+                    <li class="nav-item" sec:authorize="hasRole('USER')">
 
-            <div class="d-flex align-items-center gap-3">
+                        <a class="nav-link" th:href="@{/carrito}">
+                            Carrito
+                        </a>
 
-                <span class="text-white-50 small d-none d-lg-inline"
-                      sec:authorize="hasRole('ADMIN')">
-                    Panel administrativo
-                </span>
+                    </li>
 
-                <span class="text-white-50 small d-none d-lg-inline"
-                      sec:authorize="hasRole('USER')">
-                    Consulta de medicamentos
-                </span>
+                </ul>
 
-                <form th:action="@{/logout}" method="post">
+                <div class="d-flex align-items-center gap-3">
 
-                    <button class="btn btn-outline-light btn-sm"
-                            type="submit">
-                        Cerrar sesión
-                    </button>
+                    <span class="text-white-50 small d-none d-lg-inline" sec:authorize="hasRole('ADMIN')">
+                        Panel administrativo
+                    </span>
 
-                </form>
+                    <span class="text-white-50 small d-none d-lg-inline" sec:authorize="hasRole('USER')">
+                        Consulta de medicamentos
+                    </span>
+
+                    <form th:action="@{/logout}" method="post">
+
+                        <button class="btn btn-outline-light btn-sm" type="submit">
+                            Cerrar sesión
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</nav>
+    </nav>
 
 </body>
 
