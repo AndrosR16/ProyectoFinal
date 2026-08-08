@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"
+<html th:lang="${#locale.language}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Carrito - Farmacia Vida</title>
+    <title th:text="#{carrito.titulo.pagina}">Carrito - Farmacia Vida</title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -24,19 +24,21 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
             <div>
-                <span class="insignia-proveedor mb-2">
+                <span class="insignia-proveedor mb-2"
+                      th:text="#{carrito.insignia}">
                     Compra de medicamentos
                 </span>
 
-                <h1>Carrito de compras</h1>
+                <h1 th:text="#{carrito.titulo}">Carrito de compras</h1>
 
-                <p>
+                <p th:text="#{carrito.subtitulo}">
                     Revise los medicamentos seleccionados y sus cantidades.
                 </p>
             </div>
 
             <a th:href="@{/medicamentos}"
-               class="btn btn-farmacia">
+               class="btn btn-farmacia"
+               th:text="#{carrito.seguir.comprando}">
                 Seguir comprando
             </a>
 
@@ -63,11 +65,11 @@
 
                 <thead>
                 <tr>
-                    <th>Medicamento</th>
-                    <th>Precio</th>
-                    <th style="width: 190px;">Cantidad</th>
-                    <th>Subtotal</th>
-                    <th class="text-center">Acción</th>
+                    <th th:text="#{medicamento.columna.nombre}">Medicamento</th>
+                    <th th:text="#{comun.campo.precio}">Precio</th>
+                    <th style="width: 190px;" th:text="#{carrito.columna.cantidad}">Cantidad</th>
+                    <th th:text="#{carrito.columna.subtotal}">Subtotal</th>
+                    <th class="text-center" th:text="#{carrito.columna.accion}">Acción</th>
                 </tr>
                 </thead>
 
@@ -81,7 +83,7 @@
                         </span>
 
                         <div class="dato-secundario">
-                            Stock disponible:
+                            <span th:text="#{carrito.stock.disponible}">Stock disponible:</span>
                             <span th:text="${item.stockDisponible}"></span>
                         </div>
                     </td>
@@ -109,7 +111,8 @@
                                    required>
 
                             <button type="submit"
-                                    class="btn btn-editar btn-sm">
+                                    class="btn btn-editar btn-sm"
+                                    th:text="#{carrito.actualizar}">
                                 Actualizar
                             </button>
 
@@ -131,7 +134,8 @@
                                    th:value="${_csrf.token}">
 
                             <button type="submit"
-                                    class="btn btn-eliminar btn-sm">
+                                    class="btn btn-eliminar btn-sm"
+                                    th:text="#{carrito.quitar}">
                                 Quitar
                             </button>
 
@@ -153,12 +157,12 @@
 
                 <div>
                     <p class="mb-1">
-                        Cantidad de productos:
+                        <span th:text="#{carrito.cantidad.productos}">Cantidad de productos:</span>
                         <strong th:text="${cantidadTotal}"></strong>
                     </p>
 
                     <h3 class="mb-0">
-                        Total:
+                        <span th:text="#{carrito.total}">Total:</span>
                         ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span>
                     </h3>
                 </div>
@@ -171,7 +175,8 @@
                            th:value="${_csrf.token}">
 
                     <button type="submit"
-                            class="btn btn-eliminar">
+                            class="btn btn-eliminar"
+                            th:text="#{carrito.vaciar}">
                         Vaciar carrito
                     </button>
 
@@ -188,14 +193,15 @@
 
         <div class="estado-vacio">
 
-            <h3>El carrito está vacío</h3>
+            <h3 th:text="#{carrito.vacio.titulo}">El carrito está vacío</h3>
 
-            <p>
+            <p th:text="#{carrito.vacio.mensaje}">
                 Agregue medicamentos para comenzar su compra.
             </p>
 
             <a th:href="@{/medicamentos}"
-               class="btn btn-farmacia">
+               class="btn btn-farmacia"
+               th:text="#{medicamento.ver}">
                 Ver medicamentos
             </a>
 

@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.controller;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +21,16 @@ public class CarritoController {
 
     private final CarritoService carritoService;
     private final MedicamentoService medicamentoService;
+    private final MessageSource messageSource;
 
     public CarritoController(
             CarritoService carritoService,
-            MedicamentoService medicamentoService) {
+            MedicamentoService medicamentoService,
+            MessageSource messageSource) {
 
         this.carritoService = carritoService;
         this.medicamentoService = medicamentoService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -64,7 +69,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El medicamento no fue encontrado"
+                    messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/medicamentos";
@@ -74,7 +79,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "La cantidad debe ser mayor que cero"
+                    messageSource.getMessage("flash.carrito.cantidad.invalida", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/medicamentos";
@@ -84,7 +89,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El medicamento no tiene stock disponible"
+                    messageSource.getMessage("flash.carrito.sin.stock", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/medicamentos";
@@ -94,7 +99,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "La cantidad supera el stock disponible"
+                    messageSource.getMessage("flash.carrito.cantidad.excede.stock", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/medicamentos";
@@ -107,7 +112,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "La cantidad total supera el stock disponible"
+                    messageSource.getMessage("flash.carrito.cantidad.total.excede.stock", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/medicamentos";
@@ -115,7 +120,7 @@ public class CarritoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Medicamento agregado al carrito"
+                messageSource.getMessage("flash.carrito.agregado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/medicamentos";
@@ -134,7 +139,7 @@ public class CarritoController {
 
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "La cantidad ingresada no es válida"
+                    messageSource.getMessage("flash.carrito.cantidad.no.valida", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/carrito";
@@ -142,7 +147,7 @@ public class CarritoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Cantidad actualizada correctamente"
+                messageSource.getMessage("flash.carrito.actualizado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/carrito";
@@ -157,7 +162,7 @@ public class CarritoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Medicamento eliminado del carrito"
+                messageSource.getMessage("flash.carrito.eliminado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/carrito";
@@ -171,7 +176,7 @@ public class CarritoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "El carrito fue vaciado"
+                messageSource.getMessage("flash.carrito.vaciado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/carrito";

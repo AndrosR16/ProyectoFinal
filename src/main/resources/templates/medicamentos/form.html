@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title th:text="${medicamento.id == null}
-        ? 'Nuevo medicamento'
-        : 'Editar medicamento'">
+        ? #{medicamento.form.titulo.pagina.nuevo}
+        : #{medicamento.form.titulo.pagina.editar}">
         Medicamento
     </title>
 
@@ -29,18 +29,18 @@
 
                     <span class="insignia-proveedor mb-2"
                           th:text="${medicamento.id == null}
-                              ? 'Nuevo registro'
-                              : 'Actualización de datos'">
+                              ? #{comun.insignia.nuevo}
+                              : #{comun.insignia.editar}">
                     </span>
 
                     <h1 th:text="${medicamento.id == null}
-                        ? 'Registrar medicamento'
-                        : 'Editar medicamento'">
+                        ? #{medicamento.form.titulo.nuevo}
+                        : #{medicamento.form.titulo.editar}">
                     </h1>
 
                     <p th:text="${medicamento.id == null}
-                        ? 'Complete la información para registrar un medicamento.'
-                        : 'Actualice la información del medicamento seleccionado.'">
+                        ? #{medicamento.form.subtitulo.nuevo}
+                        : #{medicamento.form.subtitulo.editar}">
                     </p>
 
                 </section>
@@ -57,7 +57,8 @@
 
                             <div class="mb-4">
 
-                                <label for="nombre" class="form-label">
+                                <label for="nombre" class="form-label"
+                                       th:text="#{medicamento.campo.nombre}">
                                     Nombre del medicamento
                                 </label>
 
@@ -67,6 +68,7 @@
                                        th:classappend="${#fields.hasErrors('nombre')}
                                            ? 'is-invalid'"
                                        th:field="*{nombre}"
+                                       th:placeholder="#{medicamento.campo.nombre.placeholder}"
                                        placeholder="Ejemplo: Acetaminofén">
 
                                 <div class="invalid-feedback"
@@ -79,7 +81,8 @@
 
                                 <div class="col-md-6 mb-4">
 
-                                    <label for="precio" class="form-label">
+                                    <label for="precio" class="form-label"
+                                           th:text="#{comun.campo.precio}">
                                         Precio
                                     </label>
 
@@ -91,6 +94,7 @@
                                            th:field="*{precio}"
                                            min="0"
                                            step="0.01"
+                                           th:placeholder="#{medicamento.campo.precio.placeholder}"
                                            placeholder="Ejemplo: 2500.00">
 
                                     <div class="invalid-feedback"
@@ -101,7 +105,8 @@
 
                                 <div class="col-md-6 mb-4">
 
-                                    <label for="stock" class="form-label">
+                                    <label for="stock" class="form-label"
+                                           th:text="#{medicamento.campo.stock}">
                                         Cantidad en inventario
                                     </label>
 
@@ -112,6 +117,7 @@
                                                ? 'is-invalid'"
                                            th:field="*{stock}"
                                            min="0"
+                                           th:placeholder="#{medicamento.campo.stock.placeholder}"
                                            placeholder="Ejemplo: 25">
 
                                     <div class="invalid-feedback"
@@ -125,15 +131,16 @@
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
                                 <a th:href="@{/medicamentos}"
-                                   class="btn btn-secondary">
+                                   class="btn btn-secondary"
+                                   th:text="#{comun.volver}">
                                     Volver
                                 </a>
 
                                 <button type="submit"
                                         class="btn btn-farmacia"
                                         th:text="${medicamento.id == null}
-                                            ? 'Registrar medicamento'
-                                            : 'Guardar cambios'">
+                                            ? #{medicamento.registrar}
+                                            : #{comun.guardar.cambios}">
                                     Guardar
                                 </button>
 

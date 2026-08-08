@@ -1,0 +1,26 @@
+# Build artifacts
+target/
+
+# Control de versiones y editores
+.git/
+.gitignore
+.idea/
+.vscode/
+*.iml
+
+# Documentacion (no hace falta dentro de la imagen)
+docs/
+README.md
+HELP.md
+
+# Logs
+*.log
+
+# Archivos sueltos en la raiz del repo que NO son parte del build.
+# Son copias basura fuera de src/ (duplicados de clases/plantillas ya
+# presentes en src/main/java y src/main/resources/templates).
+# Se excluyen explicitamente por nombre para no arrastrar con un patron
+# amplio que pudiera afectar algo dentro de src/.
+/*.java
+/*.html
+/application.properties

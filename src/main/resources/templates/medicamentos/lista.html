@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es"
+      th:lang="${#locale.language}"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
@@ -7,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Medicamentos - Farmacia</title>
+    <title th:text="#{medicamento.lista.titulo.pagina}">Medicamentos - Farmacia</title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -24,13 +25,14 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
             <div>
-                <span class="insignia-proveedor mb-2">
+                <span class="insignia-proveedor mb-2"
+                      th:text="#{medicamento.lista.insignia}">
                     Catálogo farmacéutico
                 </span>
 
-                <h1>Medicamentos</h1>
+                <h1 th:text="#{medicamento.titulo}">Medicamentos</h1>
 
-                <p>
+                <p th:text="#{medicamento.lista.subtitulo}">
                     Consulte los medicamentos, precios y existencias disponibles.
                 </p>
             </div>
@@ -39,13 +41,15 @@
 
                 <a th:href="@{/carrito}"
                    class="btn btn-editar"
-                   sec:authorize="hasRole('USER')">
+                   sec:authorize="hasRole('USER')"
+                   th:text="#{carrito.ver}">
                     Ver carrito
                 </a>
 
                 <a th:href="@{/medicamentos/nuevo}"
                    class="btn btn-farmacia"
-                   sec:authorize="hasRole('ADMIN')">
+                   sec:authorize="hasRole('ADMIN')"
+                   th:text="#{medicamento.nuevo}">
                     Nuevo medicamento
                 </a>
 
@@ -67,24 +71,47 @@
 
     <section class="contenedor-tabla">
 
+        <div class="barra-tabla">
+
+            <label class="visually-hidden" for="buscadorMedicamentos"
+                   th:text="#{comun.buscar}">Buscar</label>
+
+            <svg class="barra-tabla-icono" viewBox="0 0 20 20" width="15" height="15"
+                 aria-hidden="true" focusable="false">
+                <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"
+                        fill="none"></circle>
+                <path d="M13.2 13.2 L17 17" stroke="currentColor" stroke-width="1.6"
+                      stroke-linecap="round" fill="none"></path>
+            </svg>
+
+            <input type="search" id="buscadorMedicamentos"
+                   class="form-control js-buscador-tabla"
+                   th:placeholder="#{comun.buscar.placeholder}"
+                   th:data-mensaje-vacio="#{comun.buscar.sin.resultados}"
+                   autocomplete="off">
+
+        </div>
+
         <div class="table-responsive">
 
             <table class="table tabla-farmacia align-middle">
 
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Medicamento</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
+                    <th th:text="#{comun.id}">ID</th>
+                    <th th:text="#{medicamento.columna.nombre}">Medicamento</th>
+                    <th th:text="#{comun.campo.precio}">Precio</th>
+                    <th th:text="#{medicamento.columna.stock}">Stock</th>
 
                     <th class="text-center"
-                        sec:authorize="hasRole('USER')">
+                        sec:authorize="hasRole('USER')"
+                        th:text="#{medicamento.columna.comprar}">
                         Comprar
                     </th>
 
                     <th class="text-center"
-                        sec:authorize="hasRole('ADMIN')">
+                        sec:authorize="hasRole('ADMIN')"
+                        th:text="#{comun.acciones}">
                         Acciones
                     </th>
                 </tr>
@@ -102,7 +129,8 @@
                               th:text="${medicamento.nombre}">
                         </span>
 
-                        <div class="dato-secundario">
+                        <div class="dato-secundario"
+                             th:text="#{medicamento.dato.secundario}">
                             Producto farmacéutico
                         </div>
                     </td>
@@ -117,12 +145,14 @@
                         </span>
 
                         <span class="badge text-bg-warning ms-2"
-                              th:if="${medicamento.stock > 0 and medicamento.stock <= 5}">
+                              th:if="${medicamento.stock > 0 and medicamento.stock <= 5}"
+                              th:text="#{medicamento.stock.bajo}">
                             Stock bajo
                         </span>
 
                         <span class="badge text-bg-danger ms-2"
-                              th:if="${medicamento.stock <= 0}">
+                              th:if="${medicamento.stock <= 0}"
+                              th:text="#{medicamento.sin.stock}">
                             Sin stock
                         </span>
                     </td>
@@ -153,11 +183,13 @@
                                     class="btn btn-farmacia btn-sm"
                                     th:disabled="${medicamento.stock <= 0}">
 
-                                <span th:if="${medicamento.stock > 0}">
+                                <span th:if="${medicamento.stock > 0}"
+                                      th:text="#{medicamento.agregar}">
                                     Agregar
                                 </span>
 
-                                <span th:if="${medicamento.stock <= 0}">
+                                <span th:if="${medicamento.stock <= 0}"
+                                      th:text="#{medicamento.sin.stock}">
                                     Sin stock
                                 </span>
 
@@ -174,7 +206,8 @@
                         <div class="d-flex justify-content-center flex-wrap gap-2">
 
                             <a th:href="@{/medicamentos/{id}/editar(id=${medicamento.id})}"
-                               class="btn btn-editar btn-sm">
+                               class="btn btn-editar btn-sm"
+                               th:text="#{comun.editar}">
                                 Editar
                             </a>
 
@@ -183,7 +216,8 @@
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalEliminar"
                                     th:attr="data-id=${medicamento.id},
-                                             data-nombre=${medicamento.nombre}">
+                                             data-nombre=${medicamento.nombre}"
+                                    th:text="#{comun.eliminar}">
                                 Eliminar
                             </button>
 
@@ -200,14 +234,15 @@
 
                         <div class="estado-vacio">
 
-                            <h3>No hay medicamentos registrados</h3>
+                            <h3 th:text="#{medicamento.vacio.titulo.admin}">No hay medicamentos registrados</h3>
 
-                            <p>
+                            <p th:text="#{medicamento.vacio.mensaje.admin}">
                                 Registre el primer medicamento para comenzar.
                             </p>
 
                             <a th:href="@{/medicamentos/nuevo}"
-                               class="btn btn-farmacia">
+                               class="btn btn-farmacia"
+                               th:text="#{medicamento.registrar}">
                                 Registrar medicamento
                             </a>
 
@@ -220,9 +255,9 @@
 
                         <div class="estado-vacio">
 
-                            <h3>No hay medicamentos disponibles</h3>
+                            <h3 th:text="#{medicamento.vacio.titulo.usuario}">No hay medicamentos disponibles</h3>
 
-                            <p>
+                            <p th:text="#{medicamento.vacio.mensaje.usuario}">
                                 Actualmente no existen medicamentos registrados.
                             </p>
 
@@ -256,21 +291,23 @@
             <div class="modal-header">
 
                 <h5 class="modal-title"
-                    id="modalEliminarLabel">
+                    id="modalEliminarLabel"
+                    th:text="#{comun.confirmar.eliminacion}">
                     Confirmar eliminación
                 </h5>
 
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
-                        aria-label="Cerrar">
+                        aria-label="Cerrar"
+                        th:aria-label="#{comun.cerrar}">
                 </button>
 
             </div>
 
             <div class="modal-body">
 
-                <p>
+                <p th:utext="#{medicamento.eliminar.confirmacion('&lt;strong id=&quot;nombreMedicamento&quot;&gt;&lt;/strong&gt;')}">
                     ¿Está seguro de eliminar el medicamento
                     <strong id="nombreMedicamento"></strong>?
                 </p>
@@ -281,7 +318,8 @@
 
                 <button type="button"
                         class="btn btn-secondary"
-                        data-bs-dismiss="modal">
+                        data-bs-dismiss="modal"
+                        th:text="#{comun.cancelar}">
                     Cancelar
                 </button>
 
@@ -293,7 +331,8 @@
                            th:value="${_csrf.token}">
 
                     <button type="submit"
-                            class="btn btn-eliminar">
+                            class="btn btn-eliminar"
+                            th:text="#{medicamento.eliminar.boton}">
                         Eliminar medicamento
                     </button>
 
@@ -310,6 +349,7 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <div th:replace="~{fragments/head :: bootstrap-js}"></div>
+<script th:src="@{/js/tabla-buscador.js}"></script>
 
 <script sec:authorize="hasRole('ADMIN')">
     const modalEliminar = document.getElementById('modalEliminar');

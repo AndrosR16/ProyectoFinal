@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Proveedores - Farmacia</title>
+    <title th:text="#{proveedor.lista.titulo.pagina}">Proveedores - Farmacia</title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -21,19 +21,19 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                 <div>
-                    <span class="insignia-proveedor mb-2">
+                    <span class="insignia-proveedor mb-2" th:text="#{proveedor.lista.insignia}">
                         Gestión de contactos
                     </span>
 
-                    <h1>Proveedores</h1>
+                    <h1 th:text="#{proveedor.titulo}">Proveedores</h1>
 
-                    <p>
+                    <p th:text="#{proveedor.lista.subtitulo}">
                         Registre y mantenga actualizada la información de los
                         distribuidores de la farmacia.
                     </p>
                 </div>
 
-                <a th:href="@{/proveedores/nuevo}" class="btn btn-farmacia">
+                <a th:href="@{/proveedores/nuevo}" class="btn btn-farmacia" th:text="#{proveedor.nuevo}">
                     Nuevo proveedor
                 </a>
 
@@ -48,17 +48,38 @@
 
         <section class="contenedor-tabla">
 
+            <div class="barra-tabla">
+
+                <label class="visually-hidden" for="buscadorProveedores"
+                       th:text="#{comun.buscar}">Buscar</label>
+
+                <svg class="barra-tabla-icono" viewBox="0 0 20 20" width="15" height="15"
+                     aria-hidden="true" focusable="false">
+                    <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"
+                            fill="none"></circle>
+                    <path d="M13.2 13.2 L17 17" stroke="currentColor" stroke-width="1.6"
+                          stroke-linecap="round" fill="none"></path>
+                </svg>
+
+                <input type="search" id="buscadorProveedores"
+                       class="form-control js-buscador-tabla"
+                       th:placeholder="#{comun.buscar.placeholder}"
+                       th:data-mensaje-vacio="#{comun.buscar.sin.resultados}"
+                       autocomplete="off">
+
+            </div>
+
             <div class="table-responsive">
 
                 <table class="table tabla-farmacia align-middle">
 
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Proveedor</th>
-                            <th>Teléfono</th>
-                            <th>Correo electrónico</th>
-                            <th class="text-center">Acciones</th>
+                            <th th:text="#{comun.id}">ID</th>
+                            <th th:text="#{proveedor.columna.nombre}">Proveedor</th>
+                            <th th:text="#{comun.campo.telefono}">Teléfono</th>
+                            <th th:text="#{comun.campo.correo}">Correo electrónico</th>
+                            <th class="text-center" th:text="#{comun.acciones}">Acciones</th>
                         </tr>
                     </thead>
 
@@ -77,7 +98,7 @@
                                       th:text="${proveedor.nombre}">
                                 </span>
 
-                                <div class="dato-secundario">
+                                <div class="dato-secundario" th:text="#{proveedor.dato.secundario}">
                                     Proveedor registrado
                                 </div>
                             </td>
@@ -96,7 +117,8 @@
                                 <div class="d-flex justify-content-center flex-wrap gap-2">
 
                                     <a th:href="@{/proveedores/{id}/editar(id=${proveedor.id})}"
-                                       class="btn btn-editar btn-sm">
+                                       class="btn btn-editar btn-sm"
+                                       th:text="#{comun.editar}">
                                         Editar
                                     </a>
 
@@ -105,7 +127,8 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalEliminar"
                                             th:attr="data-id=${proveedor.id},
-                                                     data-nombre=${proveedor.nombre}">
+                                                     data-nombre=${proveedor.nombre}"
+                                            th:text="#{comun.eliminar}">
                                         Eliminar
                                     </button>
 
@@ -124,15 +147,16 @@
                                         PR
                                     </div>
 
-                                    <h3>No hay proveedores registrados</h3>
+                                    <h3 th:text="#{proveedor.vacio.titulo}">No hay proveedores registrados</h3>
 
-                                    <p>
+                                    <p th:text="#{proveedor.vacio.mensaje}">
                                         Agregue el primer proveedor para comenzar
                                         a administrar los distribuidores.
                                     </p>
 
                                     <a th:href="@{/proveedores/nuevo}"
-                                       class="btn btn-farmacia">
+                                       class="btn btn-farmacia"
+                                       th:text="#{proveedor.registrar}">
                                         Registrar proveedor
                                     </a>
 
@@ -163,27 +187,28 @@
 
                 <div class="modal-header">
 
-                    <h5 class="modal-title" id="modalEliminarLabel">
+                    <h5 class="modal-title" id="modalEliminarLabel" th:text="#{comun.confirmar.eliminacion}">
                         Confirmar eliminación
                     </h5>
 
                     <button type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
-                            aria-label="Cerrar">
+                            aria-label="Cerrar"
+                            th:aria-label="#{comun.cerrar}">
                     </button>
 
                 </div>
 
                 <div class="modal-body">
 
-                    <p class="mb-2">
+                    <p class="mb-2" th:text="#{proveedor.eliminar.confirmacion}">
                         Está a punto de eliminar al proveedor:
                     </p>
 
                     <strong id="nombreProveedor"></strong>
 
-                    <p class="dato-secundario mt-3 mb-0">
+                    <p class="dato-secundario mt-3 mb-0" th:text="#{proveedor.eliminar.advertencia}">
                         Esta acción eliminará el registro de la base de datos.
                     </p>
 
@@ -193,7 +218,8 @@
 
                     <button type="button"
                             class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                            data-bs-dismiss="modal"
+                            th:text="#{comun.cancelar}">
                         Cancelar
                     </button>
 
@@ -203,7 +229,7 @@
                                th:name="${_csrf.parameterName}"
                                th:value="${_csrf.token}">
 
-                        <button type="submit" class="btn btn-eliminar">
+                        <button type="submit" class="btn btn-eliminar" th:text="#{proveedor.eliminar.boton}">
                             Eliminar proveedor
                         </button>
 
@@ -220,6 +246,7 @@
     <div th:replace="~{fragments/footer :: footer}"></div>
 
     <div th:replace="~{fragments/head :: bootstrap-js}"></div>
+    <script th:src="@{/js/tabla-buscador.js}"></script>
 
     <script>
         const modalEliminar = document.getElementById('modalEliminar');

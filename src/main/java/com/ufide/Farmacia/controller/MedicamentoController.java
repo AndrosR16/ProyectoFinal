@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.controller;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,11 @@ import jakarta.validation.Valid;
 public class MedicamentoController {
 
     private final MedicamentoService service;
+    private final MessageSource messageSource;
 
-    public MedicamentoController(MedicamentoService service) {
+    public MedicamentoController(MedicamentoService service, MessageSource messageSource) {
         this.service = service;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -51,7 +55,7 @@ public class MedicamentoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Medicamento registrado correctamente");
+                messageSource.getMessage("flash.medicamento.registrado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/medicamentos";
     }
@@ -67,7 +71,7 @@ public class MedicamentoController {
         if (medicamento == null) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El medicamento no fue encontrado");
+                    messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale()));
 
             return "redirect:/medicamentos";
         }
@@ -93,7 +97,7 @@ public class MedicamentoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Medicamento actualizado correctamente");
+                messageSource.getMessage("flash.medicamento.actualizado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/medicamentos";
     }
@@ -106,7 +110,7 @@ public class MedicamentoController {
         if (service.buscarPorId(id).isEmpty()) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El medicamento no fue encontrado");
+                    messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale()));
 
             return "redirect:/medicamentos";
         }
@@ -115,7 +119,7 @@ public class MedicamentoController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Medicamento eliminado correctamente");
+                messageSource.getMessage("flash.medicamento.eliminado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/medicamentos";
     }

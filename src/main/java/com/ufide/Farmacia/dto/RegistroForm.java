@@ -6,24 +6,24 @@ import jakarta.validation.constraints.Size;
 
 public class RegistroForm {
 
-    @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Size(max = 50, message = "El nombre de usuario no puede superar los 50 caracteres")
+    @NotBlank(message = "{validacion.usuario.username.obligatorio}")
+    @Size(max = 50, message = "{validacion.usuario.username.tamano}")
     private String username;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
+    @NotBlank(message = "{validacion.nombre.obligatorio}")
+    @Size(max = 100, message = "{validacion.nombre.tamano}")
     private String nombre;
 
-    @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "Debe ingresar un correo válido")
-    @Size(max = 120, message = "El correo no puede superar los 120 caracteres")
+    @NotBlank(message = "{validacion.correo.obligatorio}")
+    @Email(message = "{validacion.correo.invalido}")
+    @Size(max = 120, message = "{validacion.correo.tamano}")
     private String correo;
 
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, max = 64, message = "La contrasena debe tener entre 6 y 64 caracteres")
+    @NotBlank(message = "{validacion.password.obligatoria}")
+    @Size(min = 6, max = 64, message = "{validacion.registro.password.tamano}")
     private String password;
 
-    @NotBlank(message = "Debe confirmar la contraseña")
+    @NotBlank(message = "{validacion.registro.confirmar.password.obligatorio}")
     private String confirmPassword;
 
     public RegistroForm() {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es"
+      th:lang="${#locale.language}"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -7,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title th:text="${cliente.id == null}
-        ? 'Nuevo cliente'
-        : 'Editar cliente'">
+        ? #{cliente.form.titulo.pagina.nuevo}
+        : #{cliente.form.titulo.pagina.editar}">
         Cliente
     </title>
 
@@ -30,18 +31,18 @@
 
                 <span class="insignia-proveedor mb-2"
                       th:text="${cliente.id == null}
-                          ? 'Nuevo registro'
-                          : 'Actualización de datos'">
+                          ? #{comun.insignia.nuevo}
+                          : #{comun.insignia.editar}">
                 </span>
 
                 <h1 th:text="${cliente.id == null}
-                    ? 'Registrar cliente'
-                    : 'Editar cliente'">
+                    ? #{cliente.form.titulo.nuevo}
+                    : #{cliente.form.titulo.editar}">
                 </h1>
 
                 <p th:text="${cliente.id == null}
-                    ? 'Complete la información para registrar un cliente.'
-                    : 'Actualice la información del cliente seleccionado.'">
+                    ? #{cliente.form.subtitulo.nuevo}
+                    : #{cliente.form.subtitulo.editar}">
                 </p>
 
             </section>
@@ -58,7 +59,7 @@
 
                         <div class="mb-4">
 
-                            <label for="nombre" class="form-label">
+                            <label for="nombre" class="form-label" th:text="#{comun.campo.nombre.completo}">
                                 Nombre completo
                             </label>
 
@@ -68,7 +69,8 @@
                                    th:classappend="${#fields.hasErrors('nombre')}
                                        ? 'is-invalid'"
                                    th:field="*{nombre}"
-                                   placeholder="Ejemplo: María Rodríguez">
+                                   placeholder="Ejemplo: María Rodríguez"
+                                   th:placeholder="#{cliente.campo.nombre.placeholder}">
 
                             <div class="invalid-feedback"
                                  th:errors="*{nombre}">
@@ -78,7 +80,7 @@
 
                         <div class="mb-4">
 
-                            <label for="telefono" class="form-label">
+                            <label for="telefono" class="form-label" th:text="#{comun.campo.telefono}">
                                 Teléfono
                             </label>
 
@@ -90,7 +92,8 @@
                                    th:field="*{telefono}"
                                    maxlength="20"
                                    inputmode="numeric"
-                                   placeholder="Ejemplo: 88887777">
+                                   placeholder="Ejemplo: 88887777"
+                                   th:placeholder="#{cliente.campo.telefono.placeholder}">
 
                             <div class="invalid-feedback"
                                  th:errors="*{telefono}">
@@ -100,7 +103,7 @@
 
                         <div class="mb-4">
 
-                            <label for="correo" class="form-label">
+                            <label for="correo" class="form-label" th:text="#{comun.campo.correo}">
                                 Correo electrónico
                             </label>
 
@@ -110,7 +113,8 @@
                                    th:classappend="${#fields.hasErrors('correo')}
                                        ? 'is-invalid'"
                                    th:field="*{correo}"
-                                   placeholder="Ejemplo: cliente@correo.com">
+                                   placeholder="Ejemplo: cliente@correo.com"
+                                   th:placeholder="#{cliente.campo.correo.placeholder}">
 
                             <div class="invalid-feedback"
                                  th:errors="*{correo}">
@@ -121,15 +125,16 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
                             <a th:href="@{/clientes}"
-                               class="btn btn-secondary">
+                               class="btn btn-secondary"
+                               th:text="#{comun.volver}">
                                 Volver
                             </a>
 
                             <button type="submit"
                                     class="btn btn-farmacia"
                                     th:text="${cliente.id == null}
-                                        ? 'Registrar cliente'
-                                        : 'Guardar cambios'">
+                                        ? #{cliente.registrar}
+                                        : #{comun.guardar.cambios}">
                                 Guardar
                             </button>
 

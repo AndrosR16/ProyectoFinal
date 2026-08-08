@@ -17,17 +17,17 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
+    @NotBlank(message = "{validacion.nombre.obligatorio}")
+    @Size(max = 100, message = "{validacion.nombre.tamano}")
     private String nombre;
 
-    @NotBlank(message = "El teléfono es obligatorio")
-    @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres")
+    @NotBlank(message = "{validacion.telefono.obligatorio}")
+    @Size(max = 20, message = "{validacion.cliente.telefono.tamano}")
     private String telefono;
 
-    @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "Debe ingresar un correo válido")
-    @Size(max = 120, message = "El correo no puede superar los 120 caracteres")
+    @NotBlank(message = "{validacion.correo.obligatorio}")
+    @Email(message = "{validacion.correo.invalido}")
+    @Size(max = 120, message = "{validacion.correo.tamano}")
     private String correo;
 
     public Cliente() {

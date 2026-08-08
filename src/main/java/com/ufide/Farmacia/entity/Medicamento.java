@@ -18,15 +18,15 @@ public class Medicamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
+    @NotBlank(message = "{validacion.nombre.obligatorio}")
+    @Size(max = 100, message = "{validacion.nombre.tamano}")
     private String nombre;
 
-    @NotNull(message = "El precio es obligatorio")
+    @NotNull(message = "{validacion.medicamento.precio.obligatorio}")
     private Double precio;
 
-    @NotNull(message = "El stock es obligatorio")
-    @Min(value = 0, message = "El stock no puede ser negativo")
+    @NotNull(message = "{validacion.medicamento.stock.obligatorio}")
+    @Min(value = 0, message = "{validacion.medicamento.stock.negativo}")
     private Integer stock;
 
     public Medicamento() {

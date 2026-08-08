@@ -6,4 +6,6 @@ import com.ufide.Farmacia.entity.Medicamento;
 
 public interface MedicamentoRepository
         extends JpaRepository<Medicamento, Long> {
+
+    long countByStockLessThan(Integer stock);
 }

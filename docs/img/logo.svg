@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Farmacia Vida">
+    <rect x="4" y="4" width="112" height="112" rx="26" fill="#15803d"/>
+    <rect x="4.75" y="4.75" width="110.5" height="110.5" rx="25.25" fill="none" stroke="#4ade80" stroke-width="1.5" opacity="0.55"/>
+    <path d="M49 24 h22 v25 h25 v22 h-25 v25 h-22 v-25 h-25 v-22 h25 Z" fill="#ffffff"/>
+</svg>

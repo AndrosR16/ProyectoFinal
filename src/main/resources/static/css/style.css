@@ -1,17 +1,98 @@
+/* ============================================================
+   Farmacia Vida — Sistema de diseño
+   Layout tipo consola SaaS (sidebar fijo + contenido denso),
+   marca verde farmacia. Contrastes verificados WCAG AA/AAA.
+   ============================================================ */
+
 :root {
-    --verde-principal: #2f6f5e;
-    --verde-oscuro: #214f43;
-    --verde-claro: #e8f3ef;
-    --azul-medico: #4b6f82;
-    --azul-claro: #eaf1f5;
-    --crema: #f5f1e8;
+    /* --- Colores base --- */
+    --tinta: #1c232e;
+    /* Sidebar y superficies oscuras */
+    --verde-principal: #15803d;
+    /* Marca / botones primarios (5.02:1 con blanco) */
+    --verde-oscuro: #116232;
+    /* Hover primario, texto verde sobre fondos claros (8.06:1) */
+    --verde-claro: #dcfce7;
+    /* Fondos suaves de íconos e insignias */
+    --azul-medico: #0369a1;
+    /* Enlaces y acción "editar" */
+    --azul-oscuro: #075985;
+    /* Hover de enlaces (7.56:1 con blanco) */
+    --azul-claro: #e0f2fe;
+    /* Fondos suaves de insignias/acciones "editar" */
+    --crema: #f8f9fa;
+    /* Neutro para tarjetas de nota/reporte */
     --blanco: #ffffff;
-    --gris-fondo: #f3f5f3;
-    --gris-texto: #66716c;
-    --gris-oscuro: #2d3934;
-    --gris-borde: #d9e1dd;
-    --rojo: #a94747;
-    --rojo-claro: #f8eaea;
+    --gris-fondo: #f5f6f8;
+    /* Fondo del área de contenido */
+    --gris-medio: #f0f2f4;
+    /* Fondos sutiles: filas alternas, pies de modal */
+    --gris-texto: #5b6774;
+    /* Texto secundario (5.9:1 sobre blanco) */
+    --gris-oscuro: #1f2733;
+    /* Texto principal (13.7:1 sobre blanco) */
+    --gris-borde: #e3e6ea;
+    /* Bordes de tarjetas, tablas y formularios */
+    --rojo: #dc2626;
+    /* Destructivo */
+    --rojo-oscuro: #991b1b;
+    /* Texto sobre fondos rojo claro (6.80:1) */
+    --rojo-claro: #fee2e2;
+    /* Fondos suaves de acción "eliminar" */
+
+    /* --- Alias semánticos --- */
+    --color-primary: var(--verde-principal);
+    --color-primary-foreground: var(--blanco);
+    --color-secondary: #22c55e;
+    --color-accent: var(--azul-medico);
+    --color-background: var(--gris-fondo);
+    --color-foreground: var(--gris-oscuro);
+    --color-muted: var(--gris-medio);
+    --color-muted-foreground: var(--gris-texto);
+    --color-border: var(--gris-borde);
+    --color-destructive: var(--rojo);
+    --color-ring: var(--verde-principal);
+
+    /* --- Tipografía: Inter (UI densa), vía head.html --- */
+    --fuente-titulos: "Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --fuente-texto: "Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+    /* --- Layout --- */
+    --sidebar-ancho: 236px;
+
+    /* --- Espaciado: escala consistente 4-32px --- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+
+    /* --- Transición estándar de interacción (150-300ms) --- */
+    --transicion-rapida: 150ms ease;
+    --transicion-base: 200ms ease;
+}
+
+/* --- Integración con variables de Bootstrap 5.3 (sin tocar templates) --- */
+:root {
+    --bs-primary: var(--verde-principal);
+    --bs-primary-rgb: 21, 128, 61;
+    --bs-success: var(--verde-principal);
+    --bs-success-rgb: 21, 128, 61;
+    --bs-danger: var(--rojo);
+    --bs-danger-rgb: 220, 38, 38;
+    --bs-link-color: var(--azul-medico);
+    --bs-link-color-rgb: 3, 105, 161;
+    --bs-link-hover-color: var(--azul-oscuro);
+    --bs-link-hover-color-rgb: 7, 89, 133;
+    --bs-body-font-family: var(--fuente-texto);
+    --bs-body-color: var(--gris-oscuro);
+    --bs-body-bg: var(--gris-fondo);
+    --bs-border-color: var(--gris-borde);
+    --bs-secondary-color: var(--gris-texto);
+    --bs-focus-ring-color: rgba(21, 128, 61, 0.35);
+    --bs-form-valid-color: var(--verde-oscuro);
+    --bs-form-invalid-color: var(--rojo-oscuro);
 }
 
 * {
@@ -22,77 +103,380 @@ body {
     margin: 0;
     background-color: var(--gris-fondo);
     color: var(--gris-oscuro);
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    font-family: var(--fuente-texto);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Las páginas con sidebar (todas las autenticadas) desplazan el contenido;
+   login/registro/error no incluyen el fragmento y quedan a ancho completo */
+body:has(.sidebar-farmacia) {
+    padding-left: var(--sidebar-ancho);
+    transition: padding-left var(--transicion-base);
+}
+
+/* Respiro lateral del contenido respecto al sidebar y al borde de ventana */
+@media (min-width: 992px) {
+    main.container {
+        padding-left: 40px;
+        padding-right: 40px;
+        max-width: 1240px;
+    }
 }
 
 main {
     min-height: 75vh;
 }
 
+/* --- Jerarquía tipográfica densa (consola de gestión) --- */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    color: var(--verde-oscuro);
-    font-weight: 700;
+    color: var(--gris-oscuro);
+    font-family: var(--fuente-titulos);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+h1 {
+    font-size: 1.65rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+h4 {
+    font-size: 1.05rem;
+}
+
+h5 {
+    font-size: 0.95rem;
+}
+
+h6 {
+    font-size: 0.85rem;
 }
 
 p {
     color: var(--gris-texto);
 }
 
-.navbar-farmacia {
-    background-color: var(--verde-oscuro);
-    padding-top: 13px;
-    padding-bottom: 13px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+a {
+    color: var(--azul-medico);
+    transition: color var(--transicion-base);
 }
 
-.navbar-farmacia .container {
-    max-width: 1200px;
+a:hover {
+    color: var(--azul-oscuro);
 }
 
-.navbar-farmacia .navbar-brand {
+/* --- Accesibilidad: foco visible en todo elemento interactivo --- */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.sidebar-enlace:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   Sidebar de navegación (fijo a la izquierda en escritorio)
+   ============================================================ */
+
+.sidebar-farmacia {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-ancho);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tinta);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    z-index: 1030;
+}
+
+.sidebar-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px var(--space-4);
+}
+
+.sidebar-marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     color: var(--blanco);
-    font-size: 1.3rem;
+    font-family: var(--fuente-titulos);
+    font-size: 14.5px;
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
+    text-decoration: none;
 }
 
-.navbar-farmacia .navbar-brand:hover {
+.sidebar-marca:hover {
     color: var(--blanco);
 }
 
-.navbar-farmacia .nav-link {
-    color: rgba(255, 255, 255, 0.86);
-    border-radius: 7px;
-    padding: 8px 12px;
-    margin: 0 2px;
+.sidebar-logo {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+    flex-shrink: 0;
 }
 
-.navbar-farmacia .nav-link:hover {
+.sidebar-toggler {
+    background: transparent;
+    border: 0;
+    padding: var(--space-1);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: background-color var(--transicion-rapida);
+}
+
+.sidebar-toggler:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-cuerpo {
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+    padding: 0 10px var(--space-3);
+}
+
+/* Bootstrap collapse gobierna el menú solo en móvil;
+   en escritorio el cuerpo del sidebar siempre está visible */
+@media (min-width: 992px) {
+    .sidebar-cuerpo.collapse:not(.show) {
+        display: flex !important;
+    }
+
+    .sidebar-cuerpo.collapse.show {
+        display: flex;
+    }
+}
+
+.sidebar-nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.sidebar-grupo {
+    display: block;
+    padding: 14px var(--space-2) 5px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.sidebar-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-enlace {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    margin: 1px 0;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.78);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.sidebar-enlace:hover {
+    background-color: rgba(255, 255, 255, 0.08);
     color: var(--blanco);
+}
+
+.sidebar-icono {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+/* --- Pie del sidebar: idioma, usuario y salida --- */
+.sidebar-pie {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.selector-idioma {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.selector-idioma:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--blanco);
+}
+
+.menu-idiomas {
+    min-width: 160px;
+    font-size: 13px;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.12);
+}
+
+.enlace-idioma {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    cursor: pointer;
+}
+
+.enlace-idioma.active {
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    font-weight: 600;
+}
+
+.bandera-icono {
+    display: block;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.sidebar-usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: background-color var(--transicion-rapida);
+}
+
+.sidebar-usuario:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--blanco);
+}
+
+.sidebar-avatar {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.12);
+    color: var(--blanco);
+    flex-shrink: 0;
 }
+
+.sidebar-usuario-datos {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    min-width: 0;
+}
+
+.sidebar-usuario-nombre {
+    color: var(--blanco);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-usuario-rol {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.sidebar-salir {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.sidebar-salir:hover {
+    background-color: rgba(220, 38, 38, 0.22);
+    color: var(--blanco);
+}
+
+/* ============================================================
+   Componentes del área de contenido (densidad de consola)
+   ============================================================ */
 
 .encabezado-pagina {
     background-color: var(--blanco);
     border: 1px solid var(--gris-borde);
-    border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    border-radius: 8px;
+    padding: var(--space-5) var(--space-6);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
 .encabezado-pagina h1,
 .encabezado-pagina h2 {
-    margin-bottom: 8px;
+    margin-bottom: var(--space-1);
 }
 
 .encabezado-pagina p {
     margin-bottom: 0;
     max-width: 750px;
+    font-size: 13px;
 }
 
 .dashboard-contenido {
@@ -100,32 +484,35 @@ p {
 }
 
 .dashboard-contenido h1 {
-    font-size: 2.15rem;
+    font-size: 1.65rem;
 }
 
 .resumen-sistema {
-    background-color: var(--verde-oscuro);
-    border-radius: 14px;
-    padding: 22px;
-    color: var(--blanco);
-    box-shadow: 0 5px 14px rgba(33, 79, 67, 0.16);
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-left: 3px solid var(--verde-principal);
+    border-radius: 8px;
+    padding: var(--space-4) var(--space-5);
+    color: var(--gris-oscuro);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
 .resumen-sistema strong {
     display: block;
-    font-size: 1.15rem;
-    margin-top: 4px;
+    font-size: 1.05rem;
+    margin-top: var(--space-1);
+    color: var(--gris-oscuro);
 }
 
 .resumen-sistema small {
     display: block;
-    margin-top: 4px;
-    color: rgba(255, 255, 255, 0.75);
+    margin-top: var(--space-1);
+    color: var(--gris-texto);
 }
 
 .resumen-etiqueta {
-    color: #d8e8e1;
-    font-size: 0.76rem;
+    color: var(--verde-oscuro);
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.7px;
     text-transform: uppercase;
@@ -133,59 +520,61 @@ p {
 
 .subtitulo-seccion {
     display: block;
-    color: var(--verde-principal);
-    font-size: 0.78rem;
+    color: var(--gris-texto);
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-1);
 }
 
 .titulo-seccion {
     margin-bottom: 0;
-    font-size: 1.65rem;
+    font-size: 1.25rem;
 }
 
 .texto-apoyo {
     color: var(--gris-texto);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
 }
 
 .tarjeta-modulo {
-    min-height: 220px;
+    min-height: 180px;
     background-color: var(--blanco);
     border: 1px solid var(--gris-borde);
-    border-radius: 14px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s ease;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    transition: border-color var(--transicion-base), box-shadow var(--transicion-base);
 }
 
 .tarjeta-modulo:hover {
-    box-shadow: 0 8px 20px rgba(47, 111, 94, 0.13);
+    border-color: #c9d8cf;
+    box-shadow: 0 4px 10px rgba(16, 24, 40, 0.08);
 }
 
 .tarjeta-modulo .card-body {
-    padding: 26px;
+    padding: var(--space-5);
 }
 
 .tarjeta-modulo .card-title {
-    font-size: 1.25rem;
-    margin-bottom: 12px;
+    font-size: 1rem;
+    margin-bottom: var(--space-2);
 }
 
 .tarjeta-modulo .card-text {
     color: var(--gris-texto);
+    font-size: 13px;
     line-height: 1.5;
-    min-height: 48px;
+    min-height: 40px;
 }
 
 .tarjeta-modulo .btn {
-    margin-top: 12px;
+    margin-top: var(--space-3);
 }
 
 .tarjeta-destacada {
-    min-height: 285px;
-    background-color: #f8fcfa;
+    min-height: 220px;
+    background-color: var(--blanco);
 }
 
 .tarjeta-destacada .card-body {
@@ -196,8 +585,8 @@ p {
 }
 
 .tarjeta-destacada .card-title {
-    font-size: 1.8rem;
-    margin-top: 8px;
+    font-size: 1.35rem;
+    margin-top: var(--space-2);
 }
 
 .tarjeta-destacada .card-text {
@@ -205,59 +594,65 @@ p {
 }
 
 .icono-modulo {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     background-color: var(--verde-claro);
-    color: var(--verde-principal);
+    color: var(--verde-oscuro);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    margin-bottom: 17px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-3);
 }
 
 .icono-grande {
-    width: 65px;
-    height: 65px;
-    font-size: 1.25rem;
+    width: 52px;
+    height: 52px;
+    font-size: 1.05rem;
 }
 
 .etiqueta-modulo {
     display: inline-block;
     background-color: var(--azul-claro);
     color: var(--azul-medico);
-    border-radius: 20px;
-    padding: 5px 10px;
-    font-size: 0.74rem;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.68rem;
     font-weight: 700;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
 }
 
 .tarjeta-reporte {
     background-color: var(--crema);
-    border: 1px solid #e6ddcd;
-    border-radius: 14px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
 .tarjeta-reporte .card-body {
-    padding: 30px;
+    padding: var(--space-5);
 }
 
 .tarjeta-reporte h3 {
-    margin-top: 4px;
-    margin-bottom: 8px;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-2);
 }
 
 .tarjeta-reporte p {
     max-width: 760px;
 }
 
+/* --- Botones --- */
 .btn {
-    border-radius: 8px;
+    border-radius: 6px;
     font-weight: 600;
-    padding: 9px 17px;
+    font-size: 13px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background-color var(--transicion-base), border-color var(--transicion-base), color var(--transicion-base), box-shadow var(--transicion-base);
 }
 
 .btn-farmacia {
@@ -276,7 +671,7 @@ p {
 .btn-outline-farmacia {
     background-color: transparent;
     border: 1px solid var(--verde-principal);
-    color: var(--verde-principal);
+    color: var(--verde-oscuro);
 }
 
 .btn-outline-farmacia:hover {
@@ -298,7 +693,7 @@ p {
 .btn-eliminar {
     background-color: var(--rojo-claro);
     border-color: transparent;
-    color: var(--rojo);
+    color: var(--rojo-oscuro);
 }
 
 .btn-eliminar:hover {
@@ -306,112 +701,129 @@ p {
     color: var(--blanco);
 }
 
+/* --- Tablas (densas, planas, encabezado claro) --- */
 .contenedor-tabla {
     background-color: var(--blanco);
     border: 1px solid var(--gris-borde);
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
     overflow: hidden;
 }
 
 .tabla-farmacia {
     margin-bottom: 0;
+    font-size: 13px;
 }
 
 .tabla-farmacia thead {
-    background-color: var(--verde-oscuro);
-    color: var(--blanco);
+    background-color: #fafbfc;
+    color: var(--gris-texto);
 }
 
 .tabla-farmacia thead th {
-    padding: 14px 16px;
+    padding: 11px 16px;
     border: none;
-    font-size: 0.86rem;
+    border-bottom: 1px solid var(--gris-borde);
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
 .tabla-farmacia tbody td {
-    padding: 14px 16px;
+    padding: 11px 16px;
     vertical-align: middle;
     color: var(--gris-oscuro);
-    border-color: #edf0ee;
+    border-color: var(--gris-medio);
 }
 
 .tabla-farmacia tbody tr:nth-child(even) {
-    background-color: #fafcfa;
+    background-color: #fafbfc;
+}
+
+.tabla-farmacia tbody tr {
+    transition: background-color var(--transicion-rapida);
 }
 
 .tabla-farmacia tbody tr:hover {
-    background-color: var(--verde-claro);
+    background-color: var(--gris-medio);
 }
 
 .nombre-proveedor {
-    color: var(--verde-oscuro);
-    font-weight: 700;
+    color: var(--gris-oscuro);
+    font-weight: 600;
 }
 
 .dato-secundario {
     color: var(--gris-texto);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
 }
 
 .insignia-proveedor {
     display: inline-block;
-    padding: 5px 10px;
+    padding: 3px 8px;
     background-color: var(--verde-claro);
-    color: var(--verde-principal);
-    border-radius: 20px;
-    font-size: 0.78rem;
+    color: var(--verde-oscuro);
+    border-radius: 4px;
+    font-size: 0.72rem;
     font-weight: 700;
 }
 
+/* --- Formularios --- */
 .formulario-farmacia {
     background-color: var(--blanco);
     border: 1px solid var(--gris-borde);
-    border-radius: 14px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
 .formulario-farmacia .card-body {
-    padding: 30px;
+    padding: var(--space-5);
 }
 
 .form-label {
-    color: var(--verde-oscuro);
+    color: var(--gris-oscuro);
+    font-size: 13px;
     font-weight: 600;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
 }
 
 .form-control,
 .form-select {
-    min-height: 45px;
+    min-height: 38px;
+    font-size: 14px;
     border: 1px solid var(--gris-borde);
-    border-radius: 9px;
-    background-color: #fcfdfc;
+    border-radius: 6px;
+    background-color: var(--blanco);
+    transition: border-color var(--transicion-base), box-shadow var(--transicion-base);
+}
+
+.form-select {
+    cursor: pointer;
 }
 
 .form-control:focus,
 .form-select:focus {
     border-color: var(--verde-principal);
-    box-shadow: 0 0 0 0.2rem rgba(47, 111, 94, 0.15);
+    box-shadow: 0 0 0 0.2rem rgba(21, 128, 61, 0.15);
 }
 
 .form-text {
     color: var(--gris-texto);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .invalid-feedback {
-    font-size: 0.86rem;
+    font-size: 0.8rem;
     font-weight: 500;
 }
 
+/* --- Alertas y modales --- */
 .alert {
-    border-radius: 10px;
+    border-radius: 6px;
     border: none;
+    font-size: 13px;
 }
 
 .alert-success {
@@ -421,7 +833,7 @@ p {
 
 .alert-danger {
     background-color: var(--rojo-claro);
-    color: #7d3030;
+    color: var(--rojo-oscuro);
 }
 
 .alerta-stock {
@@ -430,71 +842,92 @@ p {
 }
 
 .modal-content {
-    border: none;
-    border-radius: 14px;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
     overflow: hidden;
 }
 
 .modal-header {
-    background-color: var(--crema);
+    background-color: var(--blanco);
     border-bottom: 1px solid var(--gris-borde);
 }
 
 .modal-title {
-    color: var(--verde-oscuro);
+    color: var(--gris-oscuro);
 }
 
 .modal-footer {
-    background-color: #fafbf9;
+    background-color: var(--crema);
     border-top: 1px solid var(--gris-borde);
 }
 
+/* --- Estado vacío --- */
 .estado-vacio {
     padding: 50px 20px;
     text-align: center;
 }
 
 .estado-vacio .simbolo {
-    width: 65px;
-    height: 65px;
-    margin: 0 auto 18px;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto var(--space-3);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
+    border-radius: 8px;
     background-color: var(--verde-claro);
-    color: var(--verde-principal);
-    font-size: 1.8rem;
-    font-weight: 800;
+    color: var(--verde-oscuro);
+    font-size: 1.3rem;
+    font-weight: 700;
 }
 
+/* --- Pie de página --- */
 .footer-farmacia {
-    margin-top: 60px;
-    background-color: var(--verde-oscuro);
-    color: var(--blanco);
+    margin-top: 48px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--gris-borde);
+    background-color: transparent;
+    color: var(--gris-texto);
 }
 
-.footer-farmacia small {
-    color: rgba(255, 255, 255, 0.75);
+.footer-farmacia h6 {
+    color: var(--gris-texto);
+    font-size: 0.8rem;
 }
 
+.footer-farmacia small,
 .footer-farmacia p {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--gris-texto);
+    font-size: 0.8rem;
 }
 
-@media (max-width: 991px) {
-    .navbar-farmacia .nav-link {
-        margin-top: 5px;
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 991.98px) {
+
+    body:has(.sidebar-farmacia) {
+        padding-left: 0;
+    }
+
+    .sidebar-farmacia {
+        position: static;
+        width: auto;
+    }
+
+    .sidebar-nav {
+        overflow-y: visible;
     }
 }
 
 @media (max-width: 768px) {
     .dashboard-contenido h1 {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
     }
 
     .encabezado-pagina {
-        padding: 22px;
+        padding: var(--space-4);
     }
 
     .tarjeta-modulo,
@@ -503,15 +936,15 @@ p {
     }
 
     .tarjeta-destacada .card-title {
-        font-size: 1.55rem;
+        font-size: 1.2rem;
     }
 
     .formulario-farmacia .card-body {
-        padding: 22px;
+        padding: var(--space-4);
     }
 
     .tarjeta-reporte .card-body {
-        padding: 24px;
+        padding: var(--space-4);
     }
 }
 
@@ -523,5 +956,205 @@ p {
 
     .contenedor-tabla {
         overflow-x: auto;
+    }
+}
+
+/* ============================================================
+   Tarjetas KPI del dashboard (stat tiles)
+   ============================================================ */
+
+.tarjeta-kpi {
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.kpi-icono {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    flex-shrink: 0;
+}
+
+.kpi-icono-alerta {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.kpi-icono-info {
+    background-color: var(--azul-claro);
+    color: var(--azul-medico);
+}
+
+.kpi-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.kpi-etiqueta {
+    color: var(--gris-texto);
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.kpi-valor {
+    color: var(--gris-oscuro);
+    font-family: var(--fuente-titulos);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.kpi-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    margin-top: 4px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.kpi-estado-alerta {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.kpi-estado-ok {
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+}
+
+/* ============================================================
+   Buscador interno de tablas
+   ============================================================ */
+
+.barra-tabla {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--blanco);
+    border-bottom: 1px solid var(--gris-borde);
+}
+
+.barra-tabla-icono {
+    color: var(--gris-texto);
+    flex-shrink: 0;
+}
+
+.barra-tabla .form-control {
+    max-width: 320px;
+    min-height: 34px;
+    font-size: 13px;
+}
+
+.fila-sin-resultados td {
+    padding: var(--space-5);
+}
+
+/* ============================================================
+   Sidebar colapsado (riel de iconos)
+   ============================================================ */
+
+.sidebar-colapsador {
+    background: transparent;
+    border: 0;
+    padding: var(--space-1);
+    border-radius: 6px;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.sidebar-colapsador:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--blanco);
+}
+
+.icono-colapso {
+    display: block;
+    transition: transform var(--transicion-base);
+}
+
+html.sidebar-colapsado .icono-colapso {
+    transform: rotate(180deg);
+}
+
+.sidebar-farmacia {
+    transition: width var(--transicion-base);
+}
+
+@media (min-width: 992px) {
+
+    html.sidebar-colapsado body:has(.sidebar-farmacia) {
+        padding-left: 68px;
+    }
+
+    html.sidebar-colapsado .sidebar-farmacia {
+        width: 68px;
+    }
+
+    html.sidebar-colapsado .sidebar-marca > span:last-child,
+    html.sidebar-colapsado .sidebar-grupo,
+    html.sidebar-colapsado .sidebar-enlace > span,
+    html.sidebar-colapsado .sidebar-usuario-datos,
+    html.sidebar-colapsado .selector-idioma > span,
+    html.sidebar-colapsado .sidebar-salir > span {
+        display: none;
+    }
+
+    html.sidebar-colapsado .selector-idioma::after {
+        display: none;
+    }
+
+    html.sidebar-colapsado .sidebar-encabezado {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px var(--space-2);
+    }
+
+    html.sidebar-colapsado .sidebar-enlace,
+    html.sidebar-colapsado .sidebar-usuario,
+    html.sidebar-colapsado .sidebar-salir,
+    html.sidebar-colapsado .selector-idioma {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    html.sidebar-colapsado .menu-idiomas {
+        min-width: 130px;
+    }
+}
+
+/* --- Accesibilidad: respeta la preferencia de movimiento reducido --- */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
     }
 }

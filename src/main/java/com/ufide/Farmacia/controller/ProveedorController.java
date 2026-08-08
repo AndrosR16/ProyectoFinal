@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.controller;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,11 @@ import jakarta.validation.Valid;
 public class ProveedorController {
 
 private final ProveedorService service;
+private final MessageSource messageSource;
 
-public ProveedorController(ProveedorService service) {
+public ProveedorController(ProveedorService service, MessageSource messageSource) {
     this.service = service;
+    this.messageSource = messageSource;
 }
 
     // Mostrar todos los proveedores
@@ -53,7 +57,7 @@ public ProveedorController(ProveedorService service) {
         service.guardar(proveedor);
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Proveedor registrado correctamente");
+                messageSource.getMessage("flash.proveedor.registrado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/proveedores";
     }
@@ -70,7 +74,7 @@ public ProveedorController(ProveedorService service) {
         if (proveedor == null) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El proveedor no fue encontrado");
+                    messageSource.getMessage("flash.proveedor.no.encontrado", null, LocaleContextHolder.getLocale()));
 
             return "redirect:/proveedores";
         }
@@ -97,7 +101,7 @@ public ProveedorController(ProveedorService service) {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Proveedor actualizado correctamente");
+                messageSource.getMessage("flash.proveedor.actualizado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/proveedores";
     }
@@ -111,7 +115,7 @@ public ProveedorController(ProveedorService service) {
         if (service.buscarPorId(id).isEmpty()) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El proveedor no fue encontrado");
+                    messageSource.getMessage("flash.proveedor.no.encontrado", null, LocaleContextHolder.getLocale()));
 
             return "redirect:/proveedores";
         }
@@ -120,7 +124,7 @@ public ProveedorController(ProveedorService service) {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Proveedor eliminado correctamente");
+                messageSource.getMessage("flash.proveedor.eliminado", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/proveedores";
     }

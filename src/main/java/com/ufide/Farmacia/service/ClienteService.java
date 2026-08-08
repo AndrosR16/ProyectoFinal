@@ -21,6 +21,10 @@ public class ClienteService {
         return repository.findAll();
     }
 
+    public long contar() {
+        return repository.count();
+    }
+
     public Optional<Cliente> buscarPorId(Long id) {
         return repository.findById(id);
     }

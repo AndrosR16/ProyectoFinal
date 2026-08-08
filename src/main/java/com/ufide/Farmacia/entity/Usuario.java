@@ -18,26 +18,26 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Size(max = 50, message = "El nombre de usuario no puede superar los 50 caracteres")
+    @NotBlank(message = "{validacion.usuario.username.obligatorio}")
+    @Size(max = 50, message = "{validacion.usuario.username.tamano}")
     @Column(unique = true)
     private String username;
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
+    @NotBlank(message = "{validacion.nombre.obligatorio}")
+    @Size(max = 100, message = "{validacion.nombre.tamano}")
     private String nombre;
 
-    @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "Debe ingresar un correo válido")
-    @Size(max = 120, message = "El correo no puede superar los 120 caracteres")
+    @NotBlank(message = "{validacion.correo.obligatorio}")
+    @Email(message = "{validacion.correo.invalido}")
+    @Size(max = 120, message = "{validacion.correo.tamano}")
     @Column(unique = true)
     private String correo;
 
-    @NotBlank(message = "La contraseña es obligatoria")
+    @NotBlank(message = "{validacion.password.obligatoria}")
     private String password;
 
-    @NotBlank(message = "El rol es obligatorio")
-    @Size(max = 20, message = "El rol no puede superar los 20 caracteres")
+    @NotBlank(message = "{validacion.usuario.rol.obligatorio}")
+    @Size(max = 20, message = "{validacion.usuario.rol.tamano}")
     @Column(nullable = false)
     private String rol = "USER";
 

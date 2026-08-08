@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title th:text="${proveedor.id == null}
-        ? 'Nuevo proveedor'
-        : 'Editar proveedor'">
+        ? #{proveedor.form.titulo.pagina.nuevo}
+        : #{proveedor.form.titulo.pagina.editar}">
         Proveedor
     </title>
 
@@ -29,18 +29,18 @@
                 <section class="encabezado-pagina mb-4">
 
                     <span class="insignia-proveedor mb-2" th:text="${proveedor.id == null}
-                              ? 'Nuevo registro'
-                              : 'Actualización de datos'">
+                              ? #{comun.insignia.nuevo}
+                              : #{comun.insignia.editar}">
                     </span>
 
                     <h1 th:text="${proveedor.id == null}
-                        ? 'Registrar proveedor'
-                        : 'Editar proveedor'">
+                        ? #{proveedor.form.titulo.nuevo}
+                        : #{proveedor.form.titulo.editar}">
                     </h1>
 
                     <p th:text="${proveedor.id == null}
-                        ? 'Complete la información para registrar un nuevo proveedor.'
-                        : 'Actualice los datos del proveedor seleccionado.'">
+                        ? #{proveedor.form.subtitulo.nuevo}
+                        : #{proveedor.form.subtitulo.editar}">
                     </p>
 
                 </section>
@@ -55,22 +55,21 @@
 
                             <input type="hidden" th:field="*{id}">
 
-                            ...
-
                             <div class="mb-4">
 
-                                <label for="nombre" class="form-label">
+                                <label for="nombre" class="form-label" th:text="#{proveedor.campo.nombre}">
                                     Nombre del proveedor
                                 </label>
 
                                 <input type="text" id="nombre" class="form-control" th:classappend="${#fields.hasErrors('nombre')}
                                            ? 'is-invalid'" th:field="*{nombre}"
-                                    placeholder="Ejemplo: Distribuidora Médica CR">
+                                    placeholder="Ejemplo: Distribuidora Médica CR"
+                                    th:placeholder="#{proveedor.campo.nombre.placeholder}">
 
                                 <div class="invalid-feedback" th:errors="*{nombre}">
                                 </div>
 
-                                <div class="form-text">
+                                <div class="form-text" th:text="#{proveedor.campo.nombre.ayuda}">
                                     Ingrese el nombre comercial o razón social.
                                 </div>
 
@@ -80,17 +79,18 @@
 
                                 <div class="col-md-6 mb-4">
 
-                                    <label for="telefono" class="form-label">
+                                    <label for="telefono" class="form-label" th:text="#{comun.campo.telefono}">
                                         Teléfono
                                     </label>
 
                                     <input type="text" id="telefono" class="form-control" th:classappend="${#fields.hasErrors('telefono')}
-                                               ? 'is-invalid'" th:field="*{telefono}" placeholder="Ejemplo: 2222-1111">
+                                               ? 'is-invalid'" th:field="*{telefono}" placeholder="Ejemplo: 2222-1111"
+                                        th:placeholder="#{proveedor.campo.telefono.placeholder}">
 
                                     <div class="invalid-feedback" th:errors="*{telefono}">
                                     </div>
 
-                                    <div class="form-text">
+                                    <div class="form-text" th:text="#{proveedor.campo.telefono.ayuda}">
                                         Número de contacto del proveedor.
                                     </div>
 
@@ -98,18 +98,19 @@
 
                                 <div class="col-md-6 mb-4">
 
-                                    <label for="correo" class="form-label">
+                                    <label for="correo" class="form-label" th:text="#{comun.campo.correo}">
                                         Correo electrónico
                                     </label>
 
                                     <input type="email" id="correo" class="form-control" th:classappend="${#fields.hasErrors('correo')}
                                                ? 'is-invalid'" th:field="*{correo}"
-                                        placeholder="Ejemplo: ventas@proveedor.com">
+                                        placeholder="Ejemplo: ventas@proveedor.com"
+                                        th:placeholder="#{proveedor.campo.correo.placeholder}">
 
                                     <div class="invalid-feedback" th:errors="*{correo}">
                                     </div>
 
-                                    <div class="form-text">
+                                    <div class="form-text" th:text="#{proveedor.campo.correo.ayuda}">
                                         Correo utilizado para pedidos y comunicación.
                                     </div>
 
@@ -119,13 +120,13 @@
 
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-                                <a th:href="@{/proveedores}" class="btn btn-secondary">
+                                <a th:href="@{/proveedores}" class="btn btn-secondary" th:text="#{comun.volver}">
                                     Volver
                                 </a>
 
                                 <button type="submit" class="btn btn-farmacia" th:text="${proveedor.id == null}
-                                            ? 'Registrar proveedor'
-                                            : 'Guardar cambios'">
+                                            ? #{proveedor.registrar}
+                                            : #{comun.guardar.cambios}">
                                     Guardar
                                 </button>
 

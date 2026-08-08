@@ -22,6 +22,10 @@ public class ProveedorService {
         return repository.findAll();
     }
 
+    public long contar() {
+        return repository.count();
+    }
+
     public Optional<Proveedor> buscarPorId(Long id) {
         return repository.findById(id);
     }

@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.controller;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +19,11 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UsuarioService usuarioService;
+    private final MessageSource messageSource;
 
-    public AuthController(UsuarioService usuarioService) {
+    public AuthController(UsuarioService usuarioService, MessageSource messageSource) {
         this.usuarioService = usuarioService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/login")
@@ -43,10 +47,12 @@ public class AuthController {
         try {
             usuarioService.registrar(form);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            result.rejectValue("username", "duplicado", "No se pudo crear la cuenta, verifique los datos ingresados");
+            result.rejectValue("username", "validacion.registro.duplicado.general", "No se pudo crear la cuenta, verifique los datos ingresados");
             return "registro";
         }
-        redirectAttributes.addFlashAttribute("ok", "Cuenta creada correctamente. Ya puede iniciar sesion.");
+        redirectAttributes.addFlashAttribute(
+                "ok",
+                messageSource.getMessage("flash.registro.exitoso", null, LocaleContextHolder.getLocale()));
         return "redirect:/login";
     }
 }

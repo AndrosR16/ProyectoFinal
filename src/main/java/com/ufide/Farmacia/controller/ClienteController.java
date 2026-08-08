@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.controller;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +22,11 @@ import jakarta.validation.Valid;
 public class ClienteController {
 
     private final ClienteService service;
+    private final MessageSource messageSource;
 
-    public ClienteController(ClienteService service) {
+    public ClienteController(ClienteService service, MessageSource messageSource) {
         this.service = service;
+        this.messageSource = messageSource;
     }
 
     @GetMapping
@@ -51,7 +55,7 @@ public class ClienteController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Cliente registrado correctamente"
+                messageSource.getMessage("flash.cliente.registrado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/clientes";
@@ -68,7 +72,7 @@ public class ClienteController {
         if (cliente == null) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El cliente no fue encontrado"
+                    messageSource.getMessage("flash.cliente.no.encontrado", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/clientes";
@@ -95,7 +99,7 @@ public class ClienteController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Cliente actualizado correctamente"
+                messageSource.getMessage("flash.cliente.actualizado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/clientes";
@@ -109,7 +113,7 @@ public class ClienteController {
         if (service.buscarPorId(id).isEmpty()) {
             redirectAttributes.addFlashAttribute(
                     "error",
-                    "El cliente no fue encontrado"
+                    messageSource.getMessage("flash.cliente.no.encontrado", null, LocaleContextHolder.getLocale())
             );
 
             return "redirect:/clientes";
@@ -119,7 +123,7 @@ public class ClienteController {
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                "Cliente eliminado correctamente"
+                messageSource.getMessage("flash.cliente.eliminado", null, LocaleContextHolder.getLocale())
         );
 
         return "redirect:/clientes";
