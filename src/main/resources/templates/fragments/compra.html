@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="procesando"
+     id="compra-overlay"
+     class="compra-overlay"
+     hidden
+     aria-hidden="true"
+     role="status"
+     aria-live="polite">
+
+    <div class="compra-panel">
+
+        <p class="compra-etiqueta" th:text="#{compra.procesando.etiqueta}">Procesando</p>
+        <h2 class="compra-titulo" th:text="#{compra.procesando.titulo}">Confirmando tu compra</h2>
+
+        <ol class="compra-pasos">
+
+            <li class="compra-paso">
+                <span class="compra-paso-indice">01</span>
+                <span class="compra-paso-texto" th:text="#{compra.paso.stock}">Verificando existencias</span>
+                <span class="compra-paso-estado" aria-hidden="true"></span>
+            </li>
+
+            <li class="compra-paso">
+                <span class="compra-paso-indice">02</span>
+                <span class="compra-paso-texto" th:text="#{compra.paso.pago}">Procesando pago</span>
+                <span class="compra-paso-estado" aria-hidden="true"></span>
+            </li>
+
+            <li class="compra-paso">
+                <span class="compra-paso-indice">03</span>
+                <span class="compra-paso-texto" th:text="#{compra.paso.factura}">Generando factura</span>
+                <span class="compra-paso-estado" aria-hidden="true"></span>
+            </li>
+
+            <li class="compra-paso">
+                <span class="compra-paso-indice">04</span>
+                <span class="compra-paso-texto" th:text="#{compra.paso.listo}">Listo</span>
+                <span class="compra-paso-estado" aria-hidden="true"></span>
+            </li>
+
+        </ol>
+
+        <div class="compra-barra">
+            <div class="compra-barra-fill"></div>
+        </div>
+
+        <p class="compra-nota" th:text="#{compra.procesando.nota}">No cierres esta ventana.</p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

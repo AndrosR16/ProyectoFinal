@@ -1,12 +1,16 @@
 package com.ufide.Farmacia.entity;
 
+import com.ufide.Farmacia.util.Telefonos;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -22,7 +26,7 @@ public class Cliente {
     private String nombre;
 
     @NotBlank(message = "{validacion.telefono.obligatorio}")
-    @Size(max = 20, message = "{validacion.cliente.telefono.tamano}")
+    @Pattern(regexp = "^[0-9]{8}$", message = "{validacion.cliente.telefono.formato}")
     private String telefono;
 
     @NotBlank(message = "{validacion.correo.obligatorio}")
@@ -54,7 +58,12 @@ public class Cliente {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        this.telefono = Telefonos.normalizar(telefono);
+    }
+
+    @Transient
+    public String getTelefonoFormateado() {
+        return Telefonos.formatear(telefono);
     }
 
     public String getCorreo() {

@@ -5,39 +5,39 @@
    ============================================================ */
 
 :root {
-    /* --- Colores base --- */
-    --tinta: #1c232e;
-    /* Sidebar y superficies oscuras */
-    --verde-principal: #15803d;
-    /* Marca / botones primarios (5.02:1 con blanco) */
-    --verde-oscuro: #116232;
-    /* Hover primario, texto verde sobre fondos claros (8.06:1) */
-    --verde-claro: #dcfce7;
-    /* Fondos suaves de íconos e insignias */
-    --azul-medico: #0369a1;
-    /* Enlaces y acción "editar" */
-    --azul-oscuro: #075985;
-    /* Hover de enlaces (7.56:1 con blanco) */
-    --azul-claro: #e0f2fe;
+    /* --- Colores base (rampa atenuada, neutrales con tinte de marca) --- */
+    --tinta: #1e241f;
+    /* Sidebar: casi-negro con tinte verde, no azul-pizarra */
+    --verde-principal: #1a7a45;
+    /* Marca / botones primarios (verde bosque, menos neón) */
+    --verde-oscuro: #12522f;
+    /* Hover primario, texto verde sobre fondos claros */
+    --verde-claro: #e4f0e6;
+    /* Tinte sage suave para íconos e insignias (antes menta caramelo) */
+    --azul-medico: #256d88;
+    /* Enlaces y acción "editar" (azul apagado) */
+    --azul-oscuro: #1b566d;
+    /* Hover de enlaces */
+    --azul-claro: #e6eef2;
     /* Fondos suaves de insignias/acciones "editar" */
-    --crema: #f8f9fa;
-    /* Neutro para tarjetas de nota/reporte */
+    --crema: #f5f6f3;
+    /* Neutro cálido para tarjetas de nota/reporte */
     --blanco: #ffffff;
-    --gris-fondo: #f5f6f8;
-    /* Fondo del área de contenido */
-    --gris-medio: #f0f2f4;
+    --gris-fondo: #f6f7f5;
+    /* Fondo del área de contenido (neutro sage) */
+    --gris-medio: #eceeeb;
     /* Fondos sutiles: filas alternas, pies de modal */
-    --gris-texto: #5b6774;
-    /* Texto secundario (5.9:1 sobre blanco) */
-    --gris-oscuro: #1f2733;
-    /* Texto principal (13.7:1 sobre blanco) */
-    --gris-borde: #e3e6ea;
+    --gris-texto: #5c635d;
+    /* Texto secundario (>5.6:1 sobre blanco) */
+    --gris-oscuro: #262a26;
+    /* Texto principal (casi-negro sage) */
+    --gris-borde: #dbe0dc;
     /* Bordes de tarjetas, tablas y formularios */
     --rojo: #dc2626;
-    /* Destructivo */
+    /* Destructivo (funcional, se mantiene saturado) */
     --rojo-oscuro: #991b1b;
-    /* Texto sobre fondos rojo claro (6.80:1) */
-    --rojo-claro: #fee2e2;
+    /* Texto sobre fondos rojo claro */
+    --rojo-claro: #f7e9e8;
     /* Fondos suaves de acción "eliminar" */
 
     /* --- Alias semánticos --- */
@@ -76,21 +76,21 @@
 /* --- Integración con variables de Bootstrap 5.3 (sin tocar templates) --- */
 :root {
     --bs-primary: var(--verde-principal);
-    --bs-primary-rgb: 21, 128, 61;
+    --bs-primary-rgb: 26, 122, 69;
     --bs-success: var(--verde-principal);
-    --bs-success-rgb: 21, 128, 61;
+    --bs-success-rgb: 26, 122, 69;
     --bs-danger: var(--rojo);
     --bs-danger-rgb: 220, 38, 38;
     --bs-link-color: var(--azul-medico);
-    --bs-link-color-rgb: 3, 105, 161;
+    --bs-link-color-rgb: 37, 109, 136;
     --bs-link-hover-color: var(--azul-oscuro);
-    --bs-link-hover-color-rgb: 7, 89, 133;
+    --bs-link-hover-color-rgb: 27, 86, 109;
     --bs-body-font-family: var(--fuente-texto);
     --bs-body-color: var(--gris-oscuro);
     --bs-body-bg: var(--gris-fondo);
     --bs-border-color: var(--gris-borde);
     --bs-secondary-color: var(--gris-texto);
-    --bs-focus-ring-color: rgba(21, 128, 61, 0.35);
+    --bs-focus-ring-color: rgba(26, 122, 69, 0.32);
     --bs-form-valid-color: var(--verde-oscuro);
     --bs-form-invalid-color: var(--rojo-oscuro);
 }
@@ -806,7 +806,7 @@ textarea:focus-visible,
 .form-control:focus,
 .form-select:focus {
     border-color: var(--verde-principal);
-    box-shadow: 0 0 0 0.2rem rgba(21, 128, 61, 0.15);
+    box-shadow: 0 0 0 0.2rem rgba(26, 122, 69, 0.12);
 }
 
 .form-text {
@@ -1146,6 +1146,638 @@ html.sidebar-colapsado .icono-colapso {
     }
 }
 
+/* ============================================================
+   Tienda (grid de tarjetas de producto)
+   ============================================================ */
+
+.shop-boton-carrito {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.shop-carrito-contador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background-color: var(--blanco);
+    color: var(--verde-oscuro);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.shop-buscador {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 380px;
+    margin-bottom: var(--space-5);
+    padding: 8px 12px;
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.shop-buscador .barra-tabla-icono {
+    color: var(--gris-texto);
+    flex-shrink: 0;
+}
+
+.shop-buscador .form-control {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-height: auto;
+    font-size: 14px;
+}
+
+.shop-buscador .form-control:focus {
+    box-shadow: none;
+}
+
+.producto-card {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    transition: border-color var(--transicion-base), box-shadow var(--transicion-base), transform var(--transicion-base);
+}
+
+/* La estrella de destacado se sale de la tarjeta, así que la tarjeta
+   no puede recortar; la imagen redondea sus esquinas superiores aparte. */
+.producto-estrella {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 3;
+    display: block;
+    color: #e0a83a;
+    line-height: 0;
+}
+
+.producto-ribbon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.2);
+}
+
+.producto-card:hover {
+    border-color: var(--verde-oscuro);
+    box-shadow: 0 2px 8px rgba(38, 42, 38, 0.07);
+}
+
+.producto-imagen {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+
+/* Foto del producto: cubre el ícono cuando hay imagenUrl; si falla, onerror la quita y queda el ícono */
+.producto-foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.producto-agotado .producto-imagen {
+    background-color: var(--gris-medio);
+    color: var(--gris-texto);
+}
+
+.producto-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    flex: 1;
+}
+
+.producto-nombre {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+    color: var(--gris-oscuro);
+}
+
+.producto-precio {
+    font-family: var(--fuente-titulos);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+.producto-stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.producto-stock-ok {
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+}
+
+.producto-stock-pocas {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.producto-stock-agotado {
+    background-color: var(--gris-medio);
+    color: var(--gris-texto);
+}
+
+.producto-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-2);
+}
+
+.producto-cantidad {
+    width: 64px;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.producto-agregar {
+    flex: 1;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .producto-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .producto-cantidad {
+        width: 100%;
+    }
+
+    .producto-agregar {
+        width: 100%;
+    }
+}
+
+/* --- Banner promocional en movimiento ---
+   Va a sangre pegado al tope del área de contenido: sin margen superior ni
+   esquinas redondeadas. El aire de abajo lo pone el py-5 del <main> siguiente. */
+.promo-banner {
+    overflow: hidden;
+    margin: 0;
+    padding: 9px 0;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco);
+    border-radius: 0;
+    white-space: nowrap;
+}
+
+.promo-track {
+    display: inline-flex;
+    align-items: center;
+    animation: promo-scroll 28s linear infinite;
+    will-change: transform;
+}
+
+.promo-banner:hover .promo-track {
+    animation-play-state: paused;
+}
+
+.promo-item {
+    padding: 0 22px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.promo-sep {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 9px;
+}
+
+@keyframes promo-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* --- Carrito en el pie del sidebar (con contador) --- */
+.sidebar-carrito {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.sidebar-carrito:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--blanco);
+}
+
+.sidebar-carrito > span:not(.sidebar-carrito-badge) {
+    flex: 1;
+}
+
+.sidebar-carrito-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* --- Método de pago (checkout) --- */
+.metodo-pago {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.metodo-pago-opcion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color var(--transicion-rapida), background-color var(--transicion-rapida);
+}
+
+.metodo-pago-opcion:hover {
+    border-color: var(--verde-principal);
+}
+
+.metodo-pago-opcion:has(input:checked) {
+    border-color: var(--verde-principal);
+    background-color: var(--verde-claro);
+}
+
+.metodo-pago-info {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background-color: var(--azul-claro);
+    color: var(--azul-oscuro);
+    font-size: 13px;
+}
+
+/* --- Tienda: encabezado hero --- */
+.shop-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 210px;
+    margin-bottom: var(--space-4);
+    padding: var(--space-6);
+    border-radius: 12px;
+    background-color: #dfe7dd;
+    background-image:
+        linear-gradient(90deg, rgba(247, 250, 246, 0.94) 0%, rgba(247, 250, 246, 0.72) 34%, rgba(247, 250, 246, 0) 62%),
+        url("/img/banner.jpg");
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    color: var(--gris-oscuro);
+}
+
+.shop-hero-contenido {
+    position: relative;
+    z-index: 1;
+    max-width: 58%;
+}
+
+.shop-hero-insignia {
+    display: inline-block;
+    margin-bottom: var(--space-3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.shop-hero h1 {
+    margin: 0 0 6px;
+    color: var(--verde-oscuro);
+    font-size: 1.9rem;
+}
+
+.shop-hero p {
+    margin: 0;
+    max-width: 460px;
+    color: var(--gris-texto);
+}
+
+@media (max-width: 576px) {
+    .shop-hero {
+        min-height: 260px;
+        align-items: flex-start;
+        background-image:
+            linear-gradient(180deg, rgba(247, 250, 246, 0.94) 0%, rgba(247, 250, 246, 0.6) 45%, rgba(247, 250, 246, 0.05) 100%),
+            url("/img/banner.jpg");
+    }
+
+    .shop-hero-contenido {
+        max-width: 100%;
+    }
+}
+
+/* --- Tarjeta clickeable (abre el detalle) --- */
+.producto-clickable {
+    cursor: pointer;
+}
+
+.producto-clickable:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+}
+
+/* --- Detalle rápido de producto (modal quick view) --- */
+.mp-imagen {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 240px;
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.mp-imagen #mpFoto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mp-nombre {
+    font-size: 1.3rem;
+    margin: 0 0 6px;
+}
+
+.mp-precio {
+    font-family: var(--fuente-titulos);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+    margin-bottom: var(--space-2);
+}
+
+.mp-vendedor {
+    font-size: 13px;
+    color: var(--gris-texto);
+}
+
+.mp-vendedor strong {
+    color: var(--gris-oscuro);
+}
+
+.mp-envio {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    margin-bottom: var(--space-3);
+}
+
+.mp-subtitulo {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--gris-texto);
+    margin-bottom: var(--space-1);
+}
+
+.mp-descripcion {
+    font-size: 14px;
+    color: var(--gris-oscuro);
+    margin-bottom: var(--space-4);
+}
+
+.mp-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.mp-form .form-control {
+    width: 72px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.mp-relacionados {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--gris-borde);
+}
+
+.mp-relacionados-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+}
+
+.mp-rel-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    background-color: var(--blanco);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+}
+
+.mp-rel-card:hover {
+    border-color: var(--verde-oscuro);
+    box-shadow: 0 2px 8px rgba(38, 42, 38, 0.07);
+}
+
+.mp-rel-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 64px;
+    border-radius: 6px;
+    background-color: var(--verde-claro);
+    overflow: hidden;
+}
+
+.mp-rel-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mp-rel-nombre {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gris-oscuro);
+    line-height: 1.25;
+}
+
+.mp-rel-precio {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+}
+
+@media (max-width: 576px) {
+    .mp-relacionados-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ============================================================
+   Documento de factura
+   ============================================================ */
+
+.factura-documento {
+    position: relative;
+    background-color: #fffdf7;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.05'/%3E%3C/svg%3E");
+    border: 1px solid var(--gris-borde);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: var(--space-6);
+    max-width: 820px;
+    margin: 0 auto var(--space-5);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+/* Borde dentado tipo recibo al final de la hoja */
+.factura-documento::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -11px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M0 0 H12 L6 12 Z' fill='%23fffdf7'/%3E%3C/svg%3E");
+    background-size: 12px 12px;
+    background-repeat: repeat-x;
+    filter: drop-shadow(0 1px 1px rgba(16, 24, 40, 0.08));
+}
+
+.factura-documento-titulo {
+    margin-bottom: var(--space-2);
+    color: var(--gris-oscuro);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.factura-documento-emisor {
+    color: var(--gris-oscuro);
+    font-size: 1.15rem;
+}
+
+.factura-documento .text-muted {
+    color: var(--gris-texto) !important;
+}
+
+@media (max-width: 768px) {
+    .factura-documento {
+        padding: var(--space-5);
+    }
+}
+
+@media print {
+
+    .sidebar-farmacia,
+    .footer-farmacia,
+    .no-imprimir,
+    .encabezado-pagina {
+        display: none !important;
+    }
+
+    body {
+        padding-left: 0 !important;
+        background-color: #fff;
+    }
+
+    .factura-documento {
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        max-width: none;
+        background-color: #fff;
+        background-image: none;
+    }
+
+    .factura-documento::after {
+        display: none;
+    }
+}
+
 /* --- Accesibilidad: respeta la preferencia de movimiento reducido --- */
 @media (prefers-reduced-motion: reduce) {
 
@@ -1157,4 +1789,252 @@ html.sidebar-colapsado .icono-colapso {
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* ============================================================
+   Teléfono Costa Rica (bandera + código de país + número)
+   ============================================================ */
+
+.tel-cr {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+.tel-cr-bandera {
+    flex-shrink: 0;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(38, 42, 38, 0.14);
+}
+
+.tel-cr-codigo {
+    color: var(--gris-texto);
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.tel-cr-numero {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
+
+.tel-cr-vacio {
+    color: var(--gris-texto);
+}
+
+/* --- Input con prefijo de bandera, para formularios --- */
+.tel-cr-grupo .tel-cr-prefijo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--verde-claro);
+    border: 1px solid var(--gris-borde);
+    color: var(--verde-oscuro);
+    font-weight: 600;
+    font-size: 14px;
+    transition: border-color var(--transicion-base);
+}
+
+.tel-cr-grupo:focus-within .tel-cr-prefijo {
+    border-color: var(--verde-principal);
+}
+
+/* ============================================================
+   Overlay de compra (estilo panel oscuro con pasos numerados)
+   ============================================================ */
+
+.compra-overlay[hidden] {
+    display: none;
+}
+
+.compra-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5);
+    background-color: rgba(20, 24, 21, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.compra-panel {
+    width: 100%;
+    max-width: 420px;
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    background-color: var(--tinta);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.compra-etiqueta {
+    margin: 0 0 var(--space-1);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.compra-titulo {
+    margin: 0 0 var(--space-5);
+    color: var(--blanco);
+    font-family: var(--fuente-titulos);
+    font-size: 1.375rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+.compra-pasos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-5);
+    padding: 0;
+    list-style: none;
+}
+
+.compra-paso {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.compra-paso:last-child {
+    border-bottom: none;
+}
+
+.compra-paso-indice {
+    flex-shrink: 0;
+    width: 20px;
+    color: rgba(255, 255, 255, 0.55);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    transition: color var(--transicion-base);
+}
+
+.compra-paso-texto {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+    font-weight: 600;
+    transition: color var(--transicion-base);
+}
+
+.compra-paso-activo .compra-paso-indice,
+.compra-paso-activo .compra-paso-texto {
+    color: var(--blanco);
+}
+
+.compra-paso-listo .compra-paso-indice,
+.compra-paso-listo .compra-paso-texto {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.compra-paso-listo .compra-paso-texto {
+    text-decoration: line-through;
+    text-decoration-color: rgba(255, 255, 255, 0.35);
+    text-decoration-thickness: 1px;
+}
+
+.compra-paso-estado {
+    position: relative;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    transition: background-color var(--transicion-base), border-color var(--transicion-base);
+}
+
+.compra-paso-activo .compra-paso-estado {
+    border-color: rgba(255, 255, 255, 0.2);
+    border-top-color: var(--verde-principal);
+    animation: compra-girar 700ms linear infinite;
+}
+
+.compra-paso-listo .compra-paso-estado {
+    border-color: var(--verde-principal);
+    background-color: var(--verde-principal);
+}
+
+.compra-paso-listo .compra-paso-estado::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border: solid var(--blanco);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.compra-barra {
+    height: 5px;
+    margin-bottom: var(--space-4);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.compra-barra-fill {
+    width: 0;
+    height: 100%;
+    background-color: var(--verde-principal);
+    border-radius: 3px;
+    transition: width 300ms ease;
+}
+
+.compra-nota {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    text-align: center;
+}
+
+@keyframes compra-girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 480px) {
+    .compra-panel {
+        padding: var(--space-5) var(--space-4) var(--space-4);
+    }
+
+    .compra-titulo {
+        font-size: 1.2rem;
+    }
+}
+
+/* --- Micro-feedback de carga en botones de formulario (ej. tienda) --- */
+.btn-cargando {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-cargando::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: var(--blanco);
+    border-radius: 50%;
+    animation: compra-girar 700ms linear infinite;
 }

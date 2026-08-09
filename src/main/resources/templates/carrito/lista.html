@@ -36,7 +36,7 @@
                 </p>
             </div>
 
-            <a th:href="@{/medicamentos}"
+            <a th:href="@{/shop}"
                class="btn btn-farmacia"
                th:text="#{carrito.seguir.comprando}">
                 Seguir comprando
@@ -167,20 +167,30 @@
                     </h3>
                 </div>
 
-                <form th:action="@{/carrito/vaciar}"
-                      method="post">
+                <div class="d-flex gap-2">
 
-                    <input type="hidden"
-                           th:name="${_csrf.parameterName}"
-                           th:value="${_csrf.token}">
+                    <a th:href="@{/facturas/nueva}"
+                       class="btn btn-farmacia"
+                       th:text="#{factura.boton.facturar}">
+                        Facturar
+                    </a>
 
-                    <button type="submit"
-                            class="btn btn-eliminar"
-                            th:text="#{carrito.vaciar}">
-                        Vaciar carrito
-                    </button>
+                    <form th:action="@{/carrito/vaciar}"
+                          method="post">
 
-                </form>
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <button type="submit"
+                                class="btn btn-eliminar"
+                                th:text="#{carrito.vaciar}">
+                            Vaciar carrito
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
@@ -199,10 +209,10 @@
                 Agregue medicamentos para comenzar su compra.
             </p>
 
-            <a th:href="@{/medicamentos}"
+            <a th:href="@{/shop}"
                class="btn btn-farmacia"
-               th:text="#{medicamento.ver}">
-                Ver medicamentos
+               th:text="#{shop.titulo}">
+                Tienda
             </a>
 
         </div>

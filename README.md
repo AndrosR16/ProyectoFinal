@@ -55,7 +55,8 @@ Es el proyecto final del curso SC-403, Desarrollo de Aplicaciones Web y Patrones
 | Consulta de medicamentos | Vista del catálogo para el personal de ventas. | Empleado |
 | Clientes | Registro y consulta de clientes con buscador interno. | Administrador |
 | Proveedores | Gestión de distribuidoras y contactos con buscador interno. | Administrador |
-| Carrito | Armado de pedidos a partir del catálogo. | Empleado |
+| Carrito | Armado de pedidos a partir del catálogo. | Todos |
+| Facturación | Genera facturas desde el carrito con datos del comprador, descuenta existencias y guarda el historial. La factura tiene formato imprimible. | Todos |
 | Mi perfil | Edición de nombre y correo, y cambio de contraseña del propio usuario. | Todos |
 | API REST | Endpoints de medicamentos y clientes con autenticación básica. | Según rol |
 
@@ -86,7 +87,7 @@ La aplicación sigue una arquitectura por capas sobre Spring Boot. El navegador 
 ```mermaid
 graph TD
     N["Navegador"] --> SEC["Spring Security<br/>filtro de autenticacion y roles"]
-    SEC --> MVC["Controladores MVC<br/>Home, Medicamento, Cliente,<br/>Proveedor, Carrito, Perfil, Auth"]
+    SEC --> MVC["Controladores MVC<br/>Home, Medicamento, Cliente, Proveedor,<br/>Carrito, Factura, Perfil, Auth"]
     SEC --> API["Controladores REST<br/>api/medicamentos, api/clientes"]
     MVC --> V["Vistas Thymeleaf<br/>plantillas mas i18n"]
     MVC --> S["Servicios"]

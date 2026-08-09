@@ -128,6 +128,99 @@
 
                             </div>
 
+                            <div class="mb-4 form-check">
+
+                                <input type="checkbox"
+                                       id="destacado"
+                                       class="form-check-input"
+                                       th:field="*{destacado}">
+
+                                <label for="destacado" class="form-check-label"
+                                       th:text="#{medicamento.destacado}">
+                                    Producto destacado
+                                </label>
+
+                                <div class="form-text"
+                                     th:text="#{medicamento.destacado.ayuda}">
+                                    Aparecerá en la sección de destacados de la tienda.
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label for="imagenUrl" class="form-label"
+                                       th:text="#{medicamento.imagen}">
+                                    URL de imagen
+                                </label>
+
+                                <input type="url"
+                                       id="imagenUrl"
+                                       class="form-control"
+                                       th:classappend="${#fields.hasErrors('imagenUrl')}
+                                           ? 'is-invalid'"
+                                       th:field="*{imagenUrl}">
+
+                                <div class="invalid-feedback"
+                                     th:errors="*{imagenUrl}">
+                                </div>
+
+                                <div class="form-text"
+                                     th:text="#{medicamento.imagen.ayuda}">
+                                    Enlace a una foto del producto (opcional). Si se deja vacío se muestra un ícono.
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label for="descripcion" class="form-label"
+                                       th:text="#{medicamento.descripcion}">
+                                    Descripción
+                                </label>
+
+                                <textarea id="descripcion"
+                                          class="form-control"
+                                          th:classappend="${#fields.hasErrors('descripcion')}
+                                              ? 'is-invalid'"
+                                          th:field="*{descripcion}"
+                                          rows="3"></textarea>
+
+                                <div class="invalid-feedback"
+                                     th:errors="*{descripcion}">
+                                </div>
+
+                                <div class="form-text"
+                                     th:text="#{medicamento.descripcion.ayuda}">
+                                    Breve descripción del producto que se muestra en la tienda (opcional).
+                                </div>
+
+                            </div>
+
+                            <div class="mb-4">
+
+                                <label for="proveedorId" class="form-label"
+                                       th:text="#{medicamento.proveedor}">
+                                    Proveedor
+                                </label>
+
+                                <select id="proveedorId" name="proveedorId"
+                                        class="form-select" required>
+                                    <option value=""
+                                            th:text="#{medicamento.proveedor.seleccione}">
+                                        Seleccione un proveedor
+                                    </option>
+                                    <option th:each="p : ${proveedores}"
+                                            th:value="${p.id}"
+                                            th:text="${p.nombre}"
+                                            th:selected="${medicamento.proveedor != null
+                                                and medicamento.proveedor.id == p.id}">
+                                        Proveedor
+                                    </option>
+                                </select>
+
+                            </div>
+
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
                                 <a th:href="@{/medicamentos}"

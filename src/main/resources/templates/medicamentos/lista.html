@@ -39,13 +39,6 @@
 
             <div class="d-flex gap-2 flex-wrap">
 
-                <a th:href="@{/carrito}"
-                   class="btn btn-editar"
-                   sec:authorize="hasRole('USER')"
-                   th:text="#{carrito.ver}">
-                    Ver carrito
-                </a>
-
                 <a th:href="@{/medicamentos/nuevo}"
                    class="btn btn-farmacia"
                    sec:authorize="hasRole('ADMIN')"
@@ -102,15 +95,9 @@
                     <th th:text="#{medicamento.columna.nombre}">Medicamento</th>
                     <th th:text="#{comun.campo.precio}">Precio</th>
                     <th th:text="#{medicamento.columna.stock}">Stock</th>
+                    <th th:text="#{medicamento.proveedor}">Proveedor</th>
 
                     <th class="text-center"
-                        sec:authorize="hasRole('USER')"
-                        th:text="#{medicamento.columna.comprar}">
-                        Comprar
-                    </th>
-
-                    <th class="text-center"
-                        sec:authorize="hasRole('ADMIN')"
                         th:text="#{comun.acciones}">
                         Acciones
                     </th>
@@ -157,51 +144,14 @@
                         </span>
                     </td>
 
-                    <!-- Compra para usuarios normales -->
-                    <td class="text-center"
-                        sec:authorize="hasRole('USER')">
-
-                        <form th:action="@{/carrito/agregar/{id}(id=${medicamento.id})}"
-                              method="post"
-                              class="d-flex justify-content-center align-items-center gap-2">
-
-                            <input type="hidden"
-                                   th:name="${_csrf.parameterName}"
-                                   th:value="${_csrf.token}">
-
-                            <input type="number"
-                                   name="cantidad"
-                                   class="form-control form-control-sm"
-                                   value="1"
-                                   min="1"
-                                   th:max="${medicamento.stock}"
-                                   style="width: 75px;"
-                                   th:disabled="${medicamento.stock <= 0}"
-                                   required>
-
-                            <button type="submit"
-                                    class="btn btn-farmacia btn-sm"
-                                    th:disabled="${medicamento.stock <= 0}">
-
-                                <span th:if="${medicamento.stock > 0}"
-                                      th:text="#{medicamento.agregar}">
-                                    Agregar
-                                </span>
-
-                                <span th:if="${medicamento.stock <= 0}"
-                                      th:text="#{medicamento.sin.stock}">
-                                    Sin stock
-                                </span>
-
-                            </button>
-
-                        </form>
-
+                    <td>
+                        <span class="dato-secundario"
+                              th:text="${medicamento.proveedor != null ? medicamento.proveedor.nombre : '—'}">
+                            Proveedor
+                        </span>
                     </td>
 
-                    <!-- Acciones para administradores -->
-                    <td class="text-center"
-                        sec:authorize="hasRole('ADMIN')">
+                    <td class="text-center">
 
                         <div class="d-flex justify-content-center flex-wrap gap-2">
 

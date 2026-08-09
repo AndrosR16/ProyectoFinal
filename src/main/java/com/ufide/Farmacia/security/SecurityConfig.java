@@ -41,6 +41,7 @@ public class SecurityConfig {
                         "/registro",
                         "/css/**",
                         "/js/**",
+                        "/img/**",
                         "/webjars/**",
                         "/favicon.svg")
                 .permitAll()
@@ -57,7 +58,7 @@ public class SecurityConfig {
                 .requestMatchers("/")
                 .hasAnyRole("ADMIN", "USER")
 
-                .requestMatchers(HttpMethod.GET, "/medicamentos")
+                .requestMatchers("/shop")
                 .hasAnyRole("ADMIN", "USER")
 
                 .requestMatchers("/carrito/**")
@@ -66,11 +67,13 @@ public class SecurityConfig {
                 .requestMatchers("/medicamentos/**")
                 .hasRole("ADMIN")
 
+                .requestMatchers("/facturas/**")
+                .hasAnyRole("ADMIN", "USER")
+
                 .requestMatchers(
                         "/clientes/**",
                         "/proveedores/**",
                         "/inventario/**",
-                        "/facturas/**",
                         "/reportes/**",
                         "/usuarios/**")
                 .hasRole("ADMIN")

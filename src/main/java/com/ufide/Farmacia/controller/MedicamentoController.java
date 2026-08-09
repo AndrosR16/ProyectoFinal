@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ufide.Farmacia.entity.Medicamento;
 import com.ufide.Farmacia.service.MedicamentoService;
+import com.ufide.Farmacia.service.ProveedorService;
 
 import jakarta.validation.Valid;
 
@@ -22,10 +24,16 @@ import jakarta.validation.Valid;
 public class MedicamentoController {
 
     private final MedicamentoService service;
+    private final ProveedorService proveedorService;
     private final MessageSource messageSource;
 
-    public MedicamentoController(MedicamentoService service, MessageSource messageSource) {
+    public MedicamentoController(
+            MedicamentoService service,
+            ProveedorService proveedorService,
+            MessageSource messageSource) {
+
         this.service = service;
+        this.proveedorService = proveedorService;
         this.messageSource = messageSource;
     }
 
@@ -38,6 +46,7 @@ public class MedicamentoController {
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("medicamento", new Medicamento());
+        model.addAttribute("proveedores", proveedorService.listar());
         return "medicamentos/form";
     }
 
@@ -45,11 +54,17 @@ public class MedicamentoController {
     public String guardar(
             @Valid @ModelAttribute Medicamento medicamento,
             BindingResult result,
+            @RequestParam(name = "proveedorId", required = false) Long proveedorId,
+            Model model,
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
+            model.addAttribute("proveedores", proveedorService.listar());
             return "medicamentos/form";
         }
+
+        medicamento.setProveedor(
+                proveedorId != null ? proveedorService.buscarPorId(proveedorId).orElse(null) : null);
 
         service.guardar(medicamento);
 
@@ -77,6 +92,7 @@ public class MedicamentoController {
         }
 
         model.addAttribute("medicamento", medicamento);
+        model.addAttribute("proveedores", proveedorService.listar());
         return "medicamentos/form";
     }
 
@@ -85,14 +101,19 @@ public class MedicamentoController {
             @PathVariable Long id,
             @Valid @ModelAttribute Medicamento medicamento,
             BindingResult result,
+            @RequestParam(name = "proveedorId", required = false) Long proveedorId,
+            Model model,
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
             medicamento.setId(id);
+            model.addAttribute("proveedores", proveedorService.listar());
             return "medicamentos/form";
         }
 
         medicamento.setId(id);
+        medicamento.setProveedor(
+                proveedorId != null ? proveedorService.buscarPorId(proveedorId).orElse(null) : null);
         service.guardar(medicamento);
 
         redirectAttributes.addFlashAttribute(

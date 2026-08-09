@@ -1,9 +1,12 @@
 package com.ufide.Farmacia.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +31,19 @@ public class Medicamento {
     @NotNull(message = "{validacion.medicamento.stock.obligatorio}")
     @Min(value = 0, message = "{validacion.medicamento.stock.negativo}")
     private Integer stock;
+
+    private Boolean destacado = Boolean.FALSE;
+
+    @Size(max = 500, message = "{validacion.medicamento.imagen.tamano}")
+    private String imagenUrl;
+
+    @Column(length = 600)
+    @Size(max = 600, message = "{validacion.medicamento.descripcion.tamano}")
+    private String descripcion;
+
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
 
     public Medicamento() {
     }
@@ -62,5 +78,37 @@ public class Medicamento {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public Boolean getDestacado() {
+        return destacado;
+    }
+
+    public void setDestacado(Boolean destacado) {
+        this.destacado = destacado;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 }

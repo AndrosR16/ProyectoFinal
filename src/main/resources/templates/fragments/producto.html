@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<article th:fragment="tarjeta(medicamento)"
+         class="producto-card producto-clickable"
+         th:classappend="${medicamento.stock <= 0} ? 'producto-agotado'"
+         tabindex="0"
+         th:data-id="${medicamento.id}"
+         th:data-nombre="${medicamento.nombre}"
+         th:data-precio="${medicamento.precio}"
+         th:data-stock="${medicamento.stock}"
+         th:data-imagen="${medicamento.imagenUrl}"
+         th:data-descripcion="${medicamento.descripcion}"
+         th:data-destacado="${medicamento.destacado}">
+
+    <span class="producto-ribbon"
+          th:if="${medicamento.destacado}"
+          th:text="#{shop.destacado.ribbon}">Destacado</span>
+
+    <span class="producto-estrella" th:if="${medicamento.destacado}" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" focusable="false">
+            <path d="M12 2 L14.9 8.2 L21.7 8.8 L16.6 13.3 L18.1 19.9 L12 16.4 L5.9 19.9 L7.4 13.3 L2.3 8.8 L9.1 8.2 Z"
+                  fill="#fbbf24" stroke="#f59e0b" stroke-width="1" stroke-linejoin="round"></path>
+        </svg>
+    </span>
+
+    <div class="producto-imagen">
+        <svg class="producto-icono" viewBox="0 0 48 48" width="44" height="44"
+             aria-hidden="true" focusable="false">
+            <rect x="7" y="17" width="34" height="14" rx="7"
+                  transform="rotate(-38 24 24)" stroke="currentColor"
+                  stroke-width="2.4" fill="none"></rect>
+            <path d="M18.5 17 L29.5 31" stroke="currentColor"
+                  stroke-width="2.4" stroke-linecap="round" fill="none"></path>
+        </svg>
+        <img th:if="${medicamento.imagenUrl != null and !#strings.isEmpty(medicamento.imagenUrl)}"
+             class="producto-foto"
+             th:src="${medicamento.imagenUrl}"
+             th:alt="${medicamento.nombre}"
+             loading="lazy"
+             onerror="this.remove()">
+    </div>
+
+    <div class="producto-cuerpo">
+
+        <h3 class="producto-nombre" th:text="${medicamento.nombre}">Medicamento</h3>
+
+        <div class="producto-precio">
+            <span aria-hidden="true">₡</span><span
+                th:text="${#numbers.formatDecimal(medicamento.precio, 1, 2)}">0,00</span>
+        </div>
+
+        <span class="producto-stock producto-stock-ok"
+              th:if="${medicamento.stock >= 5}"
+              th:text="#{shop.stock.disponible}">En stock</span>
+
+        <span class="producto-stock producto-stock-pocas"
+              th:if="${medicamento.stock > 0 and medicamento.stock < 5}">
+            <span th:text="#{shop.stock.pocas}">Pocas unidades</span>
+            <span th:text="'(' + ${medicamento.stock} + ')'">(0)</span>
+        </span>
+
+        <span class="producto-stock producto-stock-agotado"
+              th:if="${medicamento.stock <= 0}"
+              th:text="#{shop.sin.stock}">Agotado</span>
+
+        <form th:action="@{/carrito/agregar/{id}(id=${medicamento.id})}"
+              method="post"
+              class="producto-form">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <input type="number"
+                   name="cantidad"
+                   class="form-control form-control-sm producto-cantidad"
+                   value="1"
+                   min="1"
+                   th:max="${medicamento.stock}"
+                   th:disabled="${medicamento.stock <= 0}"
+                   th:aria-label="#{shop.cantidad}"
+                   required>
+
+            <button type="submit"
+                    class="btn btn-farmacia btn-sm producto-agregar"
+                    th:disabled="${medicamento.stock <= 0}"
+                    th:text="#{shop.agregar}">
+                Agregar al carrito
+            </button>
+
+        </form>
+
+    </div>
+
+</article>
+
+</body>
+
+</html>

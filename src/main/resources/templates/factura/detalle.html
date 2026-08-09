@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{factura.titulo.pagina}">Facturas - Farmacia</title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 no-imprimir">
+
+        <a th:href="@{/facturas}"
+           class="btn btn-secondary no-imprimir"
+           th:text="#{comun.volver}">
+            Volver
+        </a>
+
+        <button type="button"
+                class="btn btn-farmacia no-imprimir"
+                onclick="window.print()"
+                th:text="#{factura.imprimir}">
+            Imprimir
+        </button>
+
+    </div>
+
+    <section class="factura-documento">
+
+        <div class="row align-items-start">
+
+            <div class="col-md-6">
+
+                <img th:src="@{/favicon.svg}" width="46" alt="">
+
+                <h4 class="factura-documento-emisor mt-2 mb-1"
+                    th:text="#{factura.emisor.nombre}">
+                    Farmacia Vida
+                </h4>
+
+                <p class="mb-0 text-muted small" th:text="#{factura.emisor.cedula}">
+                    Cédula jurídica: 3-101-123456
+                </p>
+
+                <p class="mb-0 text-muted small" th:text="#{factura.emisor.direccion}">
+                    San José, Costa Rica
+                </p>
+
+                <p class="mb-0 text-muted small" th:text="#{factura.emisor.telefono}">
+                    Tel: 2222-0000
+                </p>
+
+            </div>
+
+            <div class="col-md-6 text-md-end mt-4 mt-md-0">
+
+                <h2 class="factura-documento-titulo" th:text="#{factura.documento}">FACTURA</h2>
+
+                <p class="mb-1 fw-semibold"
+                   th:text="'FV-' + ${#numbers.formatInteger(factura.id, 6)}">
+                    FV-000001
+                </p>
+
+                <p class="mb-1 text-muted small">
+                    <span th:text="#{factura.emitida}">Fecha de emisión</span>:
+                    <span th:text="${factura.fechaFormateada}"></span>
+                </p>
+
+                <p class="mb-0 text-muted small">
+                    <span th:text="#{factura.registrada.por}">Registrada por</span>:
+                    <span th:text="${factura.usuarioNombre != null ? factura.usuarioNombre : factura.usuarioRegistro}"></span>
+                </p>
+
+            </div>
+
+        </div>
+
+        <hr class="my-4">
+
+        <div class="mb-4">
+
+            <span class="subtitulo-seccion" th:text="#{factura.facturar.a}">Facturar a</span>
+
+            <p class="mb-1 fw-bold" th:text="${factura.compradorNombre}"></p>
+
+            <p class="mb-1" th:text="${factura.compradorIdentificacion}"></p>
+
+            <p class="mb-1"
+               th:if="${factura.compradorCorreo != null and !#strings.isEmpty(factura.compradorCorreo)}"
+               th:text="${factura.compradorCorreo}">
+            </p>
+
+            <p class="mb-0"
+               th:if="${factura.compradorTelefono != null and !#strings.isEmpty(factura.compradorTelefono)}">
+                <span th:replace="~{fragments/telefono :: tel(${factura.compradorTelefonoFormateado})}"></span>
+            </p>
+
+        </div>
+
+        <div class="mb-4">
+            <span class="subtitulo-seccion" th:text="#{factura.pago.titulo}">Método de pago</span>
+            <p class="mb-0"
+               th:text="${factura.metodoPago == 'SINPE'} ? #{factura.pago.sinpe} : #{factura.pago.efectivo}">
+                Efectivo (retiro en tienda)
+            </p>
+        </div>
+
+        <div class="table-responsive mb-4">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+                <tr>
+                    <th th:text="#{factura.col.descripcion}">Descripción</th>
+                    <th th:text="#{factura.col.cantidad}">Cantidad</th>
+                    <th th:text="#{factura.col.precio}">Precio unitario</th>
+                    <th th:text="#{factura.col.subtotal}">Subtotal</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="d : ${factura.detalles}">
+
+                    <td th:text="${d.descripcion}"></td>
+
+                    <td th:text="${d.cantidad}"></td>
+
+                    <td>
+                        ₡<span th:text="${#numbers.formatDecimal(d.precioUnitario, 1, 2)}"></span>
+                    </td>
+
+                    <td>
+                        ₡<span th:text="${#numbers.formatDecimal(d.subtotal, 1, 2)}"></span>
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="row justify-content-end">
+
+            <div class="col-md-6 col-lg-5">
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span th:text="#{factura.subtotal}">Subtotal</span>
+                    <span>₡<span th:text="${#numbers.formatDecimal(factura.subtotal, 1, 2)}"></span></span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span th:text="#{factura.impuesto}">IVA (13%)</span>
+                    <span>₡<span th:text="${#numbers.formatDecimal(factura.impuesto, 1, 2)}"></span></span>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong th:text="#{factura.total}">Total</strong>
+                    <strong class="fs-5">₡<span th:text="${#numbers.formatDecimal(factura.total, 1, 2)}"></span></strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+
+            <p class="mb-1" th:text="#{factura.gracias}">Gracias por su compra</p>
+
+            <p class="text-muted small mb-0" th:text="#{factura.disclaimer}">
+                Documento generado como práctica académica. No es un comprobante
+                electrónico autorizado por la administración tributaria.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
+</body>
+</html>

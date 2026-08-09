@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,11 +18,22 @@ public class DetalleVenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "venta_id")
+    private Venta venta;
+
+    @ManyToOne
+    @JoinColumn(name = "medicamento_id")
+    private Medicamento medicamento;
+
+    private String descripcion;
+
+    private Double precioUnitario;
+
     @NotNull(message = "La cantidad es obligatoria")
     @Min(value = 1, message = "La cantidad debe ser mayor que cero")
     private Integer cantidad;
 
-    @NotNull(message = "El subtotal es obligatorio")
     private Double subtotal;
 
     public DetalleVenta() {
@@ -32,6 +45,38 @@ public class DetalleVenta {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
+
+    public Medicamento getMedicamento() {
+        return medicamento;
+    }
+
+    public void setMedicamento(Medicamento medicamento) {
+        this.medicamento = medicamento;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(Double precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
 
     public Integer getCantidad() {

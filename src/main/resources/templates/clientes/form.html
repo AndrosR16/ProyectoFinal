@@ -84,15 +84,14 @@
                                 Teléfono
                             </label>
 
-                            <input type="text"
+                            <input type="tel"
                                    id="telefono"
-                                   class="form-control"
-                                   th:classappend="${#fields.hasErrors('telefono')}
-                                       ? 'is-invalid'"
-                                   th:field="*{telefono}"
-                                   maxlength="20"
+                                   class="form-control js-telefono"
                                    inputmode="numeric"
-                                   placeholder="Ejemplo: 88887777"
+                                   autocomplete="tel-national"
+                                   maxlength="9"
+                                   th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid'"
+                                   th:field="*{telefono}"
                                    th:placeholder="#{cliente.campo.telefono.placeholder}">
 
                             <div class="invalid-feedback"
@@ -155,14 +154,7 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <div th:replace="~{fragments/head :: bootstrap-js}"></div>
-
-<script>
-    const telefono = document.getElementById('telefono');
-
-    telefono.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9+\-\s]/g, '');
-    });
-</script>
+<script th:src="@{/js/telefono-mask.js}"></script>
 
 </body>
 </html>

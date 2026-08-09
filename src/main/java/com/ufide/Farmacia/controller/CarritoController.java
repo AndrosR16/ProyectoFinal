@@ -1,6 +1,7 @@
 package com.ufide.Farmacia.controller;
 
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,7 +73,7 @@ public class CarritoController {
                     messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale())
             );
 
-            return "redirect:/medicamentos";
+            return "redirect:/shop";
         }
 
         if (cantidad == null || cantidad < 1) {
@@ -82,7 +83,7 @@ public class CarritoController {
                     messageSource.getMessage("flash.carrito.cantidad.invalida", null, LocaleContextHolder.getLocale())
             );
 
-            return "redirect:/medicamentos";
+            return "redirect:/shop";
         }
 
         if (medicamento.getStock() <= 0) {
@@ -92,7 +93,7 @@ public class CarritoController {
                     messageSource.getMessage("flash.carrito.sin.stock", null, LocaleContextHolder.getLocale())
             );
 
-            return "redirect:/medicamentos";
+            return "redirect:/shop";
         }
 
         if (cantidad > medicamento.getStock()) {
@@ -102,11 +103,11 @@ public class CarritoController {
                     messageSource.getMessage("flash.carrito.cantidad.excede.stock", null, LocaleContextHolder.getLocale())
             );
 
-            return "redirect:/medicamentos";
+            return "redirect:/shop";
         }
 
         boolean agregado =
-                carritoService.agregar(medicamento, cantidad);
+                agregarConReintento(medicamento, cantidad);
 
         if (!agregado) {
 
@@ -115,7 +116,7 @@ public class CarritoController {
                     messageSource.getMessage("flash.carrito.cantidad.total.excede.stock", null, LocaleContextHolder.getLocale())
             );
 
-            return "redirect:/medicamentos";
+            return "redirect:/shop";
         }
 
         redirectAttributes.addFlashAttribute(
@@ -123,7 +124,24 @@ public class CarritoController {
                 messageSource.getMessage("flash.carrito.agregado", null, LocaleContextHolder.getLocale())
         );
 
-        return "redirect:/medicamentos";
+        return "redirect:/shop";
+    }
+
+    /* La constraint única (usuario, medicamento) rechaza el INSERT cuando dos
+       peticiones del mismo usuario llegan a la vez por el mismo medicamento
+       (doble clic, dos pestañas). El reintento corre en transacción nueva y
+       entra por la rama de "ya existe", que suma cantidades. */
+    private boolean agregarConReintento(Medicamento medicamento, Integer cantidad) {
+
+        for (int intento = 0; intento < 2; intento++) {
+            try {
+                return carritoService.agregar(medicamento, cantidad);
+            } catch (DataIntegrityViolationException ex) {
+                // el siguiente intento ya encuentra la fila creada por la otra petición
+            }
+        }
+
+        return false;
     }
 
     @PostMapping("/actualizar/{id}")

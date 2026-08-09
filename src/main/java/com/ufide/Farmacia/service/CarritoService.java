@@ -2,113 +2,179 @@ package com.ufide.Farmacia.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ufide.Farmacia.dto.ItemCarrito;
+import com.ufide.Farmacia.entity.CarritoItem;
 import com.ufide.Farmacia.entity.Medicamento;
+import com.ufide.Farmacia.repository.CarritoItemRepository;
 
 @Service
-@SessionScope
 public class CarritoService {
 
-    private final List<ItemCarrito> items = new ArrayList<>();
+    private final CarritoItemRepository repository;
 
+    public CarritoService(CarritoItemRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional(readOnly = true)
     public List<ItemCarrito> listar() {
+
+        String usuario = usuarioActual();
+
+        if (usuario == null) {
+            return List.of();
+        }
+
+        List<CarritoItem> registros =
+                repository.findByUsuarioOrderByIdAsc(usuario);
+
+        List<ItemCarrito> items = new ArrayList<>();
+
+        for (CarritoItem registro : registros) {
+
+            Medicamento medicamento = registro.getMedicamento();
+
+            items.add(new ItemCarrito(
+                    medicamento.getId(),
+                    medicamento.getNombre(),
+                    medicamento.getPrecio(),
+                    registro.getCantidad(),
+                    medicamento.getStock()
+            ));
+        }
+
         return items;
     }
 
+    @Transactional
     public boolean agregar(Medicamento medicamento, Integer cantidad) {
 
-        ItemCarrito itemExistente = buscarPorMedicamentoId(
-                medicamento.getId()
-        );
+        String usuario = usuarioActual();
 
-        if (itemExistente != null) {
+        if (usuario == null) {
+            return false;
+        }
 
-            int nuevaCantidad =
-                    itemExistente.getCantidad() + cantidad;
+        Optional<CarritoItem> existente = repository
+                .findByUsuarioAndMedicamentoId(usuario, medicamento.getId());
+
+        if (existente.isPresent()) {
+
+            CarritoItem item = existente.get();
+            int nuevaCantidad = item.getCantidad() + cantidad;
 
             if (nuevaCantidad > medicamento.getStock()) {
                 return false;
             }
 
-            itemExistente.setCantidad(nuevaCantidad);
-            itemExistente.setStockDisponible(medicamento.getStock());
+            item.setCantidad(nuevaCantidad);
+            repository.save(item);
 
             return true;
         }
 
-        ItemCarrito nuevoItem = new ItemCarrito(
-                medicamento.getId(),
-                medicamento.getNombre(),
-                medicamento.getPrecio(),
-                cantidad,
-                medicamento.getStock()
-        );
-
-        items.add(nuevoItem);
+        CarritoItem nuevoItem = new CarritoItem(usuario, medicamento, cantidad);
+        repository.save(nuevoItem);
 
         return true;
     }
 
+    @Transactional
     public boolean actualizarCantidad(
             Long medicamentoId,
             Integer cantidad) {
 
-        ItemCarrito item = buscarPorMedicamentoId(medicamentoId);
+        String usuario = usuarioActual();
 
-        if (item == null) {
+        if (usuario == null) {
             return false;
         }
 
+        Optional<CarritoItem> existente = repository
+                .findByUsuarioAndMedicamentoId(usuario, medicamentoId);
+
+        if (existente.isEmpty()) {
+            return false;
+        }
+
+        CarritoItem item = existente.get();
+
         if (cantidad < 1 ||
-                cantidad > item.getStockDisponible()) {
+                cantidad > item.getMedicamento().getStock()) {
             return false;
         }
 
         item.setCantidad(cantidad);
+        repository.save(item);
 
         return true;
     }
 
+    @Transactional
     public void eliminar(Long medicamentoId) {
 
-        items.removeIf(item ->
-                item.getMedicamentoId().equals(medicamentoId));
+        String usuario = usuarioActual();
+
+        if (usuario == null) {
+            return;
+        }
+
+        repository.deleteByUsuarioAndMedicamentoId(usuario, medicamentoId);
     }
 
+    @Transactional
     public void vaciar() {
-        items.clear();
+
+        String usuario = usuarioActual();
+
+        if (usuario == null) {
+            return;
+        }
+
+        repository.deleteByUsuario(usuario);
     }
 
+    @Transactional(readOnly = true)
     public Double calcularTotal() {
 
-        return items.stream()
+        return listar().stream()
                 .mapToDouble(ItemCarrito::getSubtotal)
                 .sum();
     }
 
+    @Transactional(readOnly = true)
     public Integer calcularCantidadTotal() {
 
-        return items.stream()
+        return listar().stream()
                 .mapToInt(ItemCarrito::getCantidad)
                 .sum();
     }
 
+    @Transactional(readOnly = true)
     public boolean estaVacio() {
-        return items.isEmpty();
+        return listar().isEmpty();
     }
 
-    private ItemCarrito buscarPorMedicamentoId(
-            Long medicamentoId) {
+    // Anónimo (auth nula, no autenticada o AnonymousAuthenticationToken) no tiene carrito propio en BD
+    private String usuarioActual() {
 
-        return items.stream()
-                .filter(item ->
-                        item.getMedicamentoId()
-                                .equals(medicamentoId))
-                .findFirst()
-                .orElse(null);
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null ||
+                !auth.isAuthenticated() ||
+                auth instanceof AnonymousAuthenticationToken) {
+            return null;
+        }
+
+        return auth.getName();
     }
 }

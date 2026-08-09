@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--
+    Fragmento de presentación de teléfono costarricense.
+    Se usa th:block como raíz porque el tag de salida cambia según el caso
+    (span.tel-cr-vacio vs span.tel-cr) y th:block no imprime envoltorio propio.
+-->
+<th:block th:fragment="tel(numero)">
+
+    <span class="tel-cr-vacio"
+          th:if="${numero == null or #strings.isEmpty(numero)}">&mdash;</span>
+
+    <span class="tel-cr"
+          th:unless="${numero == null or #strings.isEmpty(numero)}">
+        <svg class="tel-cr-bandera" viewBox="0 0 20 14" width="18" height="13"
+             role="img" aria-hidden="true" focusable="false">
+            <rect x="0" y="0" width="20" height="14" fill="#002B7F"></rect>
+            <rect x="0" y="2.333" width="20" height="9.334" fill="#ffffff"></rect>
+            <rect x="0" y="4.667" width="20" height="4.666" fill="#CE1126"></rect>
+        </svg>
+        <span class="tel-cr-codigo">+506</span>
+        <span class="tel-cr-numero" th:text="${numero}">8888-7777</span>
+    </span>
+
+</th:block>
+
+</body>
+
+</html>

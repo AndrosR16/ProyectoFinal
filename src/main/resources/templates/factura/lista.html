@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{factura.titulo.pagina}">Facturas - Farmacia</title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container py-5">
+
+    <section class="encabezado-pagina mb-4">
+
+        <span class="insignia-proveedor mb-2"
+              th:text="#{factura.lista.subtitulo}">
+            Historial de ventas
+        </span>
+
+        <h1 th:text="#{factura.lista.titulo}">Facturas emitidas</h1>
+
+    </section>
+
+    <div class="alert alert-success"
+         th:if="${ok}"
+         th:text="${ok}">
+    </div>
+
+    <div class="alert alert-danger"
+         th:if="${error}"
+         th:text="${error}">
+    </div>
+
+    <section class="contenedor-tabla">
+
+        <div class="barra-tabla">
+
+            <label class="visually-hidden" for="buscadorFacturas"
+                   th:text="#{comun.buscar}">Buscar</label>
+
+            <svg class="barra-tabla-icono" viewBox="0 0 20 20" width="15" height="15"
+                 aria-hidden="true" focusable="false">
+                <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.6"
+                        fill="none"></circle>
+                <path d="M13.2 13.2 L17 17" stroke="currentColor" stroke-width="1.6"
+                      stroke-linecap="round" fill="none"></path>
+            </svg>
+
+            <input type="search" id="buscadorFacturas"
+                   class="form-control js-buscador-tabla"
+                   th:placeholder="#{comun.buscar.placeholder}"
+                   th:data-mensaje-vacio="#{comun.buscar.sin.resultados}"
+                   autocomplete="off">
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+                <tr>
+                    <th th:text="#{factura.numero}">Número</th>
+                    <th th:text="#{factura.fecha}">Fecha</th>
+                    <th th:text="#{factura.comprador}">Comprador</th>
+                    <th th:text="#{factura.total}">Total</th>
+                    <th class="text-center" th:text="#{comun.acciones}">Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="f : ${facturas}">
+
+                    <td>
+                        <span class="nombre-proveedor"
+                              th:text="'FV-' + ${#numbers.formatInteger(f.id, 6)}">
+                        </span>
+                    </td>
+
+                    <td th:text="${f.fechaFormateada}"></td>
+
+                    <td th:text="${f.compradorNombre}"></td>
+
+                    <td>
+                        ₡<span th:text="${#numbers.formatDecimal(f.total, 1, 2)}"></span>
+                    </td>
+
+                    <td class="text-center">
+
+                        <a th:href="@{/facturas/{id}(id=${f.id})}"
+                           class="btn btn-editar btn-sm"
+                           th:text="#{factura.ver}">
+                            Ver factura
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(facturas)}">
+
+                    <td colspan="5">
+
+                        <div class="estado-vacio">
+
+                            <h3 th:text="#{factura.vacio}">Aún no se han emitido facturas</h3>
+
+                            <p th:text="#{factura.vacio.ayuda}">
+                                Genere una factura desde el carrito de compras.
+                            </p>
+
+                            <a th:href="@{/carrito}"
+                               class="btn btn-farmacia"
+                               th:text="#{carrito.ver}">
+                                Ver carrito
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+<script th:src="@{/js/tabla-buscador.js}"></script>
+
+</body>
+</html>

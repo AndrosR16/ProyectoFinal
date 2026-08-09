@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ufide.Farmacia.entity.Medicamento;
@@ -8,4 +10,6 @@ public interface MedicamentoRepository
         extends JpaRepository<Medicamento, Long> {
 
     long countByStockLessThan(Integer stock);
+
+    List<Medicamento> findByDestacadoTrue();
 }
