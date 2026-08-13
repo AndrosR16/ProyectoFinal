@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Farmacia Vida</title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+
+    <section class="container py-5">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-7">
+
+                <span class="insignia-proveedor mb-3">
+                    Su farmacia de confianza
+                </span>
+
+                <h1 class="display-5 fw-bold mb-3">
+                    Cuidamos su salud todos los días
+                </h1>
+
+                <p class="lead text-muted mb-4">
+                    En Farmacia Vida encontrará medicamentos y productos
+                    para el cuidado de su salud de una forma sencilla,
+                    segura y accesible.
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <a th:href="@{/shop}"
+                       class="btn btn-farmacia">
+                        Ver productos
+                    </a>
+
+                    <a th:href="@{/registro}"
+                       class="btn btn-outline-success"
+                       sec:authorize="isAnonymous()">
+                        Crear una cuenta
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <div class="card formulario-farmacia">
+
+                    <div class="card-body p-4">
+
+                        <h4 class="mb-3">
+                            Farmacia Vida
+                        </h4>
+
+                        <p class="text-muted mb-4">
+                            Atención cercana, medicamentos disponibles
+                            y un proceso de compra sencillo.
+                        </p>
+
+                        <div class="mb-3">
+
+                            <strong>
+                                Horario
+                            </strong>
+
+                            <p class="mb-0 text-muted">
+                                Lunes a sábado
+                            </p>
+
+                            <p class="mb-0 text-muted">
+                                8:00 a.m. - 8:00 p.m.
+                            </p>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <strong>
+                                Ubicación
+                            </strong>
+
+                            <p class="mb-0 text-muted">
+                                Universidad Fidélitas, San Pedro, Costa Rica
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Teléfono
+                            </strong>
+
+                            <p class="mb-0 text-muted">
+                                +506 2222-0000
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="container pb-5">
+
+        <div class="mb-4">
+
+            <span class="insignia-proveedor mb-2">
+                Nuestros servicios
+            </span>
+
+            <h2>
+                ¿Qué ofrecemos?
+            </h2>
+
+            <p class="text-muted">
+                Servicios pensados para facilitar el acceso a sus
+                medicamentos y el cuidado de su salud.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h4>
+                            Compra de medicamentos
+                        </h4>
+
+                        <p class="text-muted mb-3">
+                            Consulte nuestro catálogo, agregue productos
+                            al carrito y complete su compra desde el sistema.
+                        </p>
+
+                        <a th:href="@{/shop}"
+                           class="btn btn-outline-success">
+                            Ir a la tienda
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h4>
+                            Atención personalizada
+                        </h4>
+
+                        <p class="text-muted mb-0">
+                            Nuestro personal está disponible para brindar
+                            una atención rápida y facilitar el proceso
+                            de compra en la farmacia.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="card h-100">
+
+                    <div class="card-body p-4">
+
+                        <h4>
+                            Historial de compras
+                        </h4>
+
+                        <p class="text-muted mb-3">
+                            Los clientes registrados pueden consultar
+                            posteriormente las compras realizadas.
+                        </p>
+
+                        <a th:href="@{/facturas}"
+                           class="btn btn-outline-success"
+                           sec:authorize="hasRole('CLIENTE')">
+                            Ver mis compras
+                        </a>
+
+                        <a th:href="@{/login}"
+                           class="btn btn-outline-success"
+                           sec:authorize="isAnonymous()">
+                            Iniciar sesión
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="container pb-5">
+
+        <div class="card">
+
+            <div class="card-body p-4 p-lg-5">
+
+                <div class="row align-items-center g-4">
+
+                    <div class="col-lg-8">
+
+                        <span class="insignia-proveedor mb-2">
+                            Sobre nosotros
+                        </span>
+
+                        <h2>
+                            Comprometidos con una atención sencilla
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Farmacia Vida busca facilitar la gestión y
+                            compra de medicamentos mediante una plataforma
+                            que permite consultar productos, controlar
+                            existencias y mantener un registro de las
+                            compras realizadas.
+                        </p>
+
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+
+                        <a th:href="@{/shop}"
+                           class="btn btn-farmacia">
+                            Explorar productos
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="container pb-5">
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <div class="card h-100">
+
+                    <div class="card-body p-4">
+
+                        <span class="insignia-proveedor mb-2">
+                            Contacto
+                        </span>
+
+                        <h3>
+                            Comuníquese con nosotros
+                        </h3>
+
+                        <p class="mb-2">
+                            <strong>Teléfono:</strong>
+                            +506 2222-0000
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Correo:</strong>
+                            info@farmaciavida.cr
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Ubicación:</strong>
+                            Universidad Fidélitas, San Pedro, Costa Rica
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="card h-100">
+
+                    <div class="card-body p-4">
+
+                        <span class="insignia-proveedor mb-2">
+                            Horario
+                        </span>
+
+                        <h3>
+                            Horario de atención
+                        </h3>
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>
+                                Lunes a viernes
+                            </span>
+
+                            <strong>
+                                8:00 a.m. - 8:00 p.m.
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>
+                                Sábado
+                            </span>
+
+                            <strong>
+                                8:00 a.m. - 8:00 p.m.
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <span>
+                                Domingo
+                            </span>
+
+                            <strong>
+                                Cerrado
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
+</body>
+
+</html>

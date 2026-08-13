@@ -39,7 +39,7 @@ public class Usuario {
     @NotBlank(message = "{validacion.usuario.rol.obligatorio}")
     @Size(max = 20, message = "{validacion.usuario.rol.tamano}")
     @Column(nullable = false)
-    private String rol = "USER";
+    private String rol = "CLIENTE";
 
     public Usuario() {
     }

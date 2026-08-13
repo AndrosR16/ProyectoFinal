@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title th:text="#{factura.titulo.pagina}">Facturas - Farmacia</title>
+    <title>Compra - Farmacia Vida</title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -22,14 +22,23 @@
 
     <section class="encabezado-pagina mb-4">
 
-        <span class="insignia-proveedor mb-2"
-              th:text="#{factura.checkout.insignia}">
+        <span class="insignia-proveedor mb-2">
             Cierre de compra
         </span>
 
-        <h1 th:text="#{factura.checkout.titulo}">Generar factura</h1>
+        <h1 sec:authorize="hasRole('CLIENTE')">
+            Confirmar compra
+        </h1>
 
-        <p th:text="#{factura.checkout.subtitulo}">
+        <h1 sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
+            Generar factura
+        </h1>
+
+        <p sec:authorize="hasRole('CLIENTE')">
+            Complete sus datos y seleccione el método de pago para finalizar la compra.
+        </p>
+
+        <p sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
             Complete los datos del comprador para emitir la factura.
         </p>
 
@@ -43,8 +52,7 @@
 
                 <div class="card-body">
 
-                    <h5 class="card-title mb-4"
-                        th:text="#{factura.comprador.titulo}">
+                    <h5 class="card-title mb-4">
                         Datos del comprador
                     </h5>
 
@@ -59,18 +67,17 @@
 
                         <div class="mb-4">
 
-                            <label for="compradorNombre" class="form-label"
-                                   th:text="#{factura.campo.nombre}">
+                            <label for="compradorNombre"
+                                   class="form-label">
                                 Nombre completo
                             </label>
 
                             <input type="text"
                                    id="compradorNombre"
                                    class="form-control"
-                                   th:classappend="${#fields.hasErrors('compradorNombre')}
-                                       ? 'is-invalid'"
+                                   th:classappend="${#fields.hasErrors('compradorNombre')} ? 'is-invalid'"
                                    th:field="*{compradorNombre}"
-                                   th:placeholder="#{factura.placeholder.nombre}"
+                                   placeholder="Nombre de quien realiza la compra"
                                    required>
 
                             <div class="invalid-feedback"
@@ -81,8 +88,8 @@
 
                         <div class="mb-4">
 
-                            <label for="compradorIdentificacion" class="form-label"
-                                   th:text="#{factura.campo.identificacion}">
+                            <label for="compradorIdentificacion"
+                                   class="form-label">
                                 Identificación
                             </label>
 
@@ -91,13 +98,12 @@
                                    class="form-control js-cedula"
                                    inputmode="numeric"
                                    maxlength="11"
-                                   th:classappend="${#fields.hasErrors('compradorIdentificacion')}
-                                       ? 'is-invalid'"
+                                   th:classappend="${#fields.hasErrors('compradorIdentificacion')} ? 'is-invalid'"
                                    th:field="*{compradorIdentificacion}"
                                    placeholder="0-0000-0000"
                                    required>
 
-                            <div class="form-text" th:text="#{factura.cedula.ayuda}">
+                            <div class="form-text">
                                 Formato: 0-0000-0000
                             </div>
 
@@ -109,18 +115,17 @@
 
                         <div class="mb-4">
 
-                            <label for="compradorCorreo" class="form-label"
-                                   th:text="#{factura.campo.correo}">
+                            <label for="compradorCorreo"
+                                   class="form-label">
                                 Correo electrónico
                             </label>
 
                             <input type="email"
                                    id="compradorCorreo"
                                    class="form-control"
-                                   th:classappend="${#fields.hasErrors('compradorCorreo')}
-                                       ? 'is-invalid'"
+                                   th:classappend="${#fields.hasErrors('compradorCorreo')} ? 'is-invalid'"
                                    th:field="*{compradorCorreo}"
-                                   th:placeholder="#{factura.placeholder.correo}">
+                                   placeholder="correo@ejemplo.com">
 
                             <div class="invalid-feedback"
                                  th:errors="*{compradorCorreo}">
@@ -130,15 +135,15 @@
 
                         <div class="mb-4">
 
-                            <label for="compradorTelefono" class="form-label"
-                                   th:text="#{factura.campo.telefono}">
+                            <label for="compradorTelefono"
+                                   class="form-label">
                                 Teléfono
                             </label>
 
                             <div class="input-group tel-cr-grupo">
 
-                                <span class="input-group-text tel-cr-prefijo"
-                                      th:aria-label="#{telefono.pais.aria}">
+                                <span class="input-group-text tel-cr-prefijo">
+
                                     <svg class="tel-cr-bandera"
                                          viewBox="0 0 20 14"
                                          width="18"
@@ -146,11 +151,32 @@
                                          role="img"
                                          aria-hidden="true"
                                          focusable="false">
-                                        <rect x="0" y="0" width="20" height="14" fill="#002B7F"></rect>
-                                        <rect x="0" y="2.333" width="20" height="9.334" fill="#ffffff"></rect>
-                                        <rect x="0" y="4.667" width="20" height="4.666" fill="#CE1126"></rect>
+
+                                        <rect x="0"
+                                              y="0"
+                                              width="20"
+                                              height="14"
+                                              fill="#002B7F">
+                                        </rect>
+
+                                        <rect x="0"
+                                              y="2.333"
+                                              width="20"
+                                              height="9.334"
+                                              fill="#ffffff">
+                                        </rect>
+
+                                        <rect x="0"
+                                              y="4.667"
+                                              width="20"
+                                              height="4.666"
+                                              fill="#CE1126">
+                                        </rect>
+
                                     </svg>
+
                                     <span>+506</span>
+
                                 </span>
 
                                 <input type="tel"
@@ -161,7 +187,7 @@
                                        maxlength="9"
                                        th:classappend="${#fields.hasErrors('compradorTelefono')} ? 'is-invalid'"
                                        th:field="*{compradorTelefono}"
-                                       th:placeholder="#{factura.placeholder.telefono}">
+                                       placeholder="8888-7777">
 
                                 <div class="invalid-feedback"
                                      th:errors="*{compradorTelefono}">
@@ -173,29 +199,43 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label"
-                                   th:text="#{factura.pago.titulo}">
+                            <label class="form-label">
                                 Método de pago
                             </label>
 
                             <div class="metodo-pago">
 
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" th:field="*{metodoPago}" value="EFECTIVO">
-                                    <span th:text="#{factura.pago.efectivo}">Efectivo (retiro en tienda)</span>
+
+                                    <input type="radio"
+                                           th:field="*{metodoPago}"
+                                           value="EFECTIVO">
+
+                                    <span>
+                                        Efectivo (retiro en tienda)
+                                    </span>
+
                                 </label>
 
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" th:field="*{metodoPago}" value="SINPE">
-                                    <span th:text="#{factura.pago.sinpe}">SINPE Móvil (retiro en tienda)</span>
+
+                                    <input type="radio"
+                                           th:field="*{metodoPago}"
+                                           value="SINPE">
+
+                                    <span>
+                                        SINPE Móvil (retiro en tienda)
+                                    </span>
+
                                 </label>
 
                             </div>
 
                             <div class="metodo-pago-info"
-                                 th:classappend="${facturaForm.metodoPago == 'SINPE'} ? '' : 'd-none'"
-                                 th:text="#{factura.pago.sinpe.info}">
+                                 th:classappend="${facturaForm.metodoPago == 'SINPE'} ? '' : 'd-none'">
+
                                 Realice el SINPE Móvil al 8888-0000 a nombre de Farmacia Vida.
+
                             </div>
 
                             <div class="invalid-feedback d-block"
@@ -208,14 +248,19 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
                             <a th:href="@{/carrito}"
-                               class="btn btn-secondary"
-                               th:text="#{comun.cancelar}">
+                               class="btn btn-secondary">
                                 Cancelar
                             </a>
 
                             <button type="submit"
                                     class="btn btn-farmacia"
-                                    th:text="#{factura.boton.generar}">
+                                    sec:authorize="hasRole('CLIENTE')">
+                                Confirmar compra
+                            </button>
+
+                            <button type="submit"
+                                    class="btn btn-farmacia"
+                                    sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
                                 Generar factura
                             </button>
 
@@ -235,8 +280,7 @@
 
                 <div class="card-body">
 
-                    <h5 class="card-title mb-3"
-                        th:text="#{factura.resumen.titulo}">
+                    <h5 class="card-title mb-3">
                         Resumen de la compra
                     </h5>
 
@@ -245,28 +289,51 @@
                         <table class="table tabla-farmacia align-middle mb-0">
 
                             <thead>
+
                             <tr>
-                                <th th:text="#{medicamento.columna.nombre}">Medicamento</th>
-                                <th th:text="#{carrito.columna.cantidad}">Cantidad</th>
-                                <th th:text="#{comun.campo.precio}">Precio</th>
-                                <th th:text="#{carrito.columna.subtotal}">Subtotal</th>
+
+                                <th>
+                                    Medicamento
+                                </th>
+
+                                <th>
+                                    Cantidad
+                                </th>
+
+                                <th>
+                                    Precio
+                                </th>
+
+                                <th>
+                                    Subtotal
+                                </th>
+
                             </tr>
+
                             </thead>
 
                             <tbody>
 
                             <tr th:each="item : ${items}">
 
-                                <td th:text="${item.nombre}"></td>
+                                <td th:text="${item.nombre}">
+                                </td>
 
-                                <td th:text="${item.cantidad}"></td>
-
-                                <td>
-                                    ₡<span th:text="${#numbers.formatDecimal(item.precio, 1, 2)}"></span>
+                                <td th:text="${item.cantidad}">
                                 </td>
 
                                 <td>
-                                    ₡<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}"></span>
+
+                                    ₡<span th:text="${#numbers.formatDecimal(item.precio, 1, 2)}">
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    ₡<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}">
+                                    </span>
+
                                 </td>
 
                             </tr>
@@ -274,16 +341,23 @@
                             </tbody>
 
                             <tfoot>
+
                             <tr>
+
                                 <td colspan="3"
-                                    class="text-end fw-bold"
-                                    th:text="#{factura.total}">
+                                    class="text-end fw-bold">
                                     Total
                                 </td>
+
                                 <td class="fw-bold">
-                                    ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span>
+
+                                    ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}">
+                                    </span>
+
                                 </td>
+
                             </tr>
+
                             </tfoot>
 
                         </table>
@@ -305,9 +379,11 @@
 <div th:replace="~{fragments/compra :: procesando}"></div>
 
 <div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
 <script th:src="@{/js/cedula-mask.js}"></script>
 <script th:src="@{/js/telefono-mask.js}"></script>
 <script th:src="@{/js/compra-procesando.js}"></script>
 
 </body>
+
 </html>

@@ -19,17 +19,40 @@ public class HomeController {
             MedicamentoService medicamentoService,
             ClienteService clienteService,
             ProveedorService proveedorService) {
+
         this.medicamentoService = medicamentoService;
         this.clienteService = clienteService;
         this.proveedorService = proveedorService;
     }
 
     @GetMapping("/")
-    public String mostrarInicio(Model model) {
-        model.addAttribute("totalMedicamentos", medicamentoService.contar());
-        model.addAttribute("medicamentosStockBajo", medicamentoService.contarStockBajo());
-        model.addAttribute("totalClientes", clienteService.contar());
-        model.addAttribute("totalProveedores", proveedorService.contar());
+    public String mostrarInicio() {
+        return "home";
+    }
+
+    @GetMapping("/dashboard")
+    public String mostrarDashboard(Model model) {
+
+        model.addAttribute(
+                "totalMedicamentos",
+                medicamentoService.contar()
+        );
+
+        model.addAttribute(
+                "medicamentosStockBajo",
+                medicamentoService.contarStockBajo()
+        );
+
+        model.addAttribute(
+                "totalClientes",
+                clienteService.contar()
+        );
+
+        model.addAttribute(
+                "totalProveedores",
+                proveedorService.contar()
+        );
+
         return "dashboard";
     }
 

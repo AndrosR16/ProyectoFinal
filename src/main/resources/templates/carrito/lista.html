@@ -7,7 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title th:text="#{carrito.titulo.pagina}">Carrito - Farmacia Vida</title>
+    <title th:text="#{carrito.titulo.pagina}">
+        Carrito - Farmacia Vida
+    </title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -24,16 +26,20 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
             <div>
+
                 <span class="insignia-proveedor mb-2"
                       th:text="#{carrito.insignia}">
                     Compra de medicamentos
                 </span>
 
-                <h1 th:text="#{carrito.titulo}">Carrito de compras</h1>
+                <h1 th:text="#{carrito.titulo}">
+                    Carrito de compras
+                </h1>
 
                 <p th:text="#{carrito.subtitulo}">
                     Revise los medicamentos seleccionados y sus cantidades.
                 </p>
+
             </div>
 
             <a th:href="@{/shop}"
@@ -64,13 +70,33 @@
             <table class="table tabla-farmacia align-middle">
 
                 <thead>
+
                 <tr>
-                    <th th:text="#{medicamento.columna.nombre}">Medicamento</th>
-                    <th th:text="#{comun.campo.precio}">Precio</th>
-                    <th style="width: 190px;" th:text="#{carrito.columna.cantidad}">Cantidad</th>
-                    <th th:text="#{carrito.columna.subtotal}">Subtotal</th>
-                    <th class="text-center" th:text="#{carrito.columna.accion}">Acción</th>
+
+                    <th th:text="#{medicamento.columna.nombre}">
+                        Medicamento
+                    </th>
+
+                    <th th:text="#{comun.campo.precio}">
+                        Precio
+                    </th>
+
+                    <th style="width: 190px;"
+                        th:text="#{carrito.columna.cantidad}">
+                        Cantidad
+                    </th>
+
+                    <th th:text="#{carrito.columna.subtotal}">
+                        Subtotal
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{carrito.columna.accion}">
+                        Acción
+                    </th>
+
                 </tr>
+
                 </thead>
 
                 <tbody>
@@ -78,18 +104,29 @@
                 <tr th:each="item : ${items}">
 
                     <td>
+
                         <span class="nombre-proveedor"
                               th:text="${item.nombre}">
                         </span>
 
                         <div class="dato-secundario">
-                            <span th:text="#{carrito.stock.disponible}">Stock disponible:</span>
-                            <span th:text="${item.stockDisponible}"></span>
+
+                            <span th:text="#{carrito.stock.disponible}">
+                                Stock disponible:
+                            </span>
+
+                            <span th:text="${item.stockDisponible}">
+                            </span>
+
                         </div>
+
                     </td>
 
                     <td>
-                        ₡<span th:text="${#numbers.formatDecimal(item.precio, 1, 2)}"></span>
+
+                        ₡<span th:text="${#numbers.formatDecimal(item.precio, 1, 2)}">
+                        </span>
+
                     </td>
 
                     <td>
@@ -121,7 +158,10 @@
                     </td>
 
                     <td>
-                        ₡<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}"></span>
+
+                        ₡<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}">
+                        </span>
+
                     </td>
 
                     <td class="text-center">
@@ -156,23 +196,36 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                 <div>
+
                     <p class="mb-1">
-                        <span th:text="#{carrito.cantidad.productos}">Cantidad de productos:</span>
-                        <strong th:text="${cantidadTotal}"></strong>
+
+                        <span th:text="#{carrito.cantidad.productos}">
+                            Cantidad de productos:
+                        </span>
+
+                        <strong th:text="${cantidadTotal}">
+                        </strong>
+
                     </p>
 
                     <h3 class="mb-0">
-                        <span th:text="#{carrito.total}">Total:</span>
-                        ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span>
+
+                        <span th:text="#{carrito.total}">
+                            Total:
+                        </span>
+
+                        ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}">
+                        </span>
+
                     </h3>
+
                 </div>
 
                 <div class="d-flex gap-2">
 
                     <a th:href="@{/facturas/nueva}"
-                       class="btn btn-farmacia"
-                       th:text="#{factura.boton.facturar}">
-                        Facturar
+                       class="btn btn-farmacia">
+                        Pagar
                     </a>
 
                     <form th:action="@{/carrito/vaciar}"
@@ -203,7 +256,9 @@
 
         <div class="estado-vacio">
 
-            <h3 th:text="#{carrito.vacio.titulo}">El carrito está vacío</h3>
+            <h3 th:text="#{carrito.vacio.titulo}">
+                El carrito está vacío
+            </h3>
 
             <p th:text="#{carrito.vacio.mensaje}">
                 Agregue medicamentos para comenzar su compra.
@@ -226,4 +281,5 @@
 <div th:replace="~{fragments/head :: bootstrap-js}"></div>
 
 </body>
+
 </html>

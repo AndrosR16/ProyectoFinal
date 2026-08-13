@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,33 @@ public class UsuarioService {
                 ));
     }
 
+    public List<Usuario> listarTodos() {
+        return repository.findAll();
+    }
+
+    public Usuario buscarPorId(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Usuario no encontrado"
+                ));
+    }
+
+    public void cambiarRol(Long id, String rol) {
+
+        Usuario usuario = buscarPorId(id);
+
+        if (!rol.equals("ADMIN")
+                && !rol.equals("EMPLEADO")
+                && !rol.equals("CLIENTE")) {
+
+            throw new IllegalArgumentException("Rol no válido");
+        }
+
+        usuario.setRol(rol);
+
+        repository.save(usuario);
+    }
+
     public boolean existeUsername(String username) {
         return repository.existsByUsername(normalizar(username));
     }
@@ -38,7 +67,9 @@ public class UsuarioService {
     }
 
     public void validarRegistro(RegistroForm form, BindingResult result) {
+
         if (existeUsername(form.getUsername())) {
+
             result.rejectValue(
                     "username",
                     "validacion.registro.username.duplicado",
@@ -47,6 +78,7 @@ public class UsuarioService {
         }
 
         if (existeCorreo(form.getCorreo())) {
+
             result.rejectValue(
                     "correo",
                     "validacion.registro.correo.duplicado",
@@ -67,26 +99,33 @@ public class UsuarioService {
     }
 
     public Usuario registrar(RegistroForm form) {
+
         Usuario usuario = new Usuario();
 
         usuario.setUsername(normalizar(form.getUsername()));
         usuario.setNombre(form.getNombre());
         usuario.setCorreo(normalizar(form.getCorreo()));
         usuario.setPassword(passwordEncoder.encode(form.getPassword()));
-        usuario.setRol("USER");
+
+        usuario.setRol("CLIENTE");
 
         return repository.save(usuario);
     }
 
-    public void actualizarPerfil(String username, PerfilForm form, BindingResult result) {
+    public void actualizarPerfil(
+            String username,
+            PerfilForm form,
+            BindingResult result) {
+
         Usuario usuario = buscarPorUsername(username);
 
         if (!result.hasFieldErrors("correo")) {
+
             String correoNuevo = normalizar(form.getCorreo());
 
-            if (!correoNuevo.equals(usuario.getCorreo()) && existeCorreo(correoNuevo)) {
-                // validacion.registro.correo.duplicado: reusada tal cual desde
-                // el registro, mismo texto exacto ("Ese correo ya está registrado").
+            if (!correoNuevo.equals(usuario.getCorreo())
+                    && existeCorreo(correoNuevo)) {
+
                 result.rejectValue(
                         "correo",
                         "validacion.registro.correo.duplicado",
@@ -105,11 +144,17 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
-    public void cambiarPassword(String username, CambioPasswordForm form, BindingResult result) {
+    public void cambiarPassword(
+            String username,
+            CambioPasswordForm form,
+            BindingResult result) {
+
         Usuario usuario = buscarPorUsername(username);
 
         if (!result.hasFieldErrors("passwordActual")
-                && !passwordEncoder.matches(form.getPasswordActual(), usuario.getPassword())) {
+                && !passwordEncoder.matches(
+                        form.getPasswordActual(),
+                        usuario.getPassword())) {
 
             result.rejectValue(
                     "passwordActual",
@@ -120,10 +165,10 @@ public class UsuarioService {
 
         if (!result.hasFieldErrors("passwordNueva")
                 && !result.hasFieldErrors("confirmarPassword")
-                && !java.util.Objects.equals(form.getPasswordNueva(), form.getConfirmarPassword())) {
+                && !java.util.Objects.equals(
+                        form.getPasswordNueva(),
+                        form.getConfirmarPassword())) {
 
-            // validacion.registro.confirmar.password.no.coincide: reusada tal
-            // cual desde el registro, mismo texto exacto.
             result.rejectValue(
                     "confirmarPassword",
                     "validacion.registro.confirmar.password.no.coincide",
@@ -135,11 +180,15 @@ public class UsuarioService {
             return;
         }
 
-        usuario.setPassword(passwordEncoder.encode(form.getPasswordNueva()));
+        usuario.setPassword(
+                passwordEncoder.encode(form.getPasswordNueva())
+        );
+
         repository.save(usuario);
     }
 
     private String normalizar(String valor) {
+
         return valor == null
                 ? null
                 : valor.trim().toLowerCase();

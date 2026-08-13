@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Usuarios - Farmacia Vida</title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container py-5">
+
+    <section class="encabezado-pagina mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <span class="insignia-proveedor mb-2">
+                    Gestión administrativa
+                </span>
+
+                <h1>Usuarios</h1>
+
+                <p>
+                    Consulte los usuarios registrados y administre los roles del sistema.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="alert alert-success"
+         th:if="${ok}"
+         th:text="${ok}">
+    </div>
+
+    <div class="alert alert-danger"
+         th:if="${error}"
+         th:text="${error}">
+    </div>
+
+    <section class="contenedor-tabla">
+
+        <div class="barra-tabla">
+
+            <label class="visually-hidden"
+                   for="buscadorUsuarios">
+                Buscar
+            </label>
+
+            <svg class="barra-tabla-icono"
+                 viewBox="0 0 20 20"
+                 width="15"
+                 height="15"
+                 aria-hidden="true"
+                 focusable="false">
+
+                <circle cx="9"
+                        cy="9"
+                        r="5.5"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        fill="none">
+                </circle>
+
+                <path d="M13.2 13.2 L17 17"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      fill="none">
+                </path>
+
+            </svg>
+
+            <input type="search"
+                   id="buscadorUsuarios"
+                   class="form-control js-buscador-tabla"
+                   placeholder="Buscar usuario..."
+                   data-mensaje-vacio="No se encontraron usuarios."
+                   autocomplete="off">
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th class="text-center">Rol actual</th>
+                    <th class="text-center">Cambiar rol</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="usuario : ${usuarios}">
+
+                    <td th:text="${usuario.id}">
+                        1
+                    </td>
+
+                    <td>
+
+                        <span class="nombre-proveedor"
+                              th:text="${usuario.nombre}">
+                            Nombre
+                        </span>
+
+                    </td>
+
+                    <td th:text="${usuario.username}">
+                        usuario
+                    </td>
+
+                    <td th:text="${usuario.correo}">
+                        correo@correo.com
+                    </td>
+
+                    <td class="text-center">
+
+                        <span class="badge text-bg-success"
+                              th:if="${usuario.rol == 'ADMIN'}">
+                            ADMIN
+                        </span>
+
+                        <span class="badge text-bg-primary"
+                              th:if="${usuario.rol == 'EMPLEADO'}">
+                            EMPLEADO
+                        </span>
+
+                        <span class="badge text-bg-secondary"
+                              th:if="${usuario.rol == 'CLIENTE'}">
+                            CLIENTE
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <form th:action="@{/usuarios/{id}/rol(id=${usuario.id})}"
+                              method="post"
+                              class="d-flex justify-content-center gap-2">
+
+                            <select name="rol"
+                                    class="form-select form-select-sm"
+                                    style="max-width: 145px;">
+
+                                <option value="CLIENTE"
+                                        th:selected="${usuario.rol == 'CLIENTE'}">
+                                    CLIENTE
+                                </option>
+
+                                <option value="EMPLEADO"
+                                        th:selected="${usuario.rol == 'EMPLEADO'}">
+                                    EMPLEADO
+                                </option>
+
+                                <option value="ADMIN"
+                                        th:selected="${usuario.rol == 'ADMIN'}">
+                                    ADMIN
+                                </option>
+
+                            </select>
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-success">
+                                Guardar
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(usuarios)}">
+
+                    <td colspan="6">
+
+                        <div class="estado-vacio">
+
+                            <h3>
+                                No hay usuarios registrados
+                            </h3>
+
+                            <p>
+                                Cuando se registren usuarios aparecerán en esta sección.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
+<script th:src="@{/js/tabla-buscador.js}"></script>
+
+</body>
+
+</html>

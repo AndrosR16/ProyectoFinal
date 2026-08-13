@@ -28,17 +28,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        BasicAuthenticationEntryPoint apiEntryPoint = new BasicAuthenticationEntryPoint();
+        BasicAuthenticationEntryPoint apiEntryPoint =
+                new BasicAuthenticationEntryPoint();
+
         apiEntryPoint.setRealmName("Farmacia API");
 
-        AccessDeniedHandlerImpl webDeniedHandler = new AccessDeniedHandlerImpl();
+        AccessDeniedHandlerImpl webDeniedHandler =
+                new AccessDeniedHandlerImpl();
+
         webDeniedHandler.setErrorPage("/acceso-denegado");
 
         http.authorizeHttpRequests(auth -> auth
 
                 .requestMatchers(
+                        "/",
+                        "/shop",
                         "/login",
                         "/registro",
+                        "/acceso-denegado",
                         "/css/**",
                         "/js/**",
                         "/img/**",
@@ -50,30 +57,48 @@ public class SecurityConfig {
                 .hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "/api/**")
-                .hasAnyRole("ADMIN", "USER")
+                .hasAnyRole(
+                        "ADMIN",
+                        "EMPLEADO",
+                        "CLIENTE"
+                )
 
                 .requestMatchers("/api/**")
                 .hasRole("ADMIN")
 
-                .requestMatchers("/")
-                .hasAnyRole("ADMIN", "USER")
-
-                .requestMatchers("/shop")
-                .hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/dashboard")
+                .hasAnyRole(
+                        "ADMIN",
+                        "EMPLEADO"
+                )
 
                 .requestMatchers("/carrito/**")
-                .hasAnyRole("ADMIN", "USER")
+                .hasAnyRole(
+                        "ADMIN",
+                        "EMPLEADO",
+                        "CLIENTE"
+                )
 
                 .requestMatchers("/medicamentos/**")
                 .hasRole("ADMIN")
 
                 .requestMatchers("/facturas/**")
-                .hasAnyRole("ADMIN", "USER")
+                .hasAnyRole(
+                        "ADMIN",
+                        "EMPLEADO",
+                        "CLIENTE"
+                )
 
                 .requestMatchers(
                         "/clientes/**",
                         "/proveedores/**",
-                        "/inventario/**",
+                        "/inventario/**")
+                .hasAnyRole(
+                        "ADMIN",
+                        "EMPLEADO"
+                )
+
+                .requestMatchers(
                         "/reportes/**",
                         "/usuarios/**")
                 .hasRole("ADMIN")
@@ -88,34 +113,48 @@ public class SecurityConfig {
 
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", false)
+                        .defaultSuccessUrl("/shop", false)
                         .failureUrl("/login?error")
                         .permitAll())
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/shop")
                         .permitAll())
 
                 .exceptionHandling(exception -> exception
+
                         .defaultAuthenticationEntryPointFor(
                                 apiEntryPoint,
-                                PathPatternRequestMatcher.pathPattern("/api/**"))
+                                PathPatternRequestMatcher
+                                        .pathPattern("/api/**"))
+
                         .defaultAccessDeniedHandlerFor(
                                 new AccessDeniedHandlerImpl(),
-                                PathPatternRequestMatcher.pathPattern("/api/**"))
+                                PathPatternRequestMatcher
+                                        .pathPattern("/api/**"))
+
                         .defaultAccessDeniedHandlerFor(
                                 webDeniedHandler,
                                 AnyRequestMatcher.INSTANCE));
 
-        // Resuelve el token CSRF diferido antes de que Thymeleaf comprometa la respuesta (sidebar > 8KB).
-        http.addFilterAfter((request, response, chain) -> {
-            CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-            if (csrfToken != null) {
-                csrfToken.getToken();
-            }
-            chain.doFilter(request, response);
-        }, CsrfFilter.class);
+        http.addFilterAfter(
+                (request, response, chain) -> {
+
+                    CsrfToken csrfToken =
+                            (CsrfToken) request.getAttribute(
+                                    CsrfToken.class.getName()
+                            );
+
+                    if (csrfToken != null) {
+                        csrfToken.getToken();
+                    }
+
+                    chain.doFilter(request, response);
+
+                },
+                CsrfFilter.class
+        );
 
         return http.build();
     }
