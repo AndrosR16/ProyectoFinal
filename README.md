@@ -5,7 +5,7 @@
 <h1 align="center">Farmacia Vida</h1>
 
 <p align="center">
-  Sistema web de gestión y facturación para una farmacia, construido con Spring Boot y Thymeleaf.
+  Sistema web de gestión, inventario, ventas y facturación para una farmacia, construido con Spring Boot y Thymeleaf.
 </p>
 
 <p align="center">
@@ -16,56 +16,77 @@
   <img src="https://img.shields.io/badge/MySQL-8-4479a1?style=flat-square" alt="MySQL 8">
   <img src="https://img.shields.io/badge/Maven-C71A36?style=flat-square" alt="Maven">
   <img src="https://img.shields.io/badge/i18n-ES%20%2F%20EN-15803d?style=flat-square" alt="i18n ES/EN">
+  <img src="https://img.shields.io/badge/Deploy-Render-46E3B7?style=flat-square" alt="Render">
 </p>
 
 ## Contenido
 
-1. [Descripción y cliente](#descripción-y-cliente)
-2. [Características](#características)
-3. [Capturas](#capturas)
-4. [Arquitectura](#arquitectura)
-5. [Stack tecnológico](#stack-tecnológico)
-6. [Modelo de datos](#modelo-de-datos)
-7. [API REST](#api-rest)
-8. [Seguridad](#seguridad)
-9. [Internacionalización](#internacionalización)
-10. [Requisitos e instalación local](#requisitos-e-instalación-local)
-11. [Despliegue](#despliegue)
-12. [Credenciales de prueba](#credenciales-de-prueba)
-13. [Estructura del proyecto](#estructura-del-proyecto)
-14. [Equipo](#equipo)
+1. [Descripción](#descripción)
+2. [Aplicación publicada](#aplicación-publicada)
+3. [Características](#características)
+4. [Capturas](#capturas)
+5. [Arquitectura](#arquitectura)
+6. [Stack tecnológico](#stack-tecnológico)
+7. [Modelo de datos](#modelo-de-datos)
+8. [API REST](#api-rest)
+9. [Seguridad y roles](#seguridad-y-roles)
+10. [Internacionalización](#internacionalización)
+11. [Requisitos e instalación local](#requisitos-e-instalación-local)
+12. [Despliegue](#despliegue)
+13. [Acceso inicial](#acceso-inicial)
+14. [Estructura del proyecto](#estructura-del-proyecto)
+15. [Equipo](#equipo)
 
-## Descripción y cliente
+## Descripción
 
-Farmacia Vida es una aplicación web pensada para el personal de una farmacia. El cliente necesita llevar en un solo lugar el catálogo de medicamentos con sus precios y existencias, la información de sus clientes y la de sus proveedores, además de un carrito para preparar pedidos. El acceso se controla por roles: el administrador gestiona toda la información, mientras que el empleado consulta el catálogo.
+Farmacia Vida es una aplicación web desarrollada para centralizar las principales operaciones de una farmacia. El sistema integra el catálogo de medicamentos, control de inventario, clientes, proveedores, usuarios, carrito de compras, ventas, facturación y reportes dentro de una misma aplicación.
 
-El sistema atiende tres necesidades del negocio:
+El acceso se controla mediante tres roles: **ADMIN**, **EMPLEADO** y **CLIENTE**. Cada usuario dispone únicamente de las opciones correspondientes a sus funciones.
 
-* Centralizar el inventario de medicamentos y avisar cuando una existencia queda baja.
-* Mantener ordenados los datos de clientes y proveedores, hoy dispersos en hojas de cálculo.
-* Separar lo que cada tipo de usuario puede ver y hacer, para proteger la información sensible.
+El sistema permite además realizar compras simuladas mediante efectivo o SINPE, generar facturas, actualizar automáticamente las existencias después de una venta y consultar estadísticas y reportes.
 
-Es el proyecto final del curso SC-403, Desarrollo de Aplicaciones Web y Patrones, de la Universidad Fidélitas.
+El proyecto corresponde al curso **SC-403 Desarrollo de Aplicaciones Web y Patrones** de la Universidad Fidélitas.
+
+## Aplicación publicada
+
+La versión de producción se encuentra disponible en:
+
+**https://farmacia-vida.onrender.com**
+
+La aplicación está desplegada mediante **Docker en Render** y utiliza una instancia **MySQL administrada por Aiven**.
+
+> Debido al uso de una instancia gratuita de Render, la primera solicitud puede tardar mientras el servicio vuelve a iniciar después de un período de inactividad.
 
 ## Características
 
 | Módulo | Descripción | Acceso |
 |--------|-------------|--------|
-| Medicamentos | Alta, edición, borrado y listado con buscador interno. Marca las existencias bajas. | Administrador |
-| Consulta de medicamentos | Vista del catálogo para el personal de ventas. | Empleado |
-| Clientes | Registro y consulta de clientes con buscador interno. | Administrador |
-| Proveedores | Gestión de distribuidoras y contactos con buscador interno. | Administrador |
-| Carrito | Armado de pedidos a partir del catálogo. | Todos |
-| Facturación | Genera facturas desde el carrito con datos del comprador, descuenta existencias y guarda el historial. La factura tiene formato imprimible. | Todos |
-| Mi perfil | Edición de nombre y correo, y cambio de contraseña del propio usuario. | Todos |
-| API REST | Endpoints de medicamentos y clientes con autenticación básica. | Según rol |
+| Dashboard | Indicadores de medicamentos, stock bajo, clientes y proveedores. | ADMIN, EMPLEADO |
+| Tienda | Catálogo visual con buscador, productos destacados, imágenes, stock y detalle de medicamentos. | Público |
+| Medicamentos | Registro, edición, eliminación, stock, precios, imágenes, proveedor y productos destacados. | ADMIN |
+| Clientes | Registro, consulta y búsqueda de clientes. | ADMIN, EMPLEADO |
+| Proveedores | Administración de proveedores relacionados con medicamentos. | ADMIN, EMPLEADO |
+| Inventario | Consulta de existencias, precios y alertas de stock bajo. | ADMIN, EMPLEADO |
+| Carrito | Selección de productos y cantidades para preparar una compra o venta. | ADMIN, EMPLEADO, CLIENTE |
+| Facturación | Checkout, selección de cliente, cálculo de totales, métodos de pago, generación e impresión de factura. | ADMIN, EMPLEADO, CLIENTE |
+| Historial de facturas | Consulta de ventas y detalle de las facturas generadas. | Según rol |
+| Reportes | Ventas por fecha, total vendido y medicamentos más vendidos en un rango de fechas. | ADMIN |
+| Usuarios | Administración de usuarios y roles. | ADMIN |
+| Mi perfil | Actualización de nombre, correo y contraseña del usuario autenticado. | Usuarios autenticados |
+| API REST | Endpoints REST para medicamentos y clientes con autenticación y autorización. | Según rol |
 
 Además:
 
-* Tablero de inicio con indicadores en vivo (total de medicamentos, existencias bajas, clientes y proveedores).
-* Interfaz en español e inglés, conmutable desde la barra lateral.
-* Barra lateral colapsable que recuerda su estado entre páginas.
-* Diseño responsivo con contrastes verificados para accesibilidad.
+* El stock se descuenta automáticamente al confirmar una venta.
+* El sistema controla situaciones de stock insuficiente.
+* Los medicamentos con pocas existencias se identifican visualmente.
+* Las facturas almacenan el detalle de los productos vendidos.
+* El administrador dispone de reportes por fechas.
+* Los productos pueden mostrar imágenes almacenadas dentro de la aplicación.
+* La interfaz está disponible en español e inglés.
+* La barra lateral adapta las opciones según el rol autenticado.
+* Se incluyen páginas personalizadas para errores 404, 5xx y acceso denegado.
+* El diseño es responsivo mediante Bootstrap 5 y estilos propios.
 
 ## Capturas
 
@@ -82,147 +103,356 @@ Además:
 
 ## Arquitectura
 
-La aplicación sigue una arquitectura por capas sobre Spring Boot. El navegador habla con dos familias de controladores: las vistas MVC con Thymeleaf y la API REST. Ambos delegan la lógica en los servicios, que a su vez usan repositorios de Spring Data JPA para llegar a la base de datos. Spring Security envuelve todo el flujo con un filtro que aplica autenticación y control de acceso por rol.
+La aplicación sigue una arquitectura por capas sobre Spring Boot. Las solicitudes web son procesadas por controladores MVC o controladores REST. La lógica de negocio se concentra en servicios y el acceso a los datos se realiza mediante repositorios de Spring Data JPA.
+
+Spring Security se encarga de la autenticación y autorización antes de permitir el acceso a las diferentes funcionalidades.
 
 ```mermaid
 graph TD
-    N["Navegador"] --> SEC["Spring Security<br/>filtro de autenticacion y roles"]
-    SEC --> MVC["Controladores MVC<br/>Home, Medicamento, Cliente, Proveedor,<br/>Carrito, Factura, Perfil, Auth"]
-    SEC --> API["Controladores REST<br/>api/medicamentos, api/clientes"]
-    MVC --> V["Vistas Thymeleaf<br/>plantillas mas i18n"]
+    N["Navegador"] --> SEC["Spring Security<br/>Autenticación y roles"]
+
+    SEC --> MVC["Controladores MVC<br/>Home, Shop, Medicamentos, Clientes,<br/>Proveedores, Inventario, Carrito,<br/>Facturas, Reportes, Usuarios y Perfil"]
+
+    SEC --> API["API REST<br/>Medicamentos y Clientes"]
+
+    MVC --> V["Vistas Thymeleaf<br/>HTML + i18n"]
     MVC --> S["Servicios"]
     API --> S
+
     S --> R["Repositorios<br/>Spring Data JPA"]
-    R --> DB[("MySQL / MariaDB<br/>farmaciadb")]
+
+    R --> DB[("MySQL<br/>Local / Aiven")]
+
     V --> N
+```
+
+El flujo principal sigue la separación:
+
+```text
+Vista
+  ↓
+Controller
+  ↓
+Service
+  ↓
+Repository
+  ↓
+MySQL
 ```
 
 ## Stack tecnológico
 
-* Java 25 y Spring Boot 4.1.
-* Spring Web MVC y Thymeleaf para las vistas del servidor.
-* Spring Security 7.1 para autenticación por formulario, autenticación básica en la API y control de acceso por rol.
-* Spring Data JPA con Hibernate para la persistencia.
-* MySQL 8 en producción, compatible con MariaDB en desarrollo.
-* Bean Validation para validar formularios y cuerpos de la API.
-* Bootstrap 5 para la retícula y los componentes base, con una hoja de estilos propia.
-* Maven como herramienta de construcción, mediante el wrapper incluido.
+* Java 25.
+* Spring Boot 4.1.
+* Spring Web MVC.
+* Thymeleaf.
+* Spring Security.
+* Spring Data JPA.
+* Hibernate.
+* Bean Validation.
+* MySQL 8.
+* Bootstrap 5.
+* HTML, CSS y JavaScript.
+* Maven mediante Maven Wrapper.
+* Docker para el empaquetado de producción.
+* Render para el alojamiento de la aplicación.
+* Aiven para MySQL en producción.
+* Postman para pruebas de la API REST.
+* Git y GitHub para control de versiones.
 
 ## Modelo de datos
 
-Entidades principales que usan los módulos operativos:
+Las principales entidades del sistema son:
 
-| Entidad | Campos | Notas |
-|---------|--------|-------|
-| Usuario | username, nombre, correo, password, rol | Contraseña cifrada con BCrypt. Rol ADMIN o USER. |
-| Medicamento | nombre, precio, stock | El precio se maneja en colones. |
-| Cliente | nombre, teléfono, correo | |
-| Proveedor | nombre, teléfono, correo | Teléfono de ocho dígitos. |
+| Entidad | Información principal | Función |
+|---------|----------------------|---------|
+| Usuario | username, nombre, correo, password, rol | Autenticación y autorización |
+| Medicamento | nombre, descripción, precio, stock, imagen, destacado, proveedor | Catálogo e inventario |
+| Cliente | identificación, nombre, teléfono, correo | Información de compradores |
+| Proveedor | nombre, teléfono, correo | Distribuidores de medicamentos |
+| CarritoItem | usuario, medicamento, cantidad | Persistencia del carrito |
+| Venta | fecha, comprador, totales, método de pago, estado | Facturación |
+| DetalleVenta | venta, medicamento, cantidad, precio, subtotal | Productos incluidos en una venta |
+| Empleado | información asociada al personal | Información del personal |
 
-El esquema incluye además las tablas ventas, detalle_venta y empleados, reservadas para la fase de facturación. Las tablas se generan con Hibernate a partir de las entidades.
+Las contraseñas de los usuarios se almacenan cifradas mediante BCrypt.
+
+Hibernate genera y actualiza las tablas a partir de las entidades JPA configuradas en el proyecto.
 
 ## API REST
 
-La API usa autenticación básica. Las lecturas de medicamentos están disponibles para ambos roles; el resto de operaciones y todo lo relativo a clientes queda restringido al administrador.
+El proyecto contiene controladores REST para medicamentos y clientes.
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| GET | /api/medicamentos | Lista de medicamentos | Administrador, Empleado |
-| GET | /api/medicamentos/{id} | Detalle de un medicamento | Administrador, Empleado |
-| POST | /api/medicamentos | Crea un medicamento | Administrador |
-| PUT | /api/medicamentos/{id} | Actualiza un medicamento | Administrador |
-| DELETE | /api/medicamentos/{id} | Elimina un medicamento | Administrador |
-| GET | /api/clientes | Lista de clientes | Administrador |
-| GET | /api/clientes/{id} | Detalle de un cliente | Administrador |
+La ruta principal de medicamentos es:
 
-En `docs/postman_collection.json` está la colección de Postman lista para importar. Configure el usuario y la contraseña en las variables de la colección antes de ejecutar las peticiones.
+```text
+/api/medicamentos
+```
 
-Ejemplo de lectura con autenticación básica:
+### Medicamentos
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/medicamentos` | Lista los medicamentos |
+| GET | `/api/medicamentos/{id}` | Consulta un medicamento |
+| POST | `/api/medicamentos` | Registra un medicamento |
+| PUT | `/api/medicamentos/{id}` | Actualiza un medicamento |
+| DELETE | `/api/medicamentos/{id}` | Elimina un medicamento |
+
+Las operaciones fueron verificadas mediante Postman, incluyendo respuestas `200 OK` y `204 No Content` para una eliminación exitosa.
+
+Ejemplo de cuerpo JSON utilizado para registrar un medicamento:
+
+```json
+{
+  "nombre": "Medicamento API Prueba",
+  "descripcion": "Medicamento creado desde Postman para prueba de la API",
+  "precio": 2500,
+  "stock": 10,
+  "imagenUrl": "",
+  "destacado": false
+}
+```
+
+### Clientes
+
+La aplicación también dispone de endpoints REST para la consulta de clientes bajo las reglas de seguridad configuradas.
+
+En `docs/postman_collection.json` se incluye una colección para realizar pruebas de la API.
+
+Ejemplo de consulta:
 
 ```bash
 curl -u admin:TU_CONTRASENA http://localhost:8080/api/medicamentos
 ```
 
-## Seguridad
+## Seguridad y roles
 
-* Inicio de sesión por formulario para las vistas y autenticación básica para la API.
-* Control de acceso por rol. Las rutas de administración (clientes, proveedores y la escritura en la API) exigen rol ADMIN; el catálogo de medicamentos está disponible para ambos roles.
-* Contraseñas cifradas con BCrypt. El registro público solo puede crear usuarios con rol USER.
-* Protección CSRF activa en todos los formularios. La API queda exenta por usar autenticación básica sin estado.
-* La página de perfil opera siempre sobre el usuario de la sesión; el cambio de contraseña exige la contraseña actual.
-* Los mensajes de error no exponen trazas internas.
+Spring Security controla las rutas y funcionalidades disponibles.
+
+### ADMIN
+
+El administrador puede acceder a las funciones administrativas, entre ellas:
+
+* Gestión de medicamentos.
+* Gestión de clientes.
+* Gestión de proveedores.
+* Inventario.
+* Facturación.
+* Usuarios y roles.
+* Reportes y estadísticas.
+* API REST administrativa.
+
+### EMPLEADO
+
+El empleado participa en las operaciones diarias de la farmacia:
+
+* Consulta de tienda.
+* Gestión y consulta de clientes.
+* Consulta de inventario.
+* Carrito.
+* Venta presencial.
+* Facturación e historial correspondiente.
+
+### CLIENTE
+
+El cliente puede utilizar el flujo de compra:
+
+* Consultar la tienda.
+* Agregar medicamentos al carrito.
+* Confirmar una compra.
+* Consultar sus facturas.
+* Administrar su perfil.
+
+Además:
+
+* Las contraseñas se cifran mediante BCrypt.
+* El registro público crea cuentas con rol CLIENTE.
+* Los formularios utilizan protección CSRF.
+* La API utiliza autenticación HTTP Basic y reglas de autorización.
+* Las rutas administrativas están protegidas según el rol.
+* Se dispone de una página personalizada para acceso denegado.
+* Los errores del servidor no muestran stack traces al usuario final.
 
 ## Internacionalización
 
-La interfaz está disponible en español e inglés. El idioma se resuelve por una cookie y se puede cambiar en cualquier momento con el selector de la barra lateral o agregando `?lang=en` o `?lang=es` a la dirección. Los textos, los mensajes de validación y las notificaciones viven en `messages_es.properties` y `messages.properties`.
+La aplicación dispone de soporte para español e inglés.
+
+La configuración utiliza un `CookieLocaleResolver`, por lo que la preferencia seleccionada se conserva mediante una cookie.
+
+El idioma también puede modificarse utilizando:
+
+```text
+?lang=es
+```
+
+o:
+
+```text
+?lang=en
+```
+
+Los mensajes se encuentran distribuidos en:
+
+```text
+messages.properties
+messages_es.properties
+messages_en.properties
+```
 
 ## Requisitos e instalación local
 
-Requisitos previos:
+Requisitos:
 
 * JDK 25 o superior.
-* MySQL 8 o MariaDB en ejecución.
-* No hace falta instalar Maven: se usa el wrapper `./mvnw`.
+* MySQL 8.
+* Git.
+* No es necesario instalar Maven por separado, ya que el proyecto incluye Maven Wrapper.
 
-Pasos:
+### 1. Crear la base de datos
 
-1. Cree la base de datos:
+```sql
+CREATE DATABASE farmaciadb;
+```
 
-   ```sql
-   CREATE DATABASE farmaciadb;
-   ```
+### 2. Configurar credenciales
 
-2. Exporte las credenciales de la base de datos (ajuste según su instalación):
+En PowerShell:
 
-   ```bash
-   export DB_USERNAME=root
-   export DB_PASSWORD=su_contraseña
-   ```
+```powershell
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="SU_CONTRASEÑA"
+```
 
-3. Arranque la aplicación:
+### 3. Ejecutar las pruebas
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+```powershell
+.\mvnw clean test
+```
 
-4. Abra `http://localhost:8080` en el navegador.
+El proyecto debe finalizar con:
 
-En el primer arranque, con la base vacía, se cargan datos de prueba de forma automática (medicamentos, clientes, proveedores y usuarios).
+```text
+BUILD SUCCESS
+```
 
-Nota para usuarios de MariaDB: si Hibernate no detecta el dialecto, agregue el argumento `--spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDBDialect` al arranque.
+### 4. Ejecutar la aplicación
+
+```powershell
+.\mvnw spring-boot:run
+```
+
+La aplicación local estará disponible normalmente en:
+
+```text
+http://localhost:8080
+```
+
+En una base vacía, `DataSeeder` carga información inicial para facilitar las pruebas del sistema.
 
 ## Despliegue
 
-La guía completa para publicar el sistema en internet está en `docs/DEPLOY.md`. Incluye el `Dockerfile`, el perfil de producción y los pasos para desplegar en Railway con una base de datos gestionada.
+La versión final utiliza la siguiente arquitectura:
+
+```text
+GitHub
+   ↓
+Render
+   ↓
+Docker / Spring Boot
+   ↓
+Aiven MySQL
+```
+
+### Render
+
+Render construye la aplicación utilizando el `Dockerfile` incluido en el repositorio.
+
+El perfil activo en producción es:
+
+```text
+prod
+```
+
+La aplicación publicada está disponible en:
+
+**https://farmacia-vida.onrender.com**
+
+### Aiven
+
+La base de datos de producción utiliza MySQL administrado por Aiven con conexión SSL.
+
+Las credenciales de producción no se almacenan directamente en GitHub.
+
+Las principales variables de entorno utilizadas son:
+
+```text
+SPRING_PROFILES_ACTIVE
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+```
+
+`application-prod.properties` obtiene la configuración de conexión desde estas variables.
 
 ## Acceso inicial
 
-En el primer arranque, con la base vacía, se crean dos usuarios: uno administrador (`admin`) y uno empleado (`empleado`).
+Al iniciar el sistema sobre una base de datos vacía, `DataSeeder` crea información de prueba, incluyendo las cuentas iniciales de administrador y empleado.
 
-Las contraseñas no se guardan en el repositorio. Se definen con las variables de entorno `SEED_ADMIN_PASSWORD` y `SEED_EMPLEADO_PASSWORD`. Si no se definen, la aplicación genera una contraseña temporal para cada usuario y la escribe en el log de arranque; búsquela ahí para iniciar sesión y cámbiela desde la página de perfil.
-
-```bash
-export SEED_ADMIN_PASSWORD=una_contraseña_fuerte
-export SEED_EMPLEADO_PASSWORD=otra_contraseña_fuerte
-```
+Por seguridad, las credenciales utilizadas para una demostración o ambiente de producción deben mantenerse fuera de la documentación pública y modificarse cuando sea necesario.
 
 ## Estructura del proyecto
 
-```
+```text
 src/main/java/com/ufide/Farmacia
-├── config          Carga de datos de prueba y configuración de idioma
-├── controller      Controladores MVC
-│   └── api         Controladores REST
-├── dto             Objetos de formulario y transferencia
-├── entity          Entidades JPA
-├── repository      Repositorios de Spring Data
-├── security        Configuración de Spring Security
-└── service         Lógica de negocio
+├── config
+│   ├── DataSeeder
+│   └── LocaleConfig
+├── controller
+│   ├── api
+│   ├── AuthController
+│   ├── CarritoController
+│   ├── ClienteController
+│   ├── FacturaController
+│   ├── HomeController
+│   ├── InventarioController
+│   ├── MedicamentoController
+│   ├── PerfilController
+│   ├── ProveedorController
+│   ├── ReporteController
+│   ├── ShopController
+│   └── UsuarioController
+├── dto
+├── entity
+├── repository
+├── security
+├── service
+└── util
+
 src/main/resources
-├── static          Hoja de estilos, scripts e ícono
-├── templates       Plantillas Thymeleaf y fragmentos
+├── static
+│   ├── css
+│   ├── img
+│   │   └── productos
+│   └── js
+├── templates
+│   ├── carrito
+│   ├── clientes
+│   ├── error
+│   ├── factura
+│   ├── fragments
+│   ├── inventario
+│   ├── medicamentos
+│   ├── perfil
+│   ├── proveedores
+│   ├── reportes
+│   ├── shop
+│   └── usuarios
+├── application.properties
+├── application-prod.properties
+├── messages.properties
 ├── messages_es.properties
-└── messages.properties
+└── messages_en.properties
 ```
 
 ## Equipo
@@ -234,4 +464,4 @@ src/main/resources
 | Alejandro Salas Sánchez | Por asignar |
 | Ismael Morun Cascante | Por asignar |
 
-Proyecto académico desarrollado para la Universidad Fidélitas.
+Proyecto académico desarrollado para la **Universidad Fidélitas**.
