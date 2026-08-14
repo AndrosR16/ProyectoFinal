@@ -356,19 +356,30 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private Cliente cliente(
-            String nombre,
-            String telefono,
-            String correo) {
+        String nombre,
+        String telefono,
+        String correo) {
 
-        Cliente cliente =
-                new Cliente();
+    Cliente cliente =
+            new Cliente();
 
-        cliente.setNombre(nombre);
-        cliente.setTelefono(telefono);
-        cliente.setCorreo(correo);
+    cliente.setNombre(nombre);
 
-        return cliente;
-    }
+    String digitosTelefono =
+            telefono.replaceAll("\\D", "");
+
+    String identificacion =
+            "1-"
+                    + digitosTelefono.substring(0, 4)
+                    + "-"
+                    + digitosTelefono.substring(4);
+
+    cliente.setIdentificacion(identificacion);
+    cliente.setTelefono(telefono);
+    cliente.setCorreo(correo);
+
+    return cliente;
+}
 
     private Proveedor proveedor(
             String nombre,

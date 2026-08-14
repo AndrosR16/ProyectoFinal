@@ -59,17 +59,17 @@
 
                         <div class="mb-4">
 
-                            <label for="nombre" class="form-label" th:text="#{comun.campo.nombre.completo}">
+                            <label for="nombre"
+                                   class="form-label"
+                                   th:text="#{comun.campo.nombre.completo}">
                                 Nombre completo
                             </label>
 
                             <input type="text"
                                    id="nombre"
                                    class="form-control"
-                                   th:classappend="${#fields.hasErrors('nombre')}
-                                       ? 'is-invalid'"
+                                   th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'"
                                    th:field="*{nombre}"
-                                   placeholder="Ejemplo: María Rodríguez"
                                    th:placeholder="#{cliente.campo.nombre.placeholder}">
 
                             <div class="invalid-feedback"
@@ -80,7 +80,30 @@
 
                         <div class="mb-4">
 
-                            <label for="telefono" class="form-label" th:text="#{comun.campo.telefono}">
+                            <label for="identificacion"
+                                   class="form-label"
+                                   th:text="#{cliente.campo.identificacion}">
+                                Identificación
+                            </label>
+
+                            <input type="text"
+                                   id="identificacion"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('identificacion')} ? 'is-invalid'"
+                                   th:field="*{identificacion}"
+                                   placeholder="Ejemplo: 1-1234-5678">
+
+                            <div class="invalid-feedback"
+                                 th:errors="*{identificacion}">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="telefono"
+                                   class="form-label"
+                                   th:text="#{comun.campo.telefono}">
                                 Teléfono
                             </label>
 
@@ -102,17 +125,17 @@
 
                         <div class="mb-4">
 
-                            <label for="correo" class="form-label" th:text="#{comun.campo.correo}">
+                            <label for="correo"
+                                   class="form-label"
+                                   th:text="#{comun.campo.correo}">
                                 Correo electrónico
                             </label>
 
                             <input type="email"
                                    id="correo"
                                    class="form-control"
-                                   th:classappend="${#fields.hasErrors('correo')}
-                                       ? 'is-invalid'"
+                                   th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'"
                                    th:field="*{correo}"
-                                   placeholder="Ejemplo: cliente@correo.com"
                                    th:placeholder="#{cliente.campo.correo.placeholder}">
 
                             <div class="invalid-feedback"
@@ -154,6 +177,7 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
 <script th:src="@{/js/telefono-mask.js}"></script>
 
 </body>

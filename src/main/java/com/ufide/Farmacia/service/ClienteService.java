@@ -21,6 +21,20 @@ public class ClienteService {
         return repository.findAll();
     }
 
+    public List<Cliente> buscar(String termino) {
+
+        if (termino == null || termino.isBlank()) {
+            return listar();
+        }
+
+        String valor = termino.trim();
+
+        return repository
+                .findByNombreContainingIgnoreCaseOrIdentificacionContainingIgnoreCase(
+                        valor,
+                        valor);
+    }
+
     public long contar() {
         return repository.count();
     }

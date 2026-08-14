@@ -1,5 +1,7 @@
 package com.ufide.Farmacia.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,7 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +31,7 @@ public class Medicamento {
     private String nombre;
 
     @NotNull(message = "{validacion.medicamento.precio.obligatorio}")
+    @DecimalMin(value = "0.01", message = "{validacion.medicamento.precio.positivo}")
     private Double precio;
 
     @NotNull(message = "{validacion.medicamento.stock.obligatorio}")
@@ -45,7 +51,15 @@ public class Medicamento {
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
+    private LocalDateTime fechaActualizacion;
+
     public Medicamento() {
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void actualizarFecha() {
+        this.fechaActualizacion = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -110,5 +124,13 @@ public class Medicamento {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public LocalDateTime getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
     }
 }

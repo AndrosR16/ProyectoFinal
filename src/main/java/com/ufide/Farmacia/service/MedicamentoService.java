@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ufide.Farmacia.entity.Medicamento;
 import com.ufide.Farmacia.repository.CarritoItemRepository;
+import com.ufide.Farmacia.repository.DetalleVentaRepository;
 import com.ufide.Farmacia.repository.MedicamentoRepository;
 
 @Service
@@ -17,13 +18,16 @@ public class MedicamentoService {
 
     private final MedicamentoRepository repository;
     private final CarritoItemRepository carritoItemRepository;
+    private final DetalleVentaRepository detalleVentaRepository;
 
     public MedicamentoService(
             MedicamentoRepository repository,
-            CarritoItemRepository carritoItemRepository) {
+            CarritoItemRepository carritoItemRepository,
+            DetalleVentaRepository detalleVentaRepository) {
 
         this.repository = repository;
         this.carritoItemRepository = carritoItemRepository;
+        this.detalleVentaRepository = detalleVentaRepository;
     }
 
     public List<Medicamento> listar() {
@@ -50,10 +54,19 @@ public class MedicamentoService {
         return repository.save(medicamento);
     }
 
+    public boolean tieneVentas(Long id) {
+        return detalleVentaRepository.existsByMedicamentoId(id);
+    }
+
     @Transactional
     public void eliminar(Long id) {
-        // purga las filas de carrito de cualquier usuario antes de borrar (FK a medicamentos)
+
+        if (tieneVentas(id)) {
+            throw new IllegalStateException("MEDICAMENTO_CON_VENTAS");
+        }
+
         carritoItemRepository.deleteByMedicamentoId(id);
+
         repository.deleteById(id);
     }
 }

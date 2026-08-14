@@ -64,13 +64,18 @@ public class MedicamentoController {
         }
 
         medicamento.setProveedor(
-                proveedorId != null ? proveedorService.buscarPorId(proveedorId).orElse(null) : null);
+                proveedorId != null
+                        ? proveedorService.buscarPorId(proveedorId).orElse(null)
+                        : null);
 
         service.guardar(medicamento);
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                messageSource.getMessage("flash.medicamento.registrado", null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(
+                        "flash.medicamento.registrado",
+                        null,
+                        LocaleContextHolder.getLocale()));
 
         return "redirect:/medicamentos";
     }
@@ -84,15 +89,20 @@ public class MedicamentoController {
         Medicamento medicamento = service.buscarPorId(id).orElse(null);
 
         if (medicamento == null) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale()));
+                    messageSource.getMessage(
+                            "flash.medicamento.no.encontrado",
+                            null,
+                            LocaleContextHolder.getLocale()));
 
             return "redirect:/medicamentos";
         }
 
         model.addAttribute("medicamento", medicamento);
         model.addAttribute("proveedores", proveedorService.listar());
+
         return "medicamentos/form";
     }
 
@@ -106,19 +116,45 @@ public class MedicamentoController {
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
+
             medicamento.setId(id);
-            model.addAttribute("proveedores", proveedorService.listar());
+
+            model.addAttribute(
+                    "proveedores",
+                    proveedorService.listar());
+
             return "medicamentos/form";
         }
 
+        Medicamento existente = service.buscarPorId(id).orElse(null);
+
+        if (existente == null) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    messageSource.getMessage(
+                            "flash.medicamento.no.encontrado",
+                            null,
+                            LocaleContextHolder.getLocale()));
+
+            return "redirect:/medicamentos";
+        }
+
         medicamento.setId(id);
+
         medicamento.setProveedor(
-                proveedorId != null ? proveedorService.buscarPorId(proveedorId).orElse(null) : null);
+                proveedorId != null
+                        ? proveedorService.buscarPorId(proveedorId).orElse(null)
+                        : null);
+
         service.guardar(medicamento);
 
         redirectAttributes.addFlashAttribute(
                 "ok",
-                messageSource.getMessage("flash.medicamento.actualizado", null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(
+                        "flash.medicamento.actualizado",
+                        null,
+                        LocaleContextHolder.getLocale()));
 
         return "redirect:/medicamentos";
     }
@@ -129,18 +165,37 @@ public class MedicamentoController {
             RedirectAttributes redirectAttributes) {
 
         if (service.buscarPorId(id).isEmpty()) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    messageSource.getMessage("flash.medicamento.no.encontrado", null, LocaleContextHolder.getLocale()));
+                    messageSource.getMessage(
+                            "flash.medicamento.no.encontrado",
+                            null,
+                            LocaleContextHolder.getLocale()));
 
             return "redirect:/medicamentos";
         }
 
-        service.eliminar(id);
+        try {
 
-        redirectAttributes.addFlashAttribute(
-                "ok",
-                messageSource.getMessage("flash.medicamento.eliminado", null, LocaleContextHolder.getLocale()));
+            service.eliminar(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "ok",
+                    messageSource.getMessage(
+                            "flash.medicamento.eliminado",
+                            null,
+                            LocaleContextHolder.getLocale()));
+
+        } catch (IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    messageSource.getMessage(
+                            "flash.medicamento.no.eliminar.ventas",
+                            null,
+                            LocaleContextHolder.getLocale()));
+        }
 
         return "redirect:/medicamentos";
     }

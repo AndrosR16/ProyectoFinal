@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ufide.Farmacia.dto.FacturaForm;
 import com.ufide.Farmacia.entity.Venta;
 import com.ufide.Farmacia.service.CarritoService;
+import com.ufide.Farmacia.service.ClienteService;
 import com.ufide.Farmacia.service.VentaService;
 import com.ufide.Farmacia.service.exception.CarritoVacioException;
 import com.ufide.Farmacia.service.exception.StockInsuficienteException;
@@ -30,15 +31,18 @@ public class FacturaController {
 
     private final VentaService ventaService;
     private final CarritoService carritoService;
+    private final ClienteService clienteService;
     private final MessageSource messageSource;
 
     public FacturaController(
             VentaService ventaService,
             CarritoService carritoService,
+            ClienteService clienteService,
             MessageSource messageSource) {
 
         this.ventaService = ventaService;
         this.carritoService = carritoService;
+        this.clienteService = clienteService;
         this.messageSource = messageSource;
     }
 
@@ -66,6 +70,7 @@ public class FacturaController {
     @GetMapping("/nueva")
     public String mostrarCheckout(
             Model model,
+            Authentication auth,
             RedirectAttributes redirectAttributes) {
 
         if (carritoService.estaVacio()) {
@@ -93,6 +98,13 @@ public class FacturaController {
                 carritoService.calcularTotal()
         );
 
+        if (esPersonalFarmacia(auth)) {
+            model.addAttribute(
+                    "clientes",
+                    clienteService.listar()
+            );
+        }
+
         return "factura/checkout";
     }
 
@@ -115,6 +127,13 @@ public class FacturaController {
                     "total",
                     carritoService.calcularTotal()
             );
+
+            if (esPersonalFarmacia(auth)) {
+                model.addAttribute(
+                        "clientes",
+                        clienteService.listar()
+                );
+            }
 
             return "factura/checkout";
         }

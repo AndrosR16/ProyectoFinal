@@ -25,6 +25,10 @@ public class Cliente {
     @Size(max = 100, message = "{validacion.nombre.tamano}")
     private String nombre;
 
+    @NotBlank(message = "{validacion.cliente.identificacion.obligatoria}")
+    @Size(max = 20, message = "{validacion.cliente.identificacion.tamano}")
+    private String identificacion;
+
     @NotBlank(message = "{validacion.telefono.obligatorio}")
     @Pattern(regexp = "^[0-9]{8}$", message = "{validacion.cliente.telefono.formato}")
     private String telefono;
@@ -53,6 +57,16 @@ public class Cliente {
         this.nombre = nombre;
     }
 
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion == null
+                ? null
+                : identificacion.trim();
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -71,6 +85,8 @@ public class Cliente {
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.correo = correo == null
+                ? null
+                : correo.trim().toLowerCase();
     }
 }

@@ -39,7 +39,7 @@
         </p>
 
         <p sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
-            Complete los datos del comprador para emitir la factura.
+            Seleccione un cliente registrado o complete los datos del comprador para emitir la factura.
         </p>
 
     </section>
@@ -64,6 +64,40 @@
                         <input type="hidden"
                                th:name="${_csrf.parameterName}"
                                th:value="${_csrf.token}">
+
+                        <div class="mb-4"
+                             sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
+
+                            <label for="clienteRegistrado"
+                                   class="form-label"
+                                   th:text="#{factura.cliente.seleccionar}">
+                                Seleccionar cliente registrado
+                            </label>
+
+                            <select id="clienteRegistrado"
+                                    class="form-select">
+
+                                <option value=""
+                                        th:text="#{factura.cliente.ocasional}">
+                                    Cliente ocasional / ingresar datos manualmente
+                                </option>
+
+                                <option th:each="cliente : ${clientes}"
+                                        th:value="${cliente.id}"
+                                        th:text="${cliente.nombre + ' - ' + cliente.identificacion}"
+                                        th:data-nombre="${cliente.nombre}"
+                                        th:data-identificacion="${cliente.identificacion}"
+                                        th:data-correo="${cliente.correo}"
+                                        th:data-telefono="${cliente.telefonoFormateado}">
+                                </option>
+
+                            </select>
+
+                            <div class="form-text">
+                                Al seleccionar un cliente, sus datos se completarán automáticamente.
+                            </div>
+
+                        </div>
 
                         <div class="mb-4">
 
@@ -323,17 +357,13 @@
                                 </td>
 
                                 <td>
-
                                     ₡<span th:text="${#numbers.formatDecimal(item.precio, 1, 2)}">
                                     </span>
-
                                 </td>
 
                                 <td>
-
                                     ₡<span th:text="${#numbers.formatDecimal(item.subtotal, 1, 2)}">
                                     </span>
-
                                 </td>
 
                             </tr>
@@ -350,10 +380,8 @@
                                 </td>
 
                                 <td class="fw-bold">
-
                                     ₡<span th:text="${#numbers.formatDecimal(total, 1, 2)}">
                                     </span>
-
                                 </td>
 
                             </tr>
@@ -383,6 +411,75 @@
 <script th:src="@{/js/cedula-mask.js}"></script>
 <script th:src="@{/js/telefono-mask.js}"></script>
 <script th:src="@{/js/compra-procesando.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const clienteRegistrado =
+            document.getElementById('clienteRegistrado');
+
+        if (!clienteRegistrado) {
+            return;
+        }
+
+        clienteRegistrado.addEventListener('change', function () {
+
+            const opcion =
+                this.options[this.selectedIndex];
+
+            const nombre =
+                document.getElementById('compradorNombre');
+
+            const identificacion =
+                document.getElementById('compradorIdentificacion');
+
+            const correo =
+                document.getElementById('compradorCorreo');
+
+            const telefono =
+                document.getElementById('compradorTelefono');
+
+            if (!this.value) {
+
+                nombre.value = '';
+                identificacion.value = '';
+                correo.value = '';
+                telefono.value = '';
+
+                return;
+            }
+
+            nombre.value =
+                opcion.dataset.nombre || '';
+
+            identificacion.value =
+                opcion.dataset.identificacion || '';
+
+            correo.value =
+                opcion.dataset.correo || '';
+
+            telefono.value =
+                opcion.dataset.telefono || '';
+
+            nombre.dispatchEvent(
+                new Event('input', { bubbles: true })
+            );
+
+            identificacion.dispatchEvent(
+                new Event('input', { bubbles: true })
+            );
+
+            correo.dispatchEvent(
+                new Event('input', { bubbles: true })
+            );
+
+            telefono.dispatchEvent(
+                new Event('input', { bubbles: true })
+            );
+        });
+
+    });
+</script>
 
 </body>
 
