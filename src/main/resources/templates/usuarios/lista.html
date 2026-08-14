@@ -8,7 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Usuarios - Farmacia Vida</title>
+    <title th:text="#{usuario.admin.titulo.pagina}">
+        Usuarios - Farmacia Vida
+    </title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -26,17 +28,26 @@
 
             <div>
 
-                <span class="insignia-proveedor mb-2">
+                <span class="insignia-proveedor mb-2"
+                      th:text="#{usuario.admin.insignia}">
                     Gestión administrativa
                 </span>
 
-                <h1>Usuarios</h1>
+                <h1 th:text="#{usuario.admin.titulo}">
+                    Usuarios
+                </h1>
 
-                <p>
+                <p th:text="#{usuario.admin.subtitulo}">
                     Consulte los usuarios registrados y administre los roles del sistema.
                 </p>
 
             </div>
+
+            <a th:href="@{/usuarios/nuevo}"
+               class="btn btn-farmacia"
+               th:text="#{usuario.admin.nuevo}">
+                Nuevo usuario
+            </a>
 
         </div>
 
@@ -57,7 +68,8 @@
         <div class="barra-tabla">
 
             <label class="visually-hidden"
-                   for="buscadorUsuarios">
+                   for="buscadorUsuarios"
+                   th:text="#{usuario.admin.buscar}">
                 Buscar
             </label>
 
@@ -88,8 +100,8 @@
             <input type="search"
                    id="buscadorUsuarios"
                    class="form-control js-buscador-tabla"
-                   placeholder="Buscar usuario..."
-                   data-mensaje-vacio="No se encontraron usuarios."
+                   th:placeholder="#{usuario.admin.buscar.placeholder}"
+                   th:data-mensaje-vacio="#{usuario.admin.buscar.sin.resultados}"
                    autocomplete="off">
 
         </div>
@@ -101,12 +113,33 @@
                 <thead>
 
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Usuario</th>
-                    <th>Correo</th>
-                    <th class="text-center">Rol actual</th>
-                    <th class="text-center">Cambiar rol</th>
+
+                    <th th:text="#{usuario.admin.columna.id}">
+                        ID
+                    </th>
+
+                    <th th:text="#{usuario.admin.columna.nombre}">
+                        Nombre
+                    </th>
+
+                    <th th:text="#{usuario.admin.columna.usuario}">
+                        Usuario
+                    </th>
+
+                    <th th:text="#{usuario.admin.columna.correo}">
+                        Correo
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{usuario.admin.columna.rol}">
+                        Rol actual
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{usuario.admin.columna.cambiar.rol}">
+                        Cambiar rol
+                    </th>
+
                 </tr>
 
                 </thead>
@@ -139,17 +172,20 @@
                     <td class="text-center">
 
                         <span class="badge text-bg-success"
-                              th:if="${usuario.rol == 'ADMIN'}">
+                              th:if="${usuario.rol == 'ADMIN'}"
+                              th:text="#{usuario.admin.rol.admin}">
                             ADMIN
                         </span>
 
                         <span class="badge text-bg-primary"
-                              th:if="${usuario.rol == 'EMPLEADO'}">
+                              th:if="${usuario.rol == 'EMPLEADO'}"
+                              th:text="#{usuario.admin.rol.empleado}">
                             EMPLEADO
                         </span>
 
                         <span class="badge text-bg-secondary"
-                              th:if="${usuario.rol == 'CLIENTE'}">
+                              th:if="${usuario.rol == 'CLIENTE'}"
+                              th:text="#{usuario.admin.rol.cliente}">
                             CLIENTE
                         </span>
 
@@ -161,29 +197,37 @@
                               method="post"
                               class="d-flex justify-content-center gap-2">
 
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
                             <select name="rol"
                                     class="form-select form-select-sm"
                                     style="max-width: 145px;">
 
                                 <option value="CLIENTE"
-                                        th:selected="${usuario.rol == 'CLIENTE'}">
+                                        th:selected="${usuario.rol == 'CLIENTE'}"
+                                        th:text="#{usuario.admin.rol.cliente}">
                                     CLIENTE
                                 </option>
 
                                 <option value="EMPLEADO"
-                                        th:selected="${usuario.rol == 'EMPLEADO'}">
+                                        th:selected="${usuario.rol == 'EMPLEADO'}"
+                                        th:text="#{usuario.admin.rol.empleado}">
                                     EMPLEADO
                                 </option>
 
                                 <option value="ADMIN"
-                                        th:selected="${usuario.rol == 'ADMIN'}">
+                                        th:selected="${usuario.rol == 'ADMIN'}"
+                                        th:text="#{usuario.admin.rol.admin}">
                                     ADMIN
                                 </option>
 
                             </select>
 
                             <button type="submit"
-                                    class="btn btn-sm btn-outline-success">
+                                    class="btn btn-sm btn-outline-success"
+                                    th:text="#{usuario.admin.guardar}">
                                 Guardar
                             </button>
 
@@ -199,11 +243,11 @@
 
                         <div class="estado-vacio">
 
-                            <h3>
+                            <h3 th:text="#{usuario.admin.vacio.titulo}">
                                 No hay usuarios registrados
                             </h3>
 
-                            <p>
+                            <p th:text="#{usuario.admin.vacio.mensaje}">
                                 Cuando se registren usuarios aparecerán en esta sección.
                             </p>
 

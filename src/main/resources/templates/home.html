@@ -11,7 +11,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Farmacia Vida</title>
+    <title th:text="#{home.titulo.pagina}">
+        Farmacia Vida
+    </title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
 
@@ -32,15 +34,18 @@
 
             <div class="col-lg-7">
 
-                <span class="insignia-proveedor mb-3">
+                <span class="insignia-proveedor mb-3"
+                      th:text="#{home.insignia}">
                     Su farmacia de confianza
                 </span>
 
-                <h1 class="display-5 fw-bold mb-3">
+                <h1 class="display-5 fw-bold mb-3"
+                    th:text="#{home.titulo}">
                     Cuidamos su salud todos los días
                 </h1>
 
-                <p class="lead text-muted mb-4">
+                <p class="lead text-muted mb-4"
+                   th:text="#{home.descripcion}">
                     En Farmacia Vida encontrará medicamentos y productos
                     para el cuidado de su salud de una forma sencilla,
                     segura y accesible.
@@ -49,13 +54,15 @@
                 <div class="d-flex flex-wrap gap-2">
 
                     <a th:href="@{/shop}"
-                       class="btn btn-farmacia">
+                       class="btn btn-farmacia"
+                       th:text="#{home.ver.productos}">
                         Ver productos
                     </a>
 
                     <a th:href="@{/registro}"
                        class="btn btn-outline-success"
-                       sec:authorize="isAnonymous()">
+                       sec:authorize="isAnonymous()"
+                       th:text="#{home.crear.cuenta}">
                         Crear una cuenta
                     </a>
 
@@ -69,26 +76,30 @@
 
                     <div class="card-body p-4">
 
-                        <h4 class="mb-3">
+                        <h4 class="mb-3"
+                            th:text="#{app.nombre.completo}">
                             Farmacia Vida
                         </h4>
 
-                        <p class="text-muted mb-4">
+                        <p class="text-muted mb-4"
+                           th:text="#{home.atencion.descripcion}">
                             Atención cercana, medicamentos disponibles
                             y un proceso de compra sencillo.
                         </p>
 
                         <div class="mb-3">
 
-                            <strong>
+                            <strong th:text="#{home.horario}">
                                 Horario
                             </strong>
 
-                            <p class="mb-0 text-muted">
+                            <p class="mb-0 text-muted"
+                               th:text="#{home.horario.resumen}">
                                 Lunes a sábado
                             </p>
 
-                            <p class="mb-0 text-muted">
+                            <p class="mb-0 text-muted"
+                               th:text="#{home.horario.resumen.horas}">
                                 8:00 a.m. - 8:00 p.m.
                             </p>
 
@@ -96,11 +107,12 @@
 
                         <div class="mb-3">
 
-                            <strong>
+                            <strong th:text="#{home.ubicacion}">
                                 Ubicación
                             </strong>
 
-                            <p class="mb-0 text-muted">
+                            <p class="mb-0 text-muted"
+                               th:text="#{home.ubicacion.valor}">
                                 Universidad Fidélitas, San Pedro, Costa Rica
                             </p>
 
@@ -108,11 +120,12 @@
 
                         <div>
 
-                            <strong>
+                            <strong th:text="#{home.telefono}">
                                 Teléfono
                             </strong>
 
-                            <p class="mb-0 text-muted">
+                            <p class="mb-0 text-muted"
+                               th:text="#{home.telefono.valor}">
                                 +506 2222-0000
                             </p>
 
@@ -132,15 +145,17 @@
 
         <div class="mb-4">
 
-            <span class="insignia-proveedor mb-2">
+            <span class="insignia-proveedor mb-2"
+                  th:text="#{home.servicios.insignia}">
                 Nuestros servicios
             </span>
 
-            <h2>
+            <h2 th:text="#{home.servicios.titulo}">
                 ¿Qué ofrecemos?
             </h2>
 
-            <p class="text-muted">
+            <p class="text-muted"
+               th:text="#{home.servicios.descripcion}">
                 Servicios pensados para facilitar el acceso a sus
                 medicamentos y el cuidado de su salud.
             </p>
@@ -155,17 +170,19 @@
 
                     <div class="card-body p-4">
 
-                        <h4>
+                        <h4 th:text="#{home.servicio.compra.titulo}">
                             Compra de medicamentos
                         </h4>
 
-                        <p class="text-muted mb-3">
+                        <p class="text-muted mb-3"
+                           th:text="#{home.servicio.compra.descripcion}">
                             Consulte nuestro catálogo, agregue productos
                             al carrito y complete su compra desde el sistema.
                         </p>
 
                         <a th:href="@{/shop}"
-                           class="btn btn-outline-success">
+                           class="btn btn-outline-success"
+                           th:text="#{home.servicio.compra.boton}">
                             Ir a la tienda
                         </a>
 
@@ -181,11 +198,12 @@
 
                     <div class="card-body p-4">
 
-                        <h4>
+                        <h4 th:text="#{home.servicio.atencion.titulo}">
                             Atención personalizada
                         </h4>
 
-                        <p class="text-muted mb-0">
+                        <p class="text-muted mb-0"
+                           th:text="#{home.servicio.atencion.descripcion}">
                             Nuestro personal está disponible para brindar
                             una atención rápida y facilitar el proceso
                             de compra en la farmacia.
@@ -203,24 +221,27 @@
 
                     <div class="card-body p-4">
 
-                        <h4>
+                        <h4 th:text="#{home.servicio.historial.titulo}">
                             Historial de compras
                         </h4>
 
-                        <p class="text-muted mb-3">
+                        <p class="text-muted mb-3"
+                           th:text="#{home.servicio.historial.descripcion}">
                             Los clientes registrados pueden consultar
                             posteriormente las compras realizadas.
                         </p>
 
                         <a th:href="@{/facturas}"
                            class="btn btn-outline-success"
-                           sec:authorize="hasRole('CLIENTE')">
+                           sec:authorize="hasRole('CLIENTE')"
+                           th:text="#{home.servicio.historial.boton}">
                             Ver mis compras
                         </a>
 
                         <a th:href="@{/login}"
                            class="btn btn-outline-success"
-                           sec:authorize="isAnonymous()">
+                           sec:authorize="isAnonymous()"
+                           th:text="#{home.iniciar.sesion}">
                             Iniciar sesión
                         </a>
 
@@ -244,15 +265,17 @@
 
                     <div class="col-lg-8">
 
-                        <span class="insignia-proveedor mb-2">
+                        <span class="insignia-proveedor mb-2"
+                              th:text="#{home.nosotros.insignia}">
                             Sobre nosotros
                         </span>
 
-                        <h2>
+                        <h2 th:text="#{home.nosotros.titulo}">
                             Comprometidos con una atención sencilla
                         </h2>
 
-                        <p class="text-muted mb-0">
+                        <p class="text-muted mb-0"
+                           th:text="#{home.nosotros.descripcion}">
                             Farmacia Vida busca facilitar la gestión y
                             compra de medicamentos mediante una plataforma
                             que permite consultar productos, controlar
@@ -265,7 +288,8 @@
                     <div class="col-lg-4 text-lg-end">
 
                         <a th:href="@{/shop}"
-                           class="btn btn-farmacia">
+                           class="btn btn-farmacia"
+                           th:text="#{home.explorar.productos}">
                             Explorar productos
                         </a>
 
@@ -289,27 +313,49 @@
 
                     <div class="card-body p-4">
 
-                        <span class="insignia-proveedor mb-2">
+                        <span class="insignia-proveedor mb-2"
+                              th:text="#{home.contacto.insignia}">
                             Contacto
                         </span>
 
-                        <h3>
+                        <h3 th:text="#{home.contacto.titulo}">
                             Comuníquese con nosotros
                         </h3>
 
                         <p class="mb-2">
-                            <strong>Teléfono:</strong>
-                            +506 2222-0000
+
+                            <strong th:text="#{home.telefono}">
+                                Teléfono
+                            </strong>:
+
+                            <span th:text="#{home.telefono.valor}">
+                                +506 2222-0000
+                            </span>
+
                         </p>
 
                         <p class="mb-2">
-                            <strong>Correo:</strong>
-                            info@farmaciavida.cr
+
+                            <strong th:text="#{home.contacto.correo}">
+                                Correo
+                            </strong>:
+
+                            <span th:text="#{home.contacto.correo.valor}">
+                                info@farmaciavida.cr
+                            </span>
+
                         </p>
 
                         <p class="mb-0">
-                            <strong>Ubicación:</strong>
-                            Universidad Fidélitas, San Pedro, Costa Rica
+
+                            <strong th:text="#{home.ubicacion}">
+                                Ubicación
+                            </strong>:
+
+                            <span th:text="#{home.ubicacion.valor}">
+                                Universidad Fidélitas, San Pedro, Costa Rica
+                            </span>
+
                         </p>
 
                     </div>
@@ -324,21 +370,22 @@
 
                     <div class="card-body p-4">
 
-                        <span class="insignia-proveedor mb-2">
+                        <span class="insignia-proveedor mb-2"
+                              th:text="#{home.horario}">
                             Horario
                         </span>
 
-                        <h3>
+                        <h3 th:text="#{home.horario.titulo}">
                             Horario de atención
                         </h3>
 
                         <div class="d-flex justify-content-between mb-2">
 
-                            <span>
+                            <span th:text="#{home.horario.lunes.viernes}">
                                 Lunes a viernes
                             </span>
 
-                            <strong>
+                            <strong th:text="#{home.horario.resumen.horas}">
                                 8:00 a.m. - 8:00 p.m.
                             </strong>
 
@@ -346,11 +393,11 @@
 
                         <div class="d-flex justify-content-between mb-2">
 
-                            <span>
+                            <span th:text="#{home.horario.sabado}">
                                 Sábado
                             </span>
 
-                            <strong>
+                            <strong th:text="#{home.horario.resumen.horas}">
                                 8:00 a.m. - 8:00 p.m.
                             </strong>
 
@@ -358,11 +405,11 @@
 
                         <div class="d-flex justify-content-between">
 
-                            <span>
+                            <span th:text="#{home.horario.domingo}">
                                 Domingo
                             </span>
 
-                            <strong>
+                            <strong th:text="#{home.horario.cerrado}">
                                 Cerrado
                             </strong>
 

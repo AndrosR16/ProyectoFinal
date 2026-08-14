@@ -46,11 +46,18 @@ public class Venta {
 
     private String metodoPago;
 
+    private String estado;
+
+    private String motivoAnulacion;
+
+    private LocalDateTime fechaAnulacion;
+
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleVenta> detalles = new ArrayList<>();
 
     public Venta() {
         this.fecha = LocalDateTime.now();
+        this.estado = "ACTIVA";
     }
 
     public void agregarDetalle(DetalleVenta detalle) {
@@ -159,6 +166,30 @@ public class Venta {
         this.metodoPago = metodoPago;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getMotivoAnulacion() {
+        return motivoAnulacion;
+    }
+
+    public void setMotivoAnulacion(String motivoAnulacion) {
+        this.motivoAnulacion = motivoAnulacion;
+    }
+
+    public LocalDateTime getFechaAnulacion() {
+        return fechaAnulacion;
+    }
+
+    public void setFechaAnulacion(LocalDateTime fechaAnulacion) {
+        this.fechaAnulacion = fechaAnulacion;
+    }
+
     public List<DetalleVenta> getDetalles() {
         return detalles;
     }
@@ -172,5 +203,23 @@ public class Venta {
         return fecha == null
                 ? ""
                 : fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    @Transient
+    public String getFechaAnulacionFormateada() {
+        return fechaAnulacion == null
+                ? ""
+                : fechaAnulacion.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    @Transient
+    public boolean isAnulada() {
+        return "ANULADA".equalsIgnoreCase(estado);
+    }
+
+    @Transient
+    public boolean isActiva() {
+        return estado == null
+                || "ACTIVA".equalsIgnoreCase(estado);
     }
 }

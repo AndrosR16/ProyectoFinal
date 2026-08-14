@@ -8,7 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title th:text="#{dashboard.titulo.pagina}">Inicio - Farmacia</title>
+    <title th:text="#{dashboard.titulo.pagina}">
+        Inicio - Farmacia
+    </title>
 
     <link th:replace="~{fragments/head :: bootstrap-css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -16,180 +18,89 @@
 
 <body>
 
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <main class="container py-5 dashboard-contenido">
+<main class="container py-5 dashboard-contenido">
 
-        <section class="encabezado-pagina mb-4">
+    <section class="encabezado-pagina mb-4">
 
-            <span class="insignia-proveedor mb-3"
-                  th:text="#{dashboard.insignia}">
-                Gestión farmacéutica
-            </span>
+        <span class="insignia-proveedor mb-3"
+              th:text="#{dashboard.insignia}">
+            Gestión farmacéutica
+        </span>
 
-            <h1 th:text="#{dashboard.titulo}">Sistema de Facturación para Farmacia</h1>
+        <h1 th:text="#{dashboard.titulo}">
+            Sistema de Facturación para Farmacia
+        </h1>
 
-            <p sec:authorize="hasRole('ADMIN')"
-               th:text="#{dashboard.descripcion.admin}">
-                Administre clientes, medicamentos, proveedores,
-                inventario y facturación desde un mismo lugar.
-            </p>
+        <p sec:authorize="hasRole('ADMIN')"
+           th:text="#{dashboard.descripcion.admin}">
+            Administre clientes, medicamentos, proveedores,
+            inventario y facturación desde un mismo lugar.
+        </p>
 
-            <p sec:authorize="hasRole('USER')"
-               th:text="#{dashboard.descripcion.usuario}">
-                Consulte la información disponible del catálogo
-                de medicamentos de la farmacia.
-            </p>
+        <p sec:authorize="hasRole('EMPLEADO')"
+           th:text="#{dashboard.descripcion.empleado}">
+            Gestione clientes, consulte el inventario y acceda
+            a las ventas y facturas de la farmacia.
+        </p>
 
-        </section>
+    </section>
 
-        <section class="mb-5">
+    <section class="mb-5">
 
-            <span class="subtitulo-seccion"
-                  th:text="#{dashboard.kpi.subtitulo}">
-                Resumen general
-            </span>
+        <span class="subtitulo-seccion"
+              th:text="#{dashboard.kpi.subtitulo}">
+            Resumen general
+        </span>
 
-            <div class="row g-4 mt-0">
+        <div class="row g-4 mt-0">
 
-                <div class="col-6 col-xl-3">
+            <div class="col-6 col-xl-3">
 
-                    <div class="tarjeta-kpi">
+                <div class="tarjeta-kpi">
 
-                        <span class="kpi-icono" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="18" height="18" focusable="false">
-                                <rect x="2.6" y="7.1" width="14.8" height="5.8" rx="2.9"
-                                      transform="rotate(-38 10 10)" stroke="currentColor"
-                                      stroke-width="1.6" fill="none"></rect>
-                                <path d="M7.7 7.1 L12.3 12.9" stroke="currentColor"
-                                      stroke-width="1.6" stroke-linecap="round" fill="none"></path>
-                            </svg>
+                    <span class="kpi-icono"
+                          aria-hidden="true">
+
+                        <svg viewBox="0 0 20 20"
+                             width="18"
+                             height="18"
+                             focusable="false">
+
+                            <rect x="2.6"
+                                  y="7.1"
+                                  width="14.8"
+                                  height="5.8"
+                                  rx="2.9"
+                                  transform="rotate(-38 10 10)"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  fill="none">
+                            </rect>
+
+                            <path d="M7.7 7.1 L12.3 12.9"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
+
+                        </svg>
+
+                    </span>
+
+                    <div class="kpi-datos">
+
+                        <span class="kpi-etiqueta"
+                              th:text="#{dashboard.kpi.medicamentos}">
+                            Medicamentos en catálogo
                         </span>
 
-                        <div class="kpi-datos">
-                            <span class="kpi-etiqueta"
-                                  th:text="#{dashboard.kpi.medicamentos}">
-                                Medicamentos en catálogo
-                            </span>
-                            <span class="kpi-valor" th:text="${totalMedicamentos}">0</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-6 col-xl-3">
-
-                    <div class="tarjeta-kpi">
-
-                        <span class="kpi-icono kpi-icono-alerta" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="18" height="18" focusable="false">
-                                <path d="M10 3 L18 16.5 H2 Z" stroke="currentColor"
-                                      stroke-width="1.6" stroke-linejoin="round" fill="none"></path>
-                                <path d="M10 8 V11.5" stroke="currentColor" stroke-width="1.6"
-                                      stroke-linecap="round" fill="none"></path>
-                                <circle cx="10" cy="14" r="0.9" fill="currentColor"></circle>
-                            </svg>
+                        <span class="kpi-valor"
+                              th:text="${totalMedicamentos}">
+                            0
                         </span>
-
-                        <div class="kpi-datos">
-
-                            <span class="kpi-etiqueta"
-                                  th:text="#{dashboard.kpi.stock.bajo}">
-                                Con stock bajo
-                            </span>
-
-                            <span class="kpi-valor" th:text="${medicamentosStockBajo}">0</span>
-
-                            <span class="kpi-estado kpi-estado-alerta"
-                                  th:if="${medicamentosStockBajo > 0}">
-
-                                <svg viewBox="0 0 20 20" width="11" height="11"
-                                     aria-hidden="true" focusable="false">
-                                    <path d="M10 3 L18 16.5 H2 Z" stroke="currentColor"
-                                          stroke-width="2" stroke-linejoin="round" fill="none"></path>
-                                </svg>
-
-                                <span th:text="#{dashboard.kpi.stock.bajo.estado}">
-                                    Requiere reposición
-                                </span>
-
-                            </span>
-
-                            <span class="kpi-estado kpi-estado-ok"
-                                  th:unless="${medicamentosStockBajo > 0}">
-
-                                <svg viewBox="0 0 20 20" width="11" height="11"
-                                     aria-hidden="true" focusable="false">
-                                    <path d="M3.5 10.5 L8 15 L16.5 5.5" stroke="currentColor"
-                                          stroke-width="2.4" stroke-linecap="round"
-                                          stroke-linejoin="round" fill="none"></path>
-                                </svg>
-
-                                <span th:text="#{dashboard.kpi.stock.ok}">
-                                    Inventario saludable
-                                </span>
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-6 col-xl-3"
-                     sec:authorize="hasRole('ADMIN')">
-
-                    <div class="tarjeta-kpi">
-
-                        <span class="kpi-icono kpi-icono-info" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="18" height="18" focusable="false">
-                                <circle cx="7.5" cy="6.5" r="2.7" stroke="currentColor"
-                                        stroke-width="1.6" fill="none"></circle>
-                                <path d="M2.8 16 c0-3 2.1-4.6 4.7-4.6 s4.7 1.6 4.7 4.6"
-                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                                      fill="none"></path>
-                                <path d="M13.4 9.2 a2.7 2.7 0 1 0-1.8-4.9 M13.6 11.5 c2.3.2 3.8 1.8 3.8 4.5"
-                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                                      fill="none"></path>
-                            </svg>
-                        </span>
-
-                        <div class="kpi-datos">
-                            <span class="kpi-etiqueta"
-                                  th:text="#{dashboard.kpi.clientes}">
-                                Clientes registrados
-                            </span>
-                            <span class="kpi-valor" th:text="${totalClientes}">0</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-6 col-xl-3"
-                     sec:authorize="hasRole('ADMIN')">
-
-                    <div class="tarjeta-kpi">
-
-                        <span class="kpi-icono kpi-icono-info" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="18" height="18" focusable="false">
-                                <path d="M2.5 5 H12 V13.5 H2.5 Z M12 8 H15.5 L17.5 10.5 V13.5 H12"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"
-                                      fill="none"></path>
-                                <circle cx="6" cy="15" r="1.4" fill="currentColor"></circle>
-                                <circle cx="14.5" cy="15" r="1.4" fill="currentColor"></circle>
-                            </svg>
-                        </span>
-
-                        <div class="kpi-datos">
-                            <span class="kpi-etiqueta"
-                                  th:text="#{dashboard.kpi.proveedores}">
-                                Proveedores activos
-                            </span>
-                            <span class="kpi-valor" th:text="${totalProveedores}">0</span>
-                        </div>
 
                     </div>
 
@@ -197,320 +108,631 @@
 
             </div>
 
-        </section>
+            <div class="col-6 col-xl-3">
 
-        <section class="mb-4">
+                <div class="tarjeta-kpi">
 
-            <span class="subtitulo-seccion"
-                  th:text="#{dashboard.modulos.subtitulo}">
-                Módulos disponibles
-            </span>
+                    <span class="kpi-icono kpi-icono-alerta"
+                          aria-hidden="true">
 
-            <h2 class="titulo-seccion"
-                th:text="#{dashboard.modulos.titulo}">
-                Área de trabajo
-            </h2>
+                        <svg viewBox="0 0 20 20"
+                             width="18"
+                             height="18"
+                             focusable="false">
 
-        </section>
+                            <path d="M10 3 L18 16.5 H2 Z"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linejoin="round"
+                                  fill="none">
+                            </path>
 
-        <section class="row g-4">
+                            <path d="M10 8 V11.5"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
 
-            <div class="col-md-6 col-lg-4"
-                 sec:authorize="hasRole('ADMIN')">
+                            <circle cx="10"
+                                    cy="14"
+                                    r="0.9"
+                                    fill="currentColor">
+                            </circle>
 
-                <article class="card tarjeta-modulo h-100">
+                        </svg>
 
-                    <div class="card-body">
+                    </span>
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <rect x="2.6" y="7.1" width="14.8" height="5.8" rx="2.9"
-                                      transform="rotate(-38 10 10)" stroke="currentColor"
-                                      stroke-width="1.6" fill="none"></rect>
-                                <path d="M7.7 7.1 L12.3 12.9" stroke="currentColor"
-                                      stroke-width="1.6" stroke-linecap="round" fill="none"></path>
-                            </svg>
+                    <div class="kpi-datos">
+
+                        <span class="kpi-etiqueta"
+                              th:text="#{dashboard.kpi.stock.bajo}">
+                            Con stock bajo
                         </span>
 
-                        <h3 class="card-title"
-                            th:text="#{medicamento.titulo}">
-                            Medicamentos
-                        </h3>
+                        <span class="kpi-valor"
+                              th:text="${medicamentosStockBajo}">
+                            0
+                        </span>
 
-                        <p class="card-text"
-                           th:text="#{dashboard.medicamentos.descripcion.admin}">
-                            Administre el catálogo de productos farmacéuticos,
-                            precios, presentaciones y datos generales.
-                        </p>
+                        <span class="kpi-estado kpi-estado-alerta"
+                              th:if="${medicamentosStockBajo > 0}">
 
-                        <a th:href="@{/medicamentos}"
-                           class="btn btn-farmacia"
-                           th:text="#{dashboard.medicamentos.boton.admin}">
-                            Abrir medicamentos
-                        </a>
+                            <svg viewBox="0 0 20 20"
+                                 width="11"
+                                 height="11"
+                                 aria-hidden="true"
+                                 focusable="false">
+
+                                <path d="M10 3 L18 16.5 H2 Z"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      stroke-linejoin="round"
+                                      fill="none">
+                                </path>
+
+                            </svg>
+
+                            <span th:text="#{dashboard.kpi.stock.bajo.estado}">
+                                Requiere reposición
+                            </span>
+
+                        </span>
+
+                        <span class="kpi-estado kpi-estado-ok"
+                              th:unless="${medicamentosStockBajo > 0}">
+
+                            <svg viewBox="0 0 20 20"
+                                 width="11"
+                                 height="11"
+                                 aria-hidden="true"
+                                 focusable="false">
+
+                                <path d="M3.5 10.5 L8 15 L16.5 5.5"
+                                      stroke="currentColor"
+                                      stroke-width="2.4"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      fill="none">
+                                </path>
+
+                            </svg>
+
+                            <span th:text="#{dashboard.kpi.stock.ok}">
+                                Inventario saludable
+                            </span>
+
+                        </span>
 
                     </div>
 
-                </article>
+                </div>
 
             </div>
 
-            <div class="col-lg-12"
-                 sec:authorize="hasRole('USER')">
+            <div class="col-6 col-xl-3"
+                 sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
 
-                <article class="card tarjeta-modulo">
+                <div class="tarjeta-kpi">
 
-                    <div class="card-body">
+                    <span class="kpi-icono kpi-icono-info"
+                          aria-hidden="true">
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <rect x="2.6" y="7.1" width="14.8" height="5.8" rx="2.9"
-                                      transform="rotate(-38 10 10)" stroke="currentColor"
-                                      stroke-width="1.6" fill="none"></rect>
-                                <path d="M7.7 7.1 L12.3 12.9" stroke="currentColor"
-                                      stroke-width="1.6" stroke-linecap="round" fill="none"></path>
-                            </svg>
+                        <svg viewBox="0 0 20 20"
+                             width="18"
+                             height="18"
+                             focusable="false">
+
+                            <circle cx="7.5"
+                                    cy="6.5"
+                                    r="2.7"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    fill="none">
+                            </circle>
+
+                            <path d="M2.8 16 c0-3 2.1-4.6 4.7-4.6 s4.7 1.6 4.7 4.6"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
+
+                            <path d="M13.4 9.2 a2.7 2.7 0 1 0-1.8-4.9 M13.6 11.5 c2.3.2 3.8 1.8 3.8 4.5"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
+
+                        </svg>
+
+                    </span>
+
+                    <div class="kpi-datos">
+
+                        <span class="kpi-etiqueta"
+                              th:text="#{dashboard.kpi.clientes}">
+                            Clientes registrados
                         </span>
 
-                        <span class="etiqueta-modulo"
-                              th:text="#{dashboard.medicamentos.etiqueta.usuario}">
-                            Catálogo disponible
+                        <span class="kpi-valor"
+                              th:text="${totalClientes}">
+                            0
                         </span>
-
-                        <h3 class="card-title"
-                            th:text="#{medicamento.titulo}">
-                            Medicamentos
-                        </h3>
-
-                        <p class="card-text"
-                           th:text="#{dashboard.medicamentos.descripcion.usuario}">
-                            Consulte los medicamentos disponibles,
-                            sus precios y la información registrada.
-                        </p>
-
-                        <a th:href="@{/shop}"
-                           class="btn btn-farmacia"
-                           th:text="#{shop.titulo}">
-                            Tienda
-                        </a>
 
                     </div>
 
-                </article>
+                </div>
 
             </div>
 
-            <div class="col-md-6 col-lg-4"
+            <div class="col-6 col-xl-3"
                  sec:authorize="hasRole('ADMIN')">
 
-                <article class="card tarjeta-modulo h-100">
+                <div class="tarjeta-kpi">
 
-                    <div class="card-body">
+                    <span class="kpi-icono kpi-icono-info"
+                          aria-hidden="true">
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <circle cx="7.5" cy="6.5" r="2.7" stroke="currentColor"
-                                        stroke-width="1.6" fill="none"></circle>
-                                <path d="M2.8 16 c0-3 2.1-4.6 4.7-4.6 s4.7 1.6 4.7 4.6"
-                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                                      fill="none"></path>
-                                <path d="M13.4 9.2 a2.7 2.7 0 1 0-1.8-4.9 M13.6 11.5 c2.3.2 3.8 1.8 3.8 4.5"
-                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                                      fill="none"></path>
-                            </svg>
+                        <svg viewBox="0 0 20 20"
+                             width="18"
+                             height="18"
+                             focusable="false">
+
+                            <path d="M2.5 5 H12 V13.5 H2.5 Z M12 8 H15.5 L17.5 10.5 V13.5 H12"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linejoin="round"
+                                  fill="none">
+                            </path>
+
+                            <circle cx="6"
+                                    cy="15"
+                                    r="1.4"
+                                    fill="currentColor">
+                            </circle>
+
+                            <circle cx="14.5"
+                                    cy="15"
+                                    r="1.4"
+                                    fill="currentColor">
+                            </circle>
+
+                        </svg>
+
+                    </span>
+
+                    <div class="kpi-datos">
+
+                        <span class="kpi-etiqueta"
+                              th:text="#{dashboard.kpi.proveedores}">
+                            Proveedores activos
                         </span>
 
-                        <h3 class="card-title"
-                            th:text="#{cliente.titulo}">
-                            Clientes
-                        </h3>
-
-                        <p class="card-text"
-                           th:text="#{dashboard.clientes.descripcion}">
-                            Registre y consulte la información de los clientes.
-                        </p>
-
-                        <a th:href="@{/clientes}"
-                           class="btn btn-outline-farmacia"
-                           th:text="#{dashboard.clientes.boton}">
-                            Ver clientes
-                        </a>
+                        <span class="kpi-valor"
+                              th:text="${totalProveedores}">
+                            0
+                        </span>
 
                     </div>
 
-                </article>
+                </div>
 
             </div>
 
-            <div class="col-md-6 col-lg-4"
-                 sec:authorize="hasRole('ADMIN')">
+        </div>
 
-                <article class="card tarjeta-modulo h-100">
+    </section>
 
-                    <div class="card-body">
+    <section class="mb-4">
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <path d="M2.5 5 H12 V13.5 H2.5 Z M12 8 H15.5 L17.5 10.5 V13.5 H12"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"
-                                      fill="none"></path>
-                                <circle cx="6" cy="15" r="1.4" fill="currentColor"></circle>
-                                <circle cx="14.5" cy="15" r="1.4" fill="currentColor"></circle>
-                            </svg>
-                        </span>
+        <span class="subtitulo-seccion"
+              th:text="#{dashboard.modulos.subtitulo}">
+            Módulos disponibles
+        </span>
 
-                        <h3 class="card-title"
-                            th:text="#{proveedor.titulo}">
-                            Proveedores
-                        </h3>
+        <h2 class="titulo-seccion"
+            th:text="#{dashboard.modulos.titulo}">
+            Área de trabajo
+        </h2>
 
-                        <p class="card-text"
-                           th:text="#{dashboard.proveedores.descripcion}">
-                            Mantenga actualizados los contactos de distribuidores
-                            y proveedores de la farmacia.
-                        </p>
+    </section>
 
-                        <a th:href="@{/proveedores}"
-                           class="btn btn-outline-farmacia"
-                           th:text="#{dashboard.proveedores.boton}">
-                            Ver proveedores
-                        </a>
+    <section class="row g-4">
 
-                    </div>
+        <div class="col-md-6 col-lg-4"
+             sec:authorize="hasRole('ADMIN')">
 
-                </article>
+            <article class="card tarjeta-modulo h-100">
 
-            </div>
+                <div class="card-body">
 
-            <div class="col-md-6 col-lg-4"
-                 sec:authorize="hasRole('ADMIN')">
+                    <span class="icono-modulo"
+                          aria-hidden="true">
 
-                <article class="card tarjeta-modulo h-100">
+                        <svg viewBox="0 0 20 20"
+                             width="20"
+                             height="20"
+                             focusable="false">
 
-                    <div class="card-body">
+                            <rect x="2.6"
+                                  y="7.1"
+                                  width="14.8"
+                                  height="5.8"
+                                  rx="2.9"
+                                  transform="rotate(-38 10 10)"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  fill="none">
+                            </rect>
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <path d="M3 6.5 L10 3 L17 6.5 V13.5 L10 17 L3 13.5 Z M3 6.5 L10 10 L17 6.5 M10 10 V17"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"
-                                      fill="none"></path>
-                            </svg>
-                        </span>
+                            <path d="M7.7 7.1 L12.3 12.9"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
 
-                        <h3 class="card-title"
-                            th:text="#{nav.inventario}">
-                            Inventario
-                        </h3>
+                        </svg>
 
-                        <p class="card-text"
-                           th:text="#{dashboard.inventario.descripcion}">
-                            Consulte existencias, movimientos y alertas de bajo stock.
-                        </p>
+                    </span>
 
-                        <a th:href="@{/inventario}"
-                           class="btn btn-outline-farmacia"
-                           th:text="#{dashboard.inventario.boton}">
-                            Revisar inventario
-                        </a>
+                    <h3 class="card-title"
+                        th:text="#{medicamento.titulo}">
+                        Medicamentos
+                    </h3>
 
-                    </div>
+                    <p class="card-text"
+                       th:text="#{dashboard.medicamentos.descripcion.admin}">
+                        Administre el catálogo de productos farmacéuticos,
+                        precios, presentaciones y datos generales.
+                    </p>
 
-                </article>
+                    <a th:href="@{/medicamentos}"
+                       class="btn btn-farmacia"
+                       th:text="#{dashboard.medicamentos.boton.admin}">
+                        Abrir medicamentos
+                    </a>
 
-            </div>
+                </div>
 
-            <div class="col-md-6 col-lg-4"
-                 sec:authorize="hasRole('ADMIN')">
+            </article>
 
-                <article class="card tarjeta-modulo h-100">
+        </div>
 
-                    <div class="card-body">
+        <div class="col-md-6 col-lg-4"
+             sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
 
-                        <span class="icono-modulo" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" width="20" height="20" focusable="false">
-                                <path d="M5 2.8 H15 V17 l-2-1.3 -1.7 1.3 -1.3-1.3 -1.3 1.3 -1.7-1.3 -2 1.3 Z"
-                                      stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"
-                                      fill="none"></path>
-                                <path d="M7.5 7 H12.5 M7.5 10 H12.5" stroke="currentColor"
-                                      stroke-width="1.5" stroke-linecap="round" fill="none"></path>
-                            </svg>
-                        </span>
+            <article class="card tarjeta-modulo h-100">
 
-                        <h3 class="card-title"
-                            th:text="#{nav.facturas}">
-                            Facturas
-                        </h3>
+                <div class="card-body">
 
-                        <p class="card-text"
-                           th:text="#{dashboard.facturas.descripcion}">
-                            Registre ventas y consulte las facturas generadas.
-                        </p>
+                    <span class="icono-modulo"
+                          aria-hidden="true">
 
-                        <a th:href="@{/facturas}"
-                           class="btn btn-outline-farmacia"
-                           th:text="#{dashboard.facturas.boton}">
-                            Ir a facturación
-                        </a>
+                        <svg viewBox="0 0 20 20"
+                             width="20"
+                             height="20"
+                             focusable="false">
 
-                    </div>
+                            <circle cx="7.5"
+                                    cy="6.5"
+                                    r="2.7"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    fill="none">
+                            </circle>
 
-                </article>
+                            <path d="M2.8 16 c0-3 2.1-4.6 4.7-4.6 s4.7 1.6 4.7 4.6"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
 
-            </div>
+                            <path d="M13.4 9.2 a2.7 2.7 0 1 0-1.8-4.9 M13.6 11.5 c2.3.2 3.8 1.8 3.8 4.5"
+                                  stroke="currentColor"
+                                  stroke-width="1.6"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
 
-            <div class="col-lg-12"
-                 sec:authorize="hasRole('ADMIN')">
+                        </svg>
 
-                <article class="card tarjeta-reporte">
+                    </span>
 
-                    <div class="card-body">
+                    <span class="etiqueta-modulo"
+                          sec:authorize="hasRole('EMPLEADO')"
+                          th:text="#{dashboard.empleado.etiqueta}">
+                        Operación de farmacia
+                    </span>
 
-                        <div class="row align-items-center">
+                    <h3 class="card-title"
+                        th:text="#{cliente.titulo}">
+                        Clientes
+                    </h3>
 
-                            <div class="col-lg-8">
+                    <p class="card-text"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.clientes.descripcion}">
+                        Registre y consulte la información de los clientes.
+                    </p>
 
-                                <span class="subtitulo-seccion"
-                                      th:text="#{dashboard.reportes.subtitulo}">
-                                    Análisis del sistema
-                                </span>
+                    <p class="card-text"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.clientes.descripcion}">
+                        Registre y consulte clientes para las ventas de la farmacia.
+                    </p>
 
-                                <h3 th:text="#{dashboard.reportes.titulo}">
-                                    Reportes de ventas
-                                </h3>
+                    <a th:href="@{/clientes}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.clientes.boton}">
+                        Ver clientes
+                    </a>
 
-                                <p class="mb-lg-0"
-                                   th:text="#{dashboard.reportes.descripcion}">
-                                    Consulte ventas registradas, medicamentos con
-                                    mayor movimiento y resultados generales de la farmacia.
-                                </p>
+                    <a th:href="@{/clientes}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.clientes.boton}">
+                        Abrir clientes
+                    </a>
 
-                            </div>
+                </div>
 
-                            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+            </article>
 
-                                <a th:href="@{/reportes}"
-                                   class="btn btn-farmacia"
-                                   th:text="#{dashboard.reportes.boton}">
-                                    Consultar reportes
-                                </a>
+        </div>
 
-                            </div>
+        <div class="col-md-6 col-lg-4"
+             sec:authorize="hasRole('ADMIN')">
+
+            <article class="card tarjeta-modulo h-100">
+
+                <div class="card-body">
+
+                    <span class="icono-modulo"
+                          aria-hidden="true">
+
+                        <svg viewBox="0 0 20 20"
+                             width="20"
+                             height="20"
+                             focusable="false">
+
+                            <path d="M2.5 5 H12 V13.5 H2.5 Z M12 8 H15.5 L17.5 10.5 V13.5 H12"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linejoin="round"
+                                  fill="none">
+                            </path>
+
+                            <circle cx="6"
+                                    cy="15"
+                                    r="1.4"
+                                    fill="currentColor">
+                            </circle>
+
+                            <circle cx="14.5"
+                                    cy="15"
+                                    r="1.4"
+                                    fill="currentColor">
+                            </circle>
+
+                        </svg>
+
+                    </span>
+
+                    <h3 class="card-title"
+                        th:text="#{proveedor.titulo}">
+                        Proveedores
+                    </h3>
+
+                    <p class="card-text"
+                       th:text="#{dashboard.proveedores.descripcion}">
+                        Mantenga actualizados los contactos de distribuidores
+                        y proveedores de la farmacia.
+                    </p>
+
+                    <a th:href="@{/proveedores}"
+                       class="btn btn-outline-farmacia"
+                       th:text="#{dashboard.proveedores.boton}">
+                        Ver proveedores
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+             sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
+
+            <article class="card tarjeta-modulo h-100">
+
+                <div class="card-body">
+
+                    <span class="icono-modulo"
+                          aria-hidden="true">
+
+                        <svg viewBox="0 0 20 20"
+                             width="20"
+                             height="20"
+                             focusable="false">
+
+                            <path d="M3 6.5 L10 3 L17 6.5 V13.5 L10 17 L3 13.5 Z M3 6.5 L10 10 L17 6.5 M10 10 V17"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linejoin="round"
+                                  fill="none">
+                            </path>
+
+                        </svg>
+
+                    </span>
+
+                    <h3 class="card-title"
+                        th:text="#{nav.inventario}">
+                        Inventario
+                    </h3>
+
+                    <p class="card-text"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.inventario.descripcion}">
+                        Consulte existencias, movimientos y alertas de bajo stock.
+                    </p>
+
+                    <p class="card-text"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.inventario.descripcion}">
+                        Consulte el stock actual e identifique medicamentos que necesitan reposición.
+                    </p>
+
+                    <a th:href="@{/inventario}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.inventario.boton}">
+                        Revisar inventario
+                    </a>
+
+                    <a th:href="@{/inventario}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.inventario.boton}">
+                        Abrir inventario
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4"
+             sec:authorize="hasAnyRole('ADMIN','EMPLEADO')">
+
+            <article class="card tarjeta-modulo h-100">
+
+                <div class="card-body">
+
+                    <span class="icono-modulo"
+                          aria-hidden="true">
+
+                        <svg viewBox="0 0 20 20"
+                             width="20"
+                             height="20"
+                             focusable="false">
+
+                            <path d="M5 2.8 H15 V17 l-2-1.3 -1.7 1.3 -1.3-1.3 -1.3 1.3 -1.7-1.3 -2 1.3 Z"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linejoin="round"
+                                  fill="none">
+                            </path>
+
+                            <path d="M7.5 7 H12.5 M7.5 10 H12.5"
+                                  stroke="currentColor"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  fill="none">
+                            </path>
+
+                        </svg>
+
+                    </span>
+
+                    <h3 class="card-title"
+                        th:text="#{nav.facturas}">
+                        Facturas
+                    </h3>
+
+                    <p class="card-text"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.facturas.descripcion}">
+                        Registre ventas y consulte las facturas generadas.
+                    </p>
+
+                    <p class="card-text"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.facturas.descripcion}">
+                        Consulte las ventas anteriores y las facturas generadas.
+                    </p>
+
+                    <a th:href="@{/facturas}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('ADMIN')"
+                       th:text="#{dashboard.facturas.boton}">
+                        Ir a facturación
+                    </a>
+
+                    <a th:href="@{/facturas}"
+                       class="btn btn-outline-farmacia"
+                       sec:authorize="hasRole('EMPLEADO')"
+                       th:text="#{dashboard.empleado.facturas.boton}">
+                        Abrir facturas
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <div class="col-lg-12"
+             sec:authorize="hasRole('ADMIN')">
+
+            <article class="card tarjeta-reporte">
+
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-lg-8">
+
+                            <span class="subtitulo-seccion"
+                                  th:text="#{dashboard.reportes.subtitulo}">
+                                Análisis del sistema
+                            </span>
+
+                            <h3 th:text="#{dashboard.reportes.titulo}">
+                                Reportes de ventas
+                            </h3>
+
+                            <p class="mb-lg-0"
+                               th:text="#{dashboard.reportes.descripcion}">
+                                Consulte ventas registradas, medicamentos con
+                                mayor movimiento y resultados generales de la farmacia.
+                            </p>
+
+                        </div>
+
+                        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+                            <a th:href="@{/reportes}"
+                               class="btn btn-farmacia"
+                               th:text="#{dashboard.reportes.boton}">
+                                Consultar reportes
+                            </a>
 
                         </div>
 
                     </div>
 
-                </article>
+                </div>
 
-            </div>
+            </article>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
+</main>
 
-    <div th:replace="~{fragments/head :: bootstrap-js}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
 
 </body>
 

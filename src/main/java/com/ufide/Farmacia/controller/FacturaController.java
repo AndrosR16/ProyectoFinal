@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ufide.Farmacia.dto.FacturaForm;
@@ -44,29 +45,53 @@ public class FacturaController {
     @GetMapping
     public String listar(Model model, Authentication auth) {
 
-        model.addAttribute(
-                "facturas",
-                esAdmin(auth)
-                        ? ventaService.listarTodas()
-                        : ventaService.listarDeUsuario(auth.getName()));
+        if (esPersonalFarmacia(auth)) {
+
+            model.addAttribute(
+                    "facturas",
+                    ventaService.listarTodas()
+            );
+
+        } else {
+
+            model.addAttribute(
+                    "facturas",
+                    ventaService.listarDeUsuario(auth.getName())
+            );
+        }
 
         return "factura/lista";
     }
 
     @GetMapping("/nueva")
-    public String mostrarCheckout(Model model, RedirectAttributes redirectAttributes) {
+    public String mostrarCheckout(
+            Model model,
+            RedirectAttributes redirectAttributes) {
 
         if (carritoService.estaVacio()) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    mensaje("flash.factura.carrito.vacio"));
+                    mensaje("flash.factura.carrito.vacio")
+            );
 
             return "redirect:/carrito";
         }
 
-        model.addAttribute("facturaForm", new FacturaForm());
-        model.addAttribute("items", carritoService.listar());
-        model.addAttribute("total", carritoService.calcularTotal());
+        model.addAttribute(
+                "facturaForm",
+                new FacturaForm()
+        );
+
+        model.addAttribute(
+                "items",
+                carritoService.listar()
+        );
+
+        model.addAttribute(
+                "total",
+                carritoService.calcularTotal()
+        );
 
         return "factura/checkout";
     }
@@ -80,31 +105,49 @@ public class FacturaController {
             RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            model.addAttribute("items", carritoService.listar());
-            model.addAttribute("total", carritoService.calcularTotal());
+
+            model.addAttribute(
+                    "items",
+                    carritoService.listar()
+            );
+
+            model.addAttribute(
+                    "total",
+                    carritoService.calcularTotal()
+            );
+
             return "factura/checkout";
         }
 
         try {
-            Venta venta = ventaService.generarFactura(form, auth.getName());
+
+            Venta venta = ventaService.generarFactura(
+                    form,
+                    auth.getName()
+            );
 
             redirectAttributes.addFlashAttribute(
                     "ok",
-                    mensaje("flash.factura.generada"));
+                    mensaje("flash.factura.generada")
+            );
 
             return "redirect:/facturas/" + venta.getId();
 
         } catch (CarritoVacioException ex) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    mensaje("flash.factura.carrito.vacio"));
+                    mensaje("flash.factura.carrito.vacio")
+            );
 
             return "redirect:/carrito";
 
         } catch (StockInsuficienteException ex) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    mensaje("flash.factura.stock.insuficiente"));
+                    mensaje("flash.factura.stock.insuficiente")
+            );
 
             return "redirect:/carrito";
         }
@@ -117,36 +160,97 @@ public class FacturaController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
-        Venta venta = ventaService.buscarPorId(id).orElse(null);
+        Venta venta = ventaService
+                .buscarPorId(id)
+                .orElse(null);
 
         if (venta == null) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    mensaje("flash.factura.no.encontrada"));
+                    mensaje("flash.factura.no.encontrada")
+            );
 
             return "redirect:/facturas";
         }
 
-        if (!esAdmin(auth) && !venta.getUsuarioRegistro().equals(auth.getName())) {
+        if (!esPersonalFarmacia(auth)
+                && !venta.getUsuarioRegistro().equals(auth.getName())) {
+
             redirectAttributes.addFlashAttribute(
                     "error",
-                    mensaje("flash.factura.sin.acceso"));
+                    mensaje("flash.factura.sin.acceso")
+            );
 
             return "redirect:/facturas";
         }
 
-        model.addAttribute("factura", venta);
+        model.addAttribute(
+                "factura",
+                venta
+        );
 
         return "factura/detalle";
     }
 
+    @PostMapping("/{id}/anular")
+    public String anularFactura(
+            @PathVariable Long id,
+            @RequestParam String motivo,
+            Authentication auth,
+            RedirectAttributes redirectAttributes) {
+
+        if (!esAdmin(auth)) {
+            return "redirect:/acceso-denegado";
+        }
+
+        try {
+
+            ventaService.anularFactura(
+                    id,
+                    motivo
+            );
+
+            redirectAttributes.addFlashAttribute(
+                    "ok",
+                    "La factura fue anulada correctamente y el inventario fue restaurado."
+            );
+
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    ex.getMessage()
+            );
+        }
+
+        return "redirect:/facturas/" + id;
+    }
+
+    private boolean esPersonalFarmacia(Authentication auth) {
+
+        return auth.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(rol ->
+                        rol.equals("ROLE_ADMIN")
+                                || rol.equals("ROLE_EMPLEADO"));
+    }
+
     private boolean esAdmin(Authentication auth) {
-        return auth.getAuthorities().stream()
+
+        return auth.getAuthorities()
+                .stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch("ROLE_ADMIN"::equals);
     }
 
     private String mensaje(String clave) {
-        return messageSource.getMessage(clave, null, LocaleContextHolder.getLocale());
+
+        return messageSource.getMessage(
+                clave,
+                null,
+                LocaleContextHolder.getLocale()
+        );
     }
 }

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{reporte.titulo.pagina}">
+        Reportes - Farmacia Vida
+    </title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container py-5">
+
+    <section class="encabezado-pagina mb-4">
+
+        <span class="insignia-proveedor mb-2"
+              th:text="#{reporte.insignia}">
+            Análisis de ventas
+        </span>
+
+        <h1 th:text="#{reporte.titulo}">
+            Reportes
+        </h1>
+
+        <p th:text="#{reporte.subtitulo}">
+            Consulte las ventas diarias y los medicamentos más vendidos.
+        </p>
+
+    </section>
+
+    <section class="card formulario-farmacia mb-4">
+
+        <div class="card-body">
+
+            <h4 class="mb-3"
+                th:text="#{reporte.ventas.dia}">
+                Ventas por día
+            </h4>
+
+            <form th:action="@{/reportes}"
+                  method="get"
+                  class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+
+                    <label for="fecha"
+                           class="form-label"
+                           th:text="#{reporte.fecha}">
+                        Fecha
+                    </label>
+
+                    <input type="date"
+                           id="fecha"
+                           name="fecha"
+                           class="form-control"
+                           th:value="${fecha}">
+
+                </div>
+
+                <input type="hidden"
+                       name="desde"
+                       th:value="${desde}">
+
+                <input type="hidden"
+                       name="hasta"
+                       th:value="${hasta}">
+
+                <div class="col-md-auto">
+
+                    <button type="submit"
+                            class="btn btn-farmacia"
+                            th:text="#{reporte.consultar}">
+                        Consultar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <section class="row g-3 mb-4">
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <span class="text-muted small"
+                          th:text="#{reporte.ventas.realizadas}">
+                        Ventas realizadas
+                    </span>
+
+                    <h3 class="mb-0"
+                        th:text="${#lists.size(ventasDia)}">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <span class="text-muted small"
+                          th:text="#{reporte.total.vendido}">
+                        Total vendido
+                    </span>
+
+                    <h3 class="mb-0">
+
+                        ₡<span th:text="${#numbers.formatDecimal(totalDia, 1, 2)}">
+                            0.00
+                        </span>
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="contenedor-tabla mb-5">
+
+        <div class="table-responsive">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+
+                <tr>
+
+                    <th th:text="#{reporte.columna.factura}">
+                        Factura
+                    </th>
+
+                    <th th:text="#{reporte.columna.fecha}">
+                        Fecha
+                    </th>
+
+                    <th th:text="#{reporte.columna.comprador}">
+                        Comprador
+                    </th>
+
+                    <th th:text="#{reporte.columna.registrada}">
+                        Registrada por
+                    </th>
+
+                    <th th:text="#{reporte.columna.total}">
+                        Total
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{reporte.columna.detalle}">
+                        Detalle
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="venta : ${ventasDia}">
+
+                    <td>
+
+                        <span class="nombre-proveedor"
+                              th:text="'FV-' + ${#numbers.formatInteger(venta.id, 6)}">
+                            FV-000001
+                        </span>
+
+                    </td>
+
+                    <td th:text="${venta.fechaFormateada}">
+                    </td>
+
+                    <td th:text="${venta.compradorNombre}">
+                    </td>
+
+                    <td th:text="${venta.usuarioNombre != null ? venta.usuarioNombre : venta.usuarioRegistro}">
+                    </td>
+
+                    <td>
+
+                        ₡<span th:text="${#numbers.formatDecimal(venta.total, 1, 2)}">
+                            0.00
+                        </span>
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a th:href="@{/facturas/{id}(id=${venta.id})}"
+                           class="btn btn-editar btn-sm"
+                           th:text="#{reporte.ver}">
+                            Ver
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(ventasDia)}">
+
+                    <td colspan="6">
+
+                        <div class="estado-vacio">
+
+                            <h3 th:text="#{reporte.sin.ventas.titulo}">
+                                No hay ventas para esta fecha
+                            </h3>
+
+                            <p th:text="#{reporte.sin.ventas.mensaje}">
+                                Seleccione otra fecha para consultar las ventas registradas.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <section class="card formulario-farmacia mb-4">
+
+        <div class="card-body">
+
+            <h4 class="mb-3"
+                th:text="#{reporte.mas.vendidos}">
+                Medicamentos más vendidos
+            </h4>
+
+            <form th:action="@{/reportes}"
+                  method="get"
+                  class="row g-3 align-items-end">
+
+                <input type="hidden"
+                       name="fecha"
+                       th:value="${fecha}">
+
+                <div class="col-md-4">
+
+                    <label for="desde"
+                           class="form-label"
+                           th:text="#{reporte.desde}">
+                        Desde
+                    </label>
+
+                    <input type="date"
+                           id="desde"
+                           name="desde"
+                           class="form-control"
+                           th:value="${desde}">
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <label for="hasta"
+                           class="form-label"
+                           th:text="#{reporte.hasta}">
+                        Hasta
+                    </label>
+
+                    <input type="date"
+                           id="hasta"
+                           name="hasta"
+                           class="form-control"
+                           th:value="${hasta}">
+
+                </div>
+
+                <div class="col-md-auto">
+
+                    <button type="submit"
+                            class="btn btn-farmacia"
+                            th:text="#{reporte.consultar}">
+                        Consultar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <section class="contenedor-tabla">
+
+        <div class="table-responsive">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+
+                <tr>
+
+                    <th th:text="#{reporte.posicion}">
+                        Posición
+                    </th>
+
+                    <th th:text="#{reporte.medicamento}">
+                        Medicamento
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{reporte.cantidad.vendida}">
+                        Cantidad vendida
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="medicamento, estado : ${medicamentosMasVendidos}">
+
+                    <td th:text="${estado.count}">
+                        1
+                    </td>
+
+                    <td>
+
+                        <span class="nombre-proveedor"
+                              th:text="${medicamento.nombre}">
+                            Medicamento
+                        </span>
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <span class="badge text-bg-success"
+                              th:text="${medicamento.cantidadVendida}">
+                            0
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(medicamentosMasVendidos)}">
+
+                    <td colspan="3">
+
+                        <div class="estado-vacio">
+
+                            <h3 th:text="#{reporte.sin.rango.titulo}">
+                                No hay ventas en el rango seleccionado
+                            </h3>
+
+                            <p th:text="#{reporte.sin.rango.mensaje}">
+                                Seleccione otro rango de fechas para consultar los medicamentos vendidos.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
+</body>
+
+</html>

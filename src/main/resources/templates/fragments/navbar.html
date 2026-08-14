@@ -17,9 +17,11 @@
                      width="18"
                      height="18"
                      focusable="false">
+
                     <path d="M8 2.5 h4 v5.5 H17.5 v4 H12 v5.5 H8 V12 H2.5 V8 H8 Z"
                           fill="currentColor">
                     </path>
+
                 </svg>
             </span>
 
@@ -33,8 +35,7 @@
                 type="button"
                 id="botonColapsarSidebar"
                 th:aria-label="#{nav.alternar.menu}"
-                th:title="#{nav.alternar.menu}"
-                aria-label="Colapsar o expandir el menú">
+                th:title="#{nav.alternar.menu}">
 
             <svg class="icono-colapso"
                  viewBox="0 0 20 20"
@@ -61,8 +62,7 @@
                 data-bs-target="#menuPrincipal"
                 aria-controls="menuPrincipal"
                 aria-expanded="false"
-                th:aria-label="#{nav.aria.mostrar.menu}"
-                aria-label="Mostrar menú">
+                th:aria-label="#{nav.aria.mostrar.menu}">
 
             <svg viewBox="0 0 20 20"
                  width="20"
@@ -83,7 +83,8 @@
 
     </div>
 
-    <div class="collapse sidebar-cuerpo" id="menuPrincipal">
+    <div class="collapse sidebar-cuerpo"
+         id="menuPrincipal">
 
         <nav class="sidebar-nav">
 
@@ -162,7 +163,7 @@
 
                     <a class="sidebar-enlace"
                        th:href="@{/dashboard}"
-                       title="Dashboard">
+                       th:title="#{nav.dashboard}">
 
                         <svg class="sidebar-icono"
                              viewBox="0 0 20 20"
@@ -211,7 +212,7 @@
 
                         </svg>
 
-                        <span>
+                        <span th:text="#{nav.dashboard}">
                             Dashboard
                         </span>
 
@@ -258,7 +259,7 @@
 
                     <a class="sidebar-enlace"
                        th:href="@{/facturas}"
-                       title="Mis compras">
+                       th:title="#{nav.mis.compras}">
 
                         <svg class="sidebar-icono"
                              viewBox="0 0 20 20"
@@ -281,7 +282,7 @@
 
                         </svg>
 
-                        <span>
+                        <span th:text="#{nav.mis.compras}">
                             Mis compras
                         </span>
 
@@ -304,7 +305,7 @@
 
                         <a class="sidebar-enlace"
                            th:href="@{/usuarios}"
-                           title="Usuarios">
+                           th:title="#{nav.usuarios}">
 
                             <svg class="sidebar-icono"
                                  viewBox="0 0 20 20"
@@ -343,7 +344,7 @@
 
                             </svg>
 
-                            <span>
+                            <span th:text="#{nav.usuarios}">
                                 Usuarios
                             </span>
 
@@ -553,6 +554,7 @@
                          focusable="false">
 
                         <g>
+
                             <rect width="20"
                                   height="14"
                                   rx="2"
@@ -564,6 +566,7 @@
                                   height="7"
                                   fill="#F1BF00">
                             </rect>
+
                         </g>
 
                     </svg>
@@ -577,10 +580,12 @@
                          focusable="false">
 
                         <clipPath id="clipBanderaEnBoton">
+
                             <rect width="20"
                                   height="14"
                                   rx="2">
                             </rect>
+
                         </clipPath>
 
                         <g clip-path="url(#clipBanderaEnBoton)">
@@ -627,8 +632,8 @@
                         <a class="dropdown-item enlace-idioma"
                            th:href="@{''(lang='es')}"
                            th:classappend="${#locale.language == 'es'} ? 'active'"
-                           aria-label="Español"
-                           title="Español">
+                           th:aria-label="#{nav.idioma.espanol}"
+                           th:title="#{nav.idioma.espanol}">
 
                             <svg class="bandera-icono"
                                  viewBox="0 0 20 14"
@@ -655,7 +660,7 @@
 
                             </svg>
 
-                            <span>
+                            <span th:text="#{nav.idioma.espanol}">
                                 Español
                             </span>
 
@@ -668,8 +673,8 @@
                         <a class="dropdown-item enlace-idioma"
                            th:href="@{''(lang='en')}"
                            th:classappend="${#locale.language == 'en'} ? 'active'"
-                           aria-label="English"
-                           title="English">
+                           th:aria-label="#{nav.idioma.ingles}"
+                           th:title="#{nav.idioma.ingles}">
 
                             <svg class="bandera-icono"
                                  viewBox="0 0 20 14"
@@ -679,10 +684,12 @@
                                  focusable="false">
 
                                 <clipPath id="clipBanderaEnMenu">
+
                                     <rect width="20"
                                           height="14"
                                           rx="2">
                                     </rect>
+
                                 </clipPath>
 
                                 <g clip-path="url(#clipBanderaEnMenu)">
@@ -716,7 +723,7 @@
 
                             </svg>
 
-                            <span>
+                            <span th:text="#{nav.idioma.ingles}">
                                 English
                             </span>
 
@@ -732,7 +739,7 @@
 
                 <a class="sidebar-usuario"
                    th:href="@{/login}"
-                   title="Iniciar sesión">
+                   th:title="#{nav.iniciar.sesion}">
 
                     <span class="sidebar-avatar"
                           aria-hidden="true">
@@ -763,11 +770,13 @@
 
                     <span class="sidebar-usuario-datos">
 
-                        <span class="sidebar-usuario-nombre">
+                        <span class="sidebar-usuario-nombre"
+                              th:text="#{nav.iniciar.sesion}">
                             Iniciar sesión
                         </span>
 
-                        <span class="sidebar-usuario-rol">
+                        <span class="sidebar-usuario-rol"
+                              th:text="#{nav.acceder.cuenta}">
                             Acceder a mi cuenta
                         </span>
 
@@ -777,7 +786,7 @@
 
                 <a class="sidebar-carrito"
                    th:href="@{/registro}"
-                   title="Registrarse">
+                   th:title="#{nav.registrarse}">
 
                     <svg class="sidebar-icono"
                          viewBox="0 0 20 20"
@@ -808,7 +817,7 @@
 
                     </svg>
 
-                    <span>
+                    <span th:text="#{nav.registrarse}">
                         Registrarse
                     </span>
 
@@ -901,17 +910,20 @@
                         </span>
 
                         <span class="sidebar-usuario-rol"
-                              sec:authorize="hasRole('ADMIN')">
+                              sec:authorize="hasRole('ADMIN')"
+                              th:text="#{nav.rol.admin}">
                             Administrador
                         </span>
 
                         <span class="sidebar-usuario-rol"
-                              sec:authorize="hasRole('EMPLEADO')">
+                              sec:authorize="hasRole('EMPLEADO')"
+                              th:text="#{nav.rol.empleado}">
                             Empleado
                         </span>
 
                         <span class="sidebar-usuario-rol"
-                              sec:authorize="hasRole('CLIENTE')">
+                              sec:authorize="hasRole('CLIENTE')"
+                              th:text="#{nav.rol.cliente}">
                             Cliente
                         </span>
 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es"
+      th:lang="${#locale.language}"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{inventario.titulo.pagina}">
+        Inventario - Farmacia Vida
+    </title>
+
+    <link th:replace="~{fragments/head :: bootstrap-css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="container py-5">
+
+    <section class="encabezado-pagina mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <span class="insignia-proveedor mb-2"
+                      th:text="#{inventario.insignia}">
+                    Control de existencias
+                </span>
+
+                <h1 th:text="#{inventario.titulo}">
+                    Inventario
+                </h1>
+
+                <p th:text="#{inventario.subtitulo}">
+                    Consulte la disponibilidad actual de los medicamentos registrados.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="row g-3 mb-4">
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <span class="text-muted small"
+                          th:text="#{inventario.registrados}">
+                        Medicamentos registrados
+                    </span>
+
+                    <h3 class="mb-0"
+                        th:text="${totalMedicamentos}">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <span class="text-muted small"
+                          th:text="#{inventario.stock.bajo}">
+                        Productos con stock bajo
+                    </span>
+
+                    <h3 class="mb-0"
+                        th:text="${stockBajo}">
+                        0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="contenedor-tabla">
+
+        <div class="barra-tabla">
+
+            <label class="visually-hidden"
+                   for="buscadorInventario"
+                   th:text="#{inventario.buscar}">
+                Buscar medicamento
+            </label>
+
+            <svg class="barra-tabla-icono"
+                 viewBox="0 0 20 20"
+                 width="15"
+                 height="15"
+                 aria-hidden="true"
+                 focusable="false">
+
+                <circle cx="9"
+                        cy="9"
+                        r="5.5"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        fill="none">
+                </circle>
+
+                <path d="M13.2 13.2 L17 17"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      fill="none">
+                </path>
+
+            </svg>
+
+            <input type="search"
+                   id="buscadorInventario"
+                   class="form-control js-buscador-tabla"
+                   th:placeholder="#{inventario.buscar.placeholder}"
+                   th:data-mensaje-vacio="#{inventario.buscar.sin.resultados}"
+                   autocomplete="off">
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table tabla-farmacia align-middle">
+
+                <thead>
+
+                <tr>
+
+                    <th th:text="#{inventario.columna.medicamento}">
+                        Medicamento
+                    </th>
+
+                    <th th:text="#{inventario.columna.precio}">
+                        Precio
+                    </th>
+
+                    <th th:text="#{inventario.columna.stock}">
+                        Stock
+                    </th>
+
+                    <th th:text="#{inventario.columna.proveedor}">
+                        Proveedor
+                    </th>
+
+                    <th class="text-center"
+                        th:text="#{inventario.columna.estado}">
+                        Estado
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="medicamento : ${medicamentos}">
+
+                    <td>
+
+                        <span class="nombre-proveedor"
+                              th:text="${medicamento.nombre}">
+                            Medicamento
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        ₡<span th:text="${#numbers.formatDecimal(medicamento.precio, 1, 2)}">
+                            0.00
+                        </span>
+
+                    </td>
+
+                    <td th:text="${medicamento.stock}">
+                        0
+                    </td>
+
+                    <td>
+
+                        <span th:if="${medicamento.proveedor != null}"
+                              th:text="${medicamento.proveedor.nombre}">
+                            Proveedor
+                        </span>
+
+                        <span th:if="${medicamento.proveedor == null}"
+                              class="text-muted"
+                              th:text="#{inventario.sin.proveedor}">
+                            Sin proveedor
+                        </span>
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <span class="badge text-bg-success"
+                              th:if="${medicamento.stock > 5}"
+                              th:text="#{inventario.estado.disponible}">
+                            Disponible
+                        </span>
+
+                        <span class="badge text-bg-warning"
+                              th:if="${medicamento.stock > 0 and medicamento.stock <= 5}"
+                              th:text="#{inventario.estado.bajo}">
+                            Stock bajo
+                        </span>
+
+                        <span class="badge text-bg-danger"
+                              th:if="${medicamento.stock == 0}"
+                              th:text="#{inventario.estado.agotado}">
+                            Agotado
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(medicamentos)}">
+
+                    <td colspan="5">
+
+                        <div class="estado-vacio">
+
+                            <h3 th:text="#{inventario.vacio.titulo}">
+                                No hay medicamentos registrados
+                            </h3>
+
+                            <p th:text="#{inventario.vacio.mensaje}">
+                                Los medicamentos aparecerán aquí cuando sean registrados.
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<div th:replace="~{fragments/head :: bootstrap-js}"></div>
+
+<script th:src="@{/js/tabla-buscador.js}"></script>
+
+</body>
+
+</html>

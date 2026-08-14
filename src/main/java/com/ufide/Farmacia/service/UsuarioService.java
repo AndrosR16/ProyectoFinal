@@ -19,16 +19,21 @@ public class UsuarioService {
     private final UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(
+            UsuarioRepository repository,
+            PasswordEncoder passwordEncoder) {
+
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario buscarPorUsername(String username) {
+
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "Usuario no encontrado: " + username
-                ));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "Usuario no encontrado: " + username
+                        ));
     }
 
     public List<Usuario> listarTodos() {
@@ -36,22 +41,19 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Long id) {
+
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Usuario no encontrado"
-                ));
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Usuario no encontrado"
+                        ));
     }
 
     public void cambiarRol(Long id, String rol) {
 
         Usuario usuario = buscarPorId(id);
 
-        if (!rol.equals("ADMIN")
-                && !rol.equals("EMPLEADO")
-                && !rol.equals("CLIENTE")) {
-
-            throw new IllegalArgumentException("Rol no válido");
-        }
+        validarRol(rol);
 
         usuario.setRol(rol);
 
@@ -59,14 +61,20 @@ public class UsuarioService {
     }
 
     public boolean existeUsername(String username) {
-        return repository.existsByUsername(normalizar(username));
+        return repository.existsByUsername(
+                normalizar(username)
+        );
     }
 
     public boolean existeCorreo(String correo) {
-        return repository.existsByCorreo(normalizar(correo));
+        return repository.existsByCorreo(
+                normalizar(correo)
+        );
     }
 
-    public void validarRegistro(RegistroForm form, BindingResult result) {
+    public void validarRegistro(
+            RegistroForm form,
+            BindingResult result) {
 
         if (existeUsername(form.getUsername())) {
 
@@ -100,14 +108,22 @@ public class UsuarioService {
 
     public Usuario registrar(RegistroForm form) {
 
-        Usuario usuario = new Usuario();
-
-        usuario.setUsername(normalizar(form.getUsername()));
-        usuario.setNombre(form.getNombre());
-        usuario.setCorreo(normalizar(form.getCorreo()));
-        usuario.setPassword(passwordEncoder.encode(form.getPassword()));
+        Usuario usuario = crearUsuario(form);
 
         usuario.setRol("CLIENTE");
+
+        return repository.save(usuario);
+    }
+
+    public Usuario registrarConRol(
+            RegistroForm form,
+            String rol) {
+
+        validarRol(rol);
+
+        Usuario usuario = crearUsuario(form);
+
+        usuario.setRol(rol);
 
         return repository.save(usuario);
     }
@@ -117,13 +133,16 @@ public class UsuarioService {
             PerfilForm form,
             BindingResult result) {
 
-        Usuario usuario = buscarPorUsername(username);
+        Usuario usuario =
+                buscarPorUsername(username);
 
         if (!result.hasFieldErrors("correo")) {
 
-            String correoNuevo = normalizar(form.getCorreo());
+            String correoNuevo =
+                    normalizar(form.getCorreo());
 
-            if (!correoNuevo.equals(usuario.getCorreo())
+            if (!correoNuevo.equals(
+                    usuario.getCorreo())
                     && existeCorreo(correoNuevo)) {
 
                 result.rejectValue(
@@ -138,8 +157,13 @@ public class UsuarioService {
             return;
         }
 
-        usuario.setNombre(form.getNombre());
-        usuario.setCorreo(normalizar(form.getCorreo()));
+        usuario.setNombre(
+                form.getNombre()
+        );
+
+        usuario.setCorreo(
+                normalizar(form.getCorreo())
+        );
 
         repository.save(usuario);
     }
@@ -149,7 +173,8 @@ public class UsuarioService {
             CambioPasswordForm form,
             BindingResult result) {
 
-        Usuario usuario = buscarPorUsername(username);
+        Usuario usuario =
+                buscarPorUsername(username);
 
         if (!result.hasFieldErrors("passwordActual")
                 && !passwordEncoder.matches(
@@ -181,10 +206,50 @@ public class UsuarioService {
         }
 
         usuario.setPassword(
-                passwordEncoder.encode(form.getPasswordNueva())
+                passwordEncoder.encode(
+                        form.getPasswordNueva()
+                )
         );
 
         repository.save(usuario);
+    }
+
+    private Usuario crearUsuario(
+            RegistroForm form) {
+
+        Usuario usuario = new Usuario();
+
+        usuario.setUsername(
+                normalizar(form.getUsername())
+        );
+
+        usuario.setNombre(
+                form.getNombre()
+        );
+
+        usuario.setCorreo(
+                normalizar(form.getCorreo())
+        );
+
+        usuario.setPassword(
+                passwordEncoder.encode(
+                        form.getPassword()
+                )
+        );
+
+        return usuario;
+    }
+
+    private void validarRol(String rol) {
+
+        if (!"ADMIN".equals(rol)
+                && !"EMPLEADO".equals(rol)
+                && !"CLIENTE".equals(rol)) {
+
+            throw new IllegalArgumentException(
+                    "Rol no válido"
+            );
+        }
     }
 
     private String normalizar(String valor) {
