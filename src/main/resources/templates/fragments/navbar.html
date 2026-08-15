@@ -830,7 +830,7 @@
                 <a class="sidebar-carrito"
                    th:href="@{/carrito}"
                    th:title="#{nav.carrito}"
-                   sec:authorize="hasAnyRole('CLIENTE','EMPLEADO')">
+                   sec:authorize="hasAnyRole('ADMIN','CLIENTE','EMPLEADO')">
 
                     <svg class="sidebar-icono"
                          viewBox="0 0 20 20"

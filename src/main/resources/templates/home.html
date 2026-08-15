@@ -26,225 +26,300 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<main>
+<main class="landing">
 
-    <section class="container py-5">
+    <!-- ============ 1. Hero editorial sobre banner ============ -->
+    <header class="landing-hero">
 
-        <div class="row align-items-center g-5">
+        <div class="container">
 
-            <div class="col-lg-7">
+            <div class="landing-hero-contenido">
 
-                <span class="insignia-proveedor mb-3"
+                <span class="insignia-proveedor"
                       th:text="#{home.insignia}">
                     Su farmacia de confianza
                 </span>
 
-                <h1 class="display-5 fw-bold mb-3"
-                    th:text="#{home.titulo}">
-                    Cuidamos su salud todos los días
+                <h1 class="landing-hero-titulo">
+                    <span th:text="#{home.titulo.antes}">Cuidamos su</span>
+                    <span class="landing-hero-resaltado"
+                          th:text="#{home.titulo.resaltado}">salud</span>
+                    <span th:text="#{home.titulo.despues}">todos los días</span>
                 </h1>
 
-                <p class="lead text-muted mb-4"
+                <p class="landing-hero-texto"
                    th:text="#{home.descripcion}">
-                    En Farmacia Vida encontrará medicamentos y productos
-                    para el cuidado de su salud de una forma sencilla,
-                    segura y accesible.
+                    Medicamentos y productos para el cuidado diario,
+                    con un proceso de compra sencillo, seguro y accesible.
                 </p>
 
-                <div class="d-flex flex-wrap gap-2">
+                <div class="landing-hero-acciones">
 
                     <a th:href="@{/shop}"
-                       class="btn btn-farmacia"
+                       class="btn btn-farmacia landing-btn"
                        th:text="#{home.ver.productos}">
-                        Ver productos
+                        Ver catálogo
                     </a>
 
                     <a th:href="@{/registro}"
-                       class="btn btn-outline-success"
+                       class="btn btn-outline-success landing-btn"
                        sec:authorize="isAnonymous()"
                        th:text="#{home.crear.cuenta}">
                         Crear una cuenta
                     </a>
 
-                </div>
+                    <a th:href="@{/facturas}"
+                       class="btn btn-outline-success landing-btn"
+                       sec:authorize="hasRole('CLIENTE')"
+                       th:text="#{home.servicio.historial.boton}">
+                        Ver mis compras
+                    </a>
 
-            </div>
-
-            <div class="col-lg-5">
-
-                <div class="card formulario-farmacia">
-
-                    <div class="card-body p-4">
-
-                        <h4 class="mb-3"
-                            th:text="#{app.nombre.completo}">
-                            Farmacia Vida
-                        </h4>
-
-                        <p class="text-muted mb-4"
-                           th:text="#{home.atencion.descripcion}">
-                            Atención cercana, medicamentos disponibles
-                            y un proceso de compra sencillo.
-                        </p>
-
-                        <div class="mb-3">
-
-                            <strong th:text="#{home.horario}">
-                                Horario
-                            </strong>
-
-                            <p class="mb-0 text-muted"
-                               th:text="#{home.horario.resumen}">
-                                Lunes a sábado
-                            </p>
-
-                            <p class="mb-0 text-muted"
-                               th:text="#{home.horario.resumen.horas}">
-                                8:00 a.m. - 8:00 p.m.
-                            </p>
-
-                        </div>
-
-                        <div class="mb-3">
-
-                            <strong th:text="#{home.ubicacion}">
-                                Ubicación
-                            </strong>
-
-                            <p class="mb-0 text-muted"
-                               th:text="#{home.ubicacion.valor}">
-                                Universidad Fidélitas, San Pedro, Costa Rica
-                            </p>
-
-                        </div>
-
-                        <div>
-
-                            <strong th:text="#{home.telefono}">
-                                Teléfono
-                            </strong>
-
-                            <p class="mb-0 text-muted"
-                               th:text="#{home.telefono.valor}">
-                                +506 2222-0000
-                            </p>
-
-                        </div>
-
-                    </div>
+                    <a th:href="@{/dashboard}"
+                       class="btn btn-outline-success landing-btn"
+                       sec:authorize="hasAnyRole('ADMIN','EMPLEADO')"
+                       th:text="#{home.panel}">
+                        Ir al panel
+                    </a>
 
                 </div>
 
             </div>
+
+            <aside class="landing-cifra">
+
+                <span class="landing-cifra-numero"
+                      th:text="${totalMedicamentos}">15</span>
+
+                <span class="landing-cifra-etiqueta"
+                      th:text="#{home.cifra.etiqueta}">
+                    medicamentos en catálogo
+                </span>
+
+            </aside>
+
+        </div>
+
+    </header>
+
+    <!-- ============ 2. Franja de credibilidad ============ -->
+    <section class="landing-credibilidad">
+
+        <div class="container">
+
+            <ul class="landing-credibilidad-lista">
+
+                <li>
+                    <svg viewBox="0 0 24 24" width="18" height="18"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 7v5l3 2"></path>
+                    </svg>
+                    <span>
+                        <strong th:text="#{home.horario}">Horario</strong>
+                        <span th:text="#{home.horario.resumen}">Lunes a sábado</span>,
+                        <span th:text="#{home.horario.resumen.horas}">8:00 a.m. - 8:00 p.m.</span>
+                    </span>
+                </li>
+
+                <li>
+                    <svg viewBox="0 0 24 24" width="18" height="18"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false">
+                        <path d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10z"></path>
+                        <circle cx="12" cy="11" r="2.2"></circle>
+                    </svg>
+                    <span>
+                        <strong th:text="#{home.ubicacion}">Ubicación</strong>
+                        <span th:text="#{home.ubicacion.valor}">Universidad Fidélitas, San Pedro, Costa Rica</span>
+                    </span>
+                </li>
+
+                <li>
+                    <svg viewBox="0 0 24 24" width="18" height="18"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false">
+                        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.4 2.1L8 9.7a16 16 0 0 0 6.3 6.3l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"></path>
+                    </svg>
+                    <span>
+                        <strong th:text="#{home.telefono}">Teléfono</strong>
+                        <span th:text="#{home.telefono.valor}">+506 2222-0000</span>
+                    </span>
+                </li>
+
+            </ul>
 
         </div>
 
     </section>
 
-    <section class="container pb-5">
+    <!-- ============ 3. Destacados: grid de catálogo ============ -->
+    <section class="landing-seccion landing-seccion-tintada"
+             th:if="${destacados != null and !destacados.isEmpty()}">
 
-        <div class="mb-4">
+        <div class="container">
 
-            <span class="insignia-proveedor mb-2"
-                  th:text="#{home.servicios.insignia}">
-                Nuestros servicios
-            </span>
+            <div class="landing-encabezado landing-encabezado-split">
 
-            <h2 th:text="#{home.servicios.titulo}">
-                ¿Qué ofrecemos?
-            </h2>
+                <div>
 
-            <p class="text-muted"
-               th:text="#{home.servicios.descripcion}">
-                Servicios pensados para facilitar el acceso a sus
-                medicamentos y el cuidado de su salud.
-            </p>
+                    <span class="insignia-proveedor"
+                          th:text="#{home.destacados.insignia}">
+                        Destacados
+                    </span>
 
-        </div>
+                    <h2 class="landing-titulo-seccion"
+                        th:text="#{home.destacados.titulo}">
+                        Seleccionados por nuestro equipo
+                    </h2>
 
-        <div class="row g-4">
+                    <p class="landing-encabezado-texto"
+                       th:text="#{home.destacados.descripcion}">
+                        Los productos más solicitados de nuestro catálogo,
+                        con disponibilidad verificada en tiempo real.
+                    </p>
 
-            <div class="col-md-4">
+                </div>
 
-                <div class="card h-100">
+                <a th:href="@{/shop}"
+                   class="landing-enlace landing-enlace-header">
+                    <span th:text="#{home.destacados.ver.todos}">Ver todo el catálogo</span>
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
 
-                    <div class="card-body p-4">
+            </div>
 
-                        <h4 th:text="#{home.servicio.compra.titulo}">
-                            Compra de medicamentos
-                        </h4>
+            <div class="landing-productos-grid">
 
-                        <p class="text-muted mb-3"
-                           th:text="#{home.servicio.compra.descripcion}">
-                            Consulte nuestro catálogo, agregue productos
-                            al carrito y complete su compra desde el sistema.
-                        </p>
+                <article class="producto-card landing-producto-card"
+                         th:each="med : ${destacados}">
+
+                    <span class="producto-ribbon"
+                          th:text="#{shop.destacado.ribbon}">Destacado</span>
+
+                    <span class="producto-estrella" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="26" height="26" focusable="false">
+                            <path d="M12 2 L14.9 8.2 L21.7 8.8 L16.6 13.3 L18.1 19.9 L12 16.4 L5.9 19.9 L7.4 13.3 L2.3 8.8 L9.1 8.2 Z"
+                                  fill="#fbbf24" stroke="#f59e0b" stroke-width="1" stroke-linejoin="round"></path>
+                        </svg>
+                    </span>
+
+                    <a th:href="@{/shop}" class="producto-imagen landing-producto-imagen">
+
+                        <svg viewBox="0 0 48 48" width="40" height="40"
+                             aria-hidden="true" focusable="false">
+                            <rect x="7" y="17" width="34" height="14" rx="7"
+                                  transform="rotate(-38 24 24)" stroke="currentColor"
+                                  stroke-width="2.4" fill="none"></rect>
+                            <path d="M18.5 17 L29.5 31" stroke="currentColor"
+                                  stroke-width="2.4" stroke-linecap="round" fill="none"></path>
+                        </svg>
+
+                        <img th:if="${med.imagenUrl != null and !#strings.isEmpty(med.imagenUrl)}"
+                             class="producto-foto"
+                             th:src="${med.imagenUrl}"
+                             th:alt="${med.nombre}"
+                             loading="lazy"
+                             onerror="this.remove()">
+
+                    </a>
+
+                    <div class="producto-cuerpo">
+
+                        <h3 class="producto-nombre"
+                            th:text="${med.nombre}">Medicamento</h3>
+
+                        <div class="producto-precio">
+                            <span aria-hidden="true">₡</span><span
+                                th:text="${#numbers.formatDecimal(med.precio, 1, 2)}">0,00</span>
+                        </div>
+
+                        <span class="producto-stock producto-stock-ok"
+                              th:if="${med.stock >= 5}"
+                              th:text="#{shop.stock.disponible}">En stock</span>
+
+                        <span class="producto-stock producto-stock-pocas"
+                              th:if="${med.stock > 0 and med.stock < 5}"
+                              th:text="#{shop.stock.pocas}">Pocas unidades</span>
+
+                        <span class="producto-stock producto-stock-agotado"
+                              th:if="${med.stock <= 0}"
+                              th:text="#{shop.sin.stock}">Agotado</span>
 
                         <a th:href="@{/shop}"
-                           class="btn btn-outline-success"
-                           th:text="#{home.servicio.compra.boton}">
-                            Ir a la tienda
+                           class="landing-enlace landing-producto-enlace">
+                            <span th:text="#{home.destacado.ver}">Verlo en la tienda</span>
+                            <span aria-hidden="true">&rarr;</span>
                         </a>
 
                     </div>
 
-                </div>
+                </article>
 
             </div>
 
-            <div class="col-md-4">
+            <div class="landing-beneficios">
 
-                <div class="card h-100">
+                <div class="landing-beneficio">
 
-                    <div class="card-body p-4">
+                    <span class="landing-beneficio-icono" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </span>
 
-                        <h4 th:text="#{home.servicio.atencion.titulo}">
-                            Atención personalizada
-                        </h4>
-
-                        <p class="text-muted mb-0"
-                           th:text="#{home.servicio.atencion.descripcion}">
-                            Nuestro personal está disponible para brindar
-                            una atención rápida y facilitar el proceso
-                            de compra en la farmacia.
+                    <div>
+                        <h3 th:text="#{home.destacado.compra.titulo}">Compra sencilla de principio a fin</h3>
+                        <p th:text="#{home.destacado.compra.descripcion}">
+                            Consulte el catálogo, agregue productos al carrito y complete su compra en línea.
                         </p>
-
                     </div>
 
                 </div>
 
-            </div>
+                <div class="landing-beneficio">
 
-            <div class="col-md-4">
+                    <span class="landing-beneficio-icono" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </span>
 
-                <div class="card h-100">
-
-                    <div class="card-body p-4">
-
-                        <h4 th:text="#{home.servicio.historial.titulo}">
-                            Historial de compras
-                        </h4>
-
-                        <p class="text-muted mb-3"
-                           th:text="#{home.servicio.historial.descripcion}">
-                            Los clientes registrados pueden consultar
-                            posteriormente las compras realizadas.
+                    <div>
+                        <h3 th:text="#{home.destacado.atencion.titulo}">Atención personalizada</h3>
+                        <p th:text="#{home.destacado.atencion.descripcion}">
+                            Nuestro personal le acompaña durante el proceso de compra.
                         </p>
+                    </div>
 
-                        <a th:href="@{/facturas}"
-                           class="btn btn-outline-success"
-                           sec:authorize="hasRole('CLIENTE')"
-                           th:text="#{home.servicio.historial.boton}">
-                            Ver mis compras
-                        </a>
+                </div>
 
-                        <a th:href="@{/login}"
-                           class="btn btn-outline-success"
-                           sec:authorize="isAnonymous()"
-                           th:text="#{home.iniciar.sesion}">
-                            Iniciar sesión
-                        </a>
+                <div class="landing-beneficio">
 
+                    <span class="landing-beneficio-icono" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 6v6l4 2"></path>
+                        </svg>
+                    </span>
+
+                    <div>
+                        <h3 th:text="#{home.destacado.historial.titulo}">Su historial, siempre disponible</h3>
+                        <p th:text="#{home.destacado.historial.descripcion}">
+                            Los clientes registrados pueden consultar sus compras anteriores en cualquier momento.
+                        </p>
                     </div>
 
                 </div>
@@ -255,167 +330,76 @@
 
     </section>
 
-    <section class="container pb-5">
+    <!-- ============ 5. Cita editorial ============ -->
+    <section class="landing-cita">
 
-        <div class="card">
+        <div class="container">
 
-            <div class="card-body p-4 p-lg-5">
+            <blockquote class="landing-cita-bloque">
 
-                <div class="row align-items-center g-4">
+                <p class="landing-cita-texto"
+                   th:text="#{home.cita.texto}">
+                    Creemos que cuidar la salud debe ser tan sencillo
+                    como cualquier otra compra.
+                </p>
 
-                    <div class="col-lg-8">
+                <footer class="landing-cita-autor"
+                        th:text="#{home.cita.autor}">
+                    Equipo de Farmacia Vida
+                </footer>
 
-                        <span class="insignia-proveedor mb-2"
-                              th:text="#{home.nosotros.insignia}">
-                            Sobre nosotros
-                        </span>
-
-                        <h2 th:text="#{home.nosotros.titulo}">
-                            Comprometidos con una atención sencilla
-                        </h2>
-
-                        <p class="text-muted mb-0"
-                           th:text="#{home.nosotros.descripcion}">
-                            Farmacia Vida busca facilitar la gestión y
-                            compra de medicamentos mediante una plataforma
-                            que permite consultar productos, controlar
-                            existencias y mantener un registro de las
-                            compras realizadas.
-                        </p>
-
-                    </div>
-
-                    <div class="col-lg-4 text-lg-end">
-
-                        <a th:href="@{/shop}"
-                           class="btn btn-farmacia"
-                           th:text="#{home.explorar.productos}">
-                            Explorar productos
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </blockquote>
 
         </div>
 
     </section>
 
-    <section class="container pb-5">
+    <!-- ============ 6. Banda de cierre ============ -->
+    <section class="landing-seccion">
 
-        <div class="row g-4">
+        <div class="container">
 
-            <div class="col-md-6">
+            <div class="landing-cierre">
 
-                <div class="card h-100">
+                <h2 class="landing-cierre-titulo"
+                    th:text="#{home.cierre.titulo}">
+                    Su próxima compra empieza aquí
+                </h2>
 
-                    <div class="card-body p-4">
+                <p class="landing-cierre-texto"
+                   th:text="#{home.cierre.descripcion}">
+                    Explore el catálogo, cree su cuenta en minutos y
+                    lleve el control de sus compras en un solo lugar.
+                </p>
 
-                        <span class="insignia-proveedor mb-2"
-                              th:text="#{home.contacto.insignia}">
-                            Contacto
-                        </span>
+                <div class="landing-cierre-acciones">
 
-                        <h3 th:text="#{home.contacto.titulo}">
-                            Comuníquese con nosotros
-                        </h3>
+                    <a th:href="@{/shop}"
+                       class="btn landing-btn landing-btn-invertido"
+                       th:text="#{home.cierre.boton}">
+                        Ir a la tienda
+                    </a>
 
-                        <p class="mb-2">
+                    <a th:href="@{/registro}"
+                       class="btn landing-btn landing-btn-contorno"
+                       sec:authorize="isAnonymous()"
+                       th:text="#{home.crear.cuenta}">
+                        Crear una cuenta
+                    </a>
 
-                            <strong th:text="#{home.telefono}">
-                                Teléfono
-                            </strong>:
+                    <a th:href="@{/facturas}"
+                       class="btn landing-btn landing-btn-contorno"
+                       sec:authorize="hasRole('CLIENTE')"
+                       th:text="#{home.servicio.historial.boton}">
+                        Ver mis compras
+                    </a>
 
-                            <span th:text="#{home.telefono.valor}">
-                                +506 2222-0000
-                            </span>
-
-                        </p>
-
-                        <p class="mb-2">
-
-                            <strong th:text="#{home.contacto.correo}">
-                                Correo
-                            </strong>:
-
-                            <span th:text="#{home.contacto.correo.valor}">
-                                info@farmaciavida.cr
-                            </span>
-
-                        </p>
-
-                        <p class="mb-0">
-
-                            <strong th:text="#{home.ubicacion}">
-                                Ubicación
-                            </strong>:
-
-                            <span th:text="#{home.ubicacion.valor}">
-                                Universidad Fidélitas, San Pedro, Costa Rica
-                            </span>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="card h-100">
-
-                    <div class="card-body p-4">
-
-                        <span class="insignia-proveedor mb-2"
-                              th:text="#{home.horario}">
-                            Horario
-                        </span>
-
-                        <h3 th:text="#{home.horario.titulo}">
-                            Horario de atención
-                        </h3>
-
-                        <div class="d-flex justify-content-between mb-2">
-
-                            <span th:text="#{home.horario.lunes.viernes}">
-                                Lunes a viernes
-                            </span>
-
-                            <strong th:text="#{home.horario.resumen.horas}">
-                                8:00 a.m. - 8:00 p.m.
-                            </strong>
-
-                        </div>
-
-                        <div class="d-flex justify-content-between mb-2">
-
-                            <span th:text="#{home.horario.sabado}">
-                                Sábado
-                            </span>
-
-                            <strong th:text="#{home.horario.resumen.horas}">
-                                8:00 a.m. - 8:00 p.m.
-                            </strong>
-
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-
-                            <span th:text="#{home.horario.domingo}">
-                                Domingo
-                            </span>
-
-                            <strong th:text="#{home.horario.cerrado}">
-                                Cerrado
-                            </strong>
-
-                        </div>
-
-                    </div>
+                    <a th:href="@{/dashboard}"
+                       class="btn landing-btn landing-btn-contorno"
+                       sec:authorize="hasAnyRole('ADMIN','EMPLEADO')"
+                       th:text="#{home.panel}">
+                        Ir al panel
+                    </a>
 
                 </div>
 

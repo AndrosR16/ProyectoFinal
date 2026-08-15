@@ -2038,3 +2038,487 @@ html.sidebar-colapsado .icono-colapso {
     border-radius: 50%;
     animation: compra-girar 700ms linear infinite;
 }
+
+/* ============================================================
+   === Landing / Home ===
+   Landing público editorial: hero sobre banner con degradado,
+   franja de credibilidad, zig-zag de destacados, pull-quote y
+   banda de cierre. Clases prefijadas "landing-". Convención del
+   archivo: base = desktop, overrides en max-width 991.98/768/576.
+   ============================================================ */
+
+/* main.landing no lleva la clase "container" (las secciones necesitan
+   fondo full-bleed), así que sus .container internos no heredaban el
+   gutter/máximo que sí aplica en el resto del sitio junto al sidebar
+   fijo (ver regla main.container arriba). Se replica aquí mismo valor. */
+@media (min-width: 992px) {
+    .landing .container {
+        padding-left: 40px;
+        padding-right: 40px;
+        max-width: 1240px;
+    }
+}
+
+/* --- 1. Hero editorial --- */
+.landing-hero {
+    background:
+        linear-gradient(90deg,
+            rgba(246, 247, 245, 0.97) 0%,
+            rgba(246, 247, 245, 0.92) 40%,
+            rgba(246, 247, 245, 0.55) 66%,
+            rgba(246, 247, 245, 0.12) 100%),
+        url("../img/banner.jpg") right center / cover no-repeat;
+    border-bottom: 1px solid var(--gris-borde);
+}
+
+.landing-hero > .container {
+    position: relative;
+    padding-top: 96px;
+    padding-bottom: 96px;
+}
+
+.landing-hero-contenido {
+    max-width: 560px;
+}
+
+.landing-hero-titulo {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    margin: var(--space-4) 0 var(--space-5);
+}
+
+.landing-hero-resaltado {
+    color: var(--verde-principal);
+    text-decoration: underline;
+    text-decoration-color: rgba(26, 122, 69, 0.35);
+    text-decoration-thickness: 0.14em;
+    text-underline-offset: 0.14em;
+}
+
+.landing-hero-texto {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--gris-texto);
+    max-width: 46ch;
+    margin-bottom: var(--space-6);
+}
+
+.landing-hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+/* CTA más grande que el .btn denso de consola (mismo sistema) */
+.landing-btn {
+    padding: 11px 22px;
+    font-size: 15px;
+    border-radius: 8px;
+}
+
+/* Cifra única flotante sobre la zona de imagen del hero */
+.landing-cifra {
+    position: absolute;
+    right: var(--space-6);
+    bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    min-width: 190px;
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.14);
+}
+
+.landing-cifra-numero {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--verde-oscuro);
+    font-variant-numeric: tabular-nums;
+}
+
+.landing-cifra-etiqueta {
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--gris-texto);
+}
+
+/* --- 2. Franja de credibilidad (sin cards) --- */
+.landing-credibilidad {
+    background-color: var(--blanco);
+    border-bottom: 1px solid var(--gris-borde);
+}
+
+.landing-credibilidad-lista {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-4) 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+}
+
+.landing-credibilidad-lista li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--gris-texto);
+    font-size: 0.92rem;
+}
+
+.landing-credibilidad-lista li + li {
+    border-left: 1px solid var(--gris-borde);
+    padding-left: var(--space-6);
+}
+
+.landing-credibilidad-lista svg {
+    color: var(--verde-principal);
+    flex-shrink: 0;
+}
+
+.landing-credibilidad-lista strong {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+    margin-right: var(--space-1);
+}
+
+/* --- Ritmo vertical de secciones editoriales --- */
+.landing-seccion {
+    padding: 96px 0;
+}
+
+.landing-encabezado {
+    max-width: 620px;
+    margin-bottom: 64px;
+}
+
+.landing-titulo-seccion {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: var(--space-2) 0 0;
+}
+
+/* --- 3. Destacados: grid de catálogo + beneficios --- */
+.landing-seccion-tintada {
+    background-color: var(--gris-fondo);
+    border-top: 1px solid var(--gris-borde);
+    border-bottom: 1px solid var(--gris-borde);
+}
+
+.landing-encabezado-split {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-5);
+}
+
+.landing-encabezado-texto {
+    color: var(--gris-texto);
+    max-width: 52ch;
+    margin: var(--space-2) 0 0;
+}
+
+.landing-enlace-header {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.landing-productos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+}
+
+/* La tarjeta reutiliza .producto-card/.producto-imagen/.producto-cuerpo
+   del catálogo (misma marca, sin duplicar chrome); solo se agranda un
+   poco la foto y se cambia el CTA por un enlace (sin formulario de
+   carrito: la landing es pública, /carrito/** exige sesión). */
+.landing-producto-card {
+    transition: transform var(--transicion-base), border-color var(--transicion-base), box-shadow var(--transicion-base);
+}
+
+.landing-producto-card:hover {
+    transform: translateY(-3px);
+}
+
+.landing-producto-imagen {
+    height: 190px;
+}
+
+.landing-producto-imagen img {
+    transition: transform var(--transicion-base);
+}
+
+.landing-producto-imagen:hover img {
+    transform: scale(1.04);
+}
+
+.landing-producto-enlace {
+    margin-top: auto;
+    padding-top: var(--space-2);
+}
+
+/* --- Franja de beneficios (reaprovecha el copy de servicio) --- */
+.landing-beneficios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    margin-top: 64px;
+    padding-top: 56px;
+    border-top: 1px solid var(--gris-borde);
+}
+
+.landing-beneficio {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+}
+
+.landing-beneficio-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: var(--verde-claro);
+    color: var(--verde-principal);
+}
+
+.landing-beneficio h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-1);
+}
+
+.landing-beneficio p {
+    color: var(--gris-texto);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.landing-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    border-bottom: 2px solid rgba(26, 122, 69, 0.35);
+    padding-bottom: 2px;
+    transition: color var(--transicion-base), border-color var(--transicion-base);
+}
+
+.landing-enlace:hover,
+.landing-enlace:focus {
+    color: var(--verde-principal);
+    border-bottom-color: var(--verde-principal);
+}
+
+/* --- 5. Cita editorial (pull-quote) --- */
+.landing-cita {
+    background-color: var(--verde-claro);
+    padding: 88px 0;
+}
+
+.landing-cita-bloque {
+    margin: 0;
+    max-width: 780px;
+}
+
+.landing-cita-texto {
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--verde-oscuro);
+    margin: 0 0 var(--space-4);
+}
+
+.landing-cita-texto::before {
+    content: "\201C";
+}
+
+.landing-cita-texto::after {
+    content: "\201D";
+}
+
+.landing-cita-autor {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--verde-principal);
+}
+
+/* --- 6. Banda de cierre --- */
+.landing-cierre {
+    background-color: var(--verde-oscuro);
+    border-radius: 20px;
+    padding: 72px 64px;
+    text-align: center;
+    color: var(--blanco);
+}
+
+.landing-cierre-titulo {
+    color: var(--blanco);
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-3);
+}
+
+.landing-cierre-texto {
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 52ch;
+    margin: 0 auto var(--space-6);
+}
+
+.landing-cierre-acciones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.landing-btn-invertido {
+    background-color: var(--blanco);
+    border-color: var(--blanco);
+    color: var(--verde-oscuro);
+    font-weight: 700;
+}
+
+.landing-btn-invertido:hover,
+.landing-btn-invertido:focus {
+    background-color: var(--verde-claro);
+    border-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+}
+
+.landing-btn-contorno {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    color: var(--blanco);
+}
+
+.landing-btn-contorno:hover,
+.landing-btn-contorno:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--blanco);
+    color: var(--blanco);
+}
+
+/* --- Responsive (misma convención max-width del archivo) --- */
+@media (max-width: 991.98px) {
+    .landing-hero > .container {
+        padding-top: 72px;
+        padding-bottom: 72px;
+    }
+
+    .landing-cifra {
+        right: var(--space-4);
+        bottom: var(--space-5);
+    }
+
+    .landing-seccion {
+        padding: 72px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    /* La foto pasa a fondo atenuado uniforme: el texto manda */
+    .landing-hero {
+        background:
+            linear-gradient(rgba(246, 247, 245, 0.94),
+                rgba(246, 247, 245, 0.9)),
+            url("../img/banner.jpg") center / cover no-repeat;
+    }
+
+    .landing-hero > .container {
+        padding-top: 56px;
+        padding-bottom: 56px;
+    }
+
+    .landing-hero-contenido {
+        max-width: none;
+    }
+
+    /* La cifra deja de flotar: bloque estático bajo el contenido */
+    .landing-cifra {
+        position: static;
+        margin-top: var(--space-6);
+        flex-direction: row;
+        align-items: baseline;
+        gap: var(--space-3);
+        width: fit-content;
+        box-shadow: 0 4px 14px rgba(16, 24, 40, 0.1);
+    }
+
+    .landing-cifra-numero {
+        font-size: 1.8rem;
+    }
+
+    .landing-credibilidad-lista {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .landing-credibilidad-lista li + li {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--gris-medio);
+        padding-top: var(--space-3);
+    }
+
+    .landing-seccion {
+        padding: 56px 0;
+    }
+
+    .landing-encabezado {
+        margin-bottom: var(--space-6);
+    }
+
+    .landing-encabezado-split {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .landing-productos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-beneficios {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+        margin-top: 48px;
+        padding-top: 40px;
+    }
+
+    .landing-cita {
+        padding: 56px 0;
+    }
+
+    .landing-cierre {
+        padding: 48px var(--space-5);
+    }
+}
+
+@media (max-width: 576px) {
+    .landing-hero-acciones,
+    .landing-cierre-acciones {
+        flex-direction: column;
+    }
+
+    .landing-cifra {
+        width: 100%;
+    }
+}

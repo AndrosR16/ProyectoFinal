@@ -26,7 +26,18 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String mostrarInicio() {
+    public String mostrarInicio(Model model) {
+
+        model.addAttribute(
+                "totalMedicamentos",
+                medicamentoService.contar()
+        );
+
+        model.addAttribute(
+                "destacados",
+                medicamentoService.listarDestacados()
+        );
+
         return "home";
     }
 
